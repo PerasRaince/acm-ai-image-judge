@@ -2,11 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { apiClient } from '../../../lib/apiClient';
+import { supabase } from '../../../lib/supabaseClient';
 import { UserProfile, UserRole } from '../../../types';
-import { User, Shield, Trophy, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
+import { User, Shield, Trophy, CheckCircle2, AlertCircle, ArrowLeft, Trash2, AlertTriangle, X } from 'lucide-react';
 
 export default function ProfilePage() {
+  const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [displayName, setDisplayName] = useState('');
   const [role, setRole] = useState<UserRole>('participant');
@@ -14,6 +17,12 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // Deletion modal state
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmationInput, setDeleteConfirmationInput] = useState('');
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -50,6 +59,24 @@ export default function ProfilePage() {
       setErrorMsg(err instanceof Error ? err.message : 'Failed to update profile');
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleDeleteAccount() {
+    if (deleteConfirmationInput.trim() !== 'DELETE') {
+      setDeleteError('Please type DELETE exactly to confirm.');
+      return;
+    }
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      await apiClient.deleteAccount();
+      await supabase.auth.signOut();
+      router.push('/login?message=deleted');
+      router.refresh();
+    } catch (err: unknown) {
+      setDeleteError(err instanceof Error ? err.message : 'Failed to delete account.');
+      setDeleting(false);
     }
   }
 
@@ -161,6 +188,104 @@ export default function ProfilePage() {
           {saving ? 'Saving changes...' : 'Save Profile'}
         </button>
       </form>
+
+      {/* Danger Zone: Full Account Deletion */}
+      <div className="p-6 rounded-2xl border border-rose-950/70 bg-rose-950/20 space-y-4 text-xs">
+        <div className="flex items-center gap-2.5 text-rose-400 font-semibold text-sm">
+          <AlertTriangle className="h-4 w-4" />
+          <span>Danger Zone: Permanent Account Deletion</span>
+        </div>
+        <p className="text-zinc-400 leading-relaxed text-[11px]">
+          Permanently delete your profile, authentication credentials, hosted competitions, submitted images, and scoring data from this system and Supabase. This action is irreversible.
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            setShowDeleteModal(true);
+            setDeleteConfirmationInput('');
+            setDeleteError(null);
+          }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 border border-rose-500/40 text-rose-300 font-semibold text-xs transition-all active:scale-95"
+        >
+          <Trash2 className="h-3.5 w-3.5" />
+          <span>Delete Account & Data</span>
+        </button>
+      </div>
+
+      {/* Modal Dialog for Confirmation */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-5 shadow-2xl">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-rose-400 font-bold text-sm">
+                <AlertTriangle className="h-4 w-4" />
+                <span>Confirm Permanent Deletion</span>
+              </div>
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="text-zinc-500 hover:text-white p-1"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="space-y-2 text-xs text-zinc-300 leading-relaxed">
+              <p>
+                This action will permanently erase:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-zinc-400 text-[11px] pl-1">
+                <li>Your profile and login credentials in Supabase Auth</li>
+                <li>All recreation images uploaded by you in storage</li>
+                <li>All competitions hosted by you (including reference images)</li>
+                <li>All AI ensemble evaluation scores and leaderboard records</li>
+              </ul>
+              <p className="font-semibold text-rose-400 pt-1">
+                This action cannot be undone.
+              </p>
+            </div>
+
+            {deleteError && (
+              <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs flex items-center gap-2">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                <span>{deleteError}</span>
+              </div>
+            )}
+
+            <div className="space-y-1.5">
+              <label className="text-[11px] text-zinc-400">
+                To confirm, type <span className="font-bold text-rose-400">DELETE</span> below:
+              </label>
+              <input
+                type="text"
+                value={deleteConfirmationInput}
+                onChange={(e) => setDeleteConfirmationInput(e.target.value)}
+                placeholder="DELETE"
+                className="w-full px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-white font-mono text-xs focus:outline-none focus:border-rose-500"
+              />
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowDeleteModal(false)}
+                disabled={deleting}
+                className="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteAccount}
+                disabled={deleting || deleteConfirmationInput.trim() !== 'DELETE'}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 disabled:opacity-40 text-white text-xs font-semibold transition-colors"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+                <span>{deleting ? 'Deleting account...' : 'Permanently Delete'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

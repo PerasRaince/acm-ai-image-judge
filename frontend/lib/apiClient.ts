@@ -66,6 +66,23 @@ export const apiClient = {
     return json.data;
   },
 
+  async deleteAccount(): Promise<void> {
+    const headers = await getAuthHeaders();
+    if (!headers['Authorization']) {
+      throw new Error('You must be logged in to delete your account.');
+    }
+
+    const res = await fetch(`${API_BASE_URL}/auth/me`, {
+      method: 'DELETE',
+      headers
+    });
+
+    const json = await res.json();
+    if (!res.ok || !json.success) {
+      throw new Error(json.error?.message || 'Failed to delete account.');
+    }
+  },
+
   async listCompetitions(params?: { status?: string; host_id?: string; organizer_id?: string }): Promise<Competition[]> {
     const headers = await getAuthHeaders();
     const query = new URLSearchParams();

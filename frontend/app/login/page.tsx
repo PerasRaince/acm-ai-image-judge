@@ -45,11 +45,15 @@ function LoginForm() {
     setErrorMsg(null);
     setOauthLoading(true);
     try {
-      const redirectTo = `${window.location.origin}${returnUrl}`;
+      const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(returnUrl)}`;
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo
+          redirectTo,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent'
+          }
         }
       });
       if (error) throw error;
