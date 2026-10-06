@@ -22,12 +22,18 @@ def compute_quality_score(
     3. Resolution adequacy
     Returns: (normalized_score, raw_metric, metadata)
     """
-    img_np = np.array(image)
-    gray = cv2.cvtColor(img_np, cv2.COLOR_RGB2GRAY)
     width, height = image.size
+    # Resize to standard 512px for stable, lightweight sharpness evaluation (prevents RAM spikes)
+    if width > 512 or height > 512:
+        eval_img = image.resize((512, 512), Image.Resampling.BILINEAR)
+    else:
+        eval_img = image
 
-    # 1. Sharpness via Laplacian variance
-    laplacian_var = cv2.Laplacian(gray, cv2.CV_64F).var()
+    img_np = np.array(eval_img)
+    gray = cv2.cvtColor(img_np, cv2.COLOR_RGB2GRAY)
+
+    # 1. Sharpness via Laplacian variance (using float32 to save RAM)
+    laplacian_var = float(cv2.Laplacian(gray, cv2.CV_32F).var())
     # Scores: variance > 250 is crisp, < 30 is severely blurred
     sharpness_score = min(1.0, max(0.1, np.log1p(laplacian_var) / np.log1p(500.0)))
 

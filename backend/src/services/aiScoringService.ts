@@ -75,36 +75,72 @@ export class AIScoringService {
       form.append('scoring_version', params.scoringVersion);
     }
 
-    const response = await fetch(`${this.baseUrl}/v1/score`, {
-      method: 'POST',
-      body: form.getBuffer() as unknown as BodyInit,
-      headers: form.getHeaders(),
-      signal: AbortSignal.timeout(180000)
-    });
+    const formBuffer = form.getBuffer();
+    const headers = {
+      ...form.getHeaders(),
+      'Content-Length': String(formBuffer.length)
+    };
 
-    if (!response.ok) {
-      const errText = await response.text();
-      logger.error(`AI scoring service returned error (${response.status}): ${errText}`);
-      if (response.status === 502 || response.status === 503 || response.status === 504) {
-        throw new Error('AI service gateway timeout or warming up (502/503). The models may still be downloading.');
-      }
+    let lastError: Error | null = null;
+    const maxAttempts = 2;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
-        const parsed = JSON.parse(errText);
-        if (parsed.detail) {
-          throw new Error(parsed.detail);
+        logger.info(`Dispatching image scoring attempt ${attempt}/${maxAttempts} to ${this.baseUrl}/v1/score`);
+
+        const response = await fetch(`${this.baseUrl}/v1/score`, {
+          method: 'POST',
+          body: formBuffer as unknown as BodyInit,
+          headers,
+          signal: AbortSignal.timeout(180000)
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          logger.error(`AI scoring service returned error (${response.status}): ${errText}`);
+          if (response.status === 502 || response.status === 503 || response.status === 504) {
+            throw new Error('AI service gateway timeout or warming up (502/503). The models may still be downloading.');
+          }
+          try {
+            const parsed = JSON.parse(errText);
+            if (parsed.detail) {
+              throw new Error(parsed.detail);
+            }
+          } catch {
+            // Not json, throw text
+          }
+          throw new Error(`AI Scoring Service error: ${errText || response.statusText}`);
         }
-      } catch {
-        // Not json, throw text
+
+        const result = (await response.json()) as AIScoreResult;
+        logger.info(
+          `Scoring succeeded! Final: ${result.final_score}, Duration: ${result.inference_duration_ms}ms, Device: ${result.device}`
+        );
+
+        return result;
+      } catch (err: unknown) {
+        lastError = err instanceof Error ? err : new Error(String(err));
+        const errMsg = lastError.message.toLowerCase();
+        const isNetworkGlitch =
+          errMsg.includes('terminated') ||
+          errMsg.includes('fetch failed') ||
+          errMsg.includes('econnreset') ||
+          errMsg.includes('socket') ||
+          errMsg.includes('gateway timeout') ||
+          errMsg.includes('502') ||
+          errMsg.includes('503');
+
+        if (attempt < maxAttempts && isNetworkGlitch) {
+          logger.warn(`AI scoring connection attempt ${attempt} interrupted (${lastError.message}). Retrying in 2.5s...`);
+          await new Promise((resolve) => setTimeout(resolve, 2500));
+          continue;
+        }
+
+        throw lastError;
       }
-      throw new Error(`AI Scoring Service error: ${errText || response.statusText}`);
     }
 
-    const result = (await response.json()) as AIScoreResult;
-    logger.info(
-      `Scoring succeeded! Final: ${result.final_score}, Duration: ${result.inference_duration_ms}ms, Device: ${result.device}`
-    );
-
-    return result;
+    throw lastError || new Error('Failed to score images after retry attempts.');
   }
 }
 

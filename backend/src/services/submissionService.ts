@@ -226,9 +226,21 @@ export class SubmissionService {
       const errMsg = err instanceof Error ? err.message : String(err);
       logger.error(`AI scoring failed for submission ${submission.id}: ${errMsg}`);
 
-      if (errMsg.includes('502') || errMsg.includes('503') || errMsg.includes('504') || errMsg.includes('Bad Gateway') || errMsg.includes('fetch failed') || errMsg.includes('timeout') || errMsg.includes('warming up')) {
+      const isTransientGlitch =
+        errMsg.includes('502') ||
+        errMsg.includes('503') ||
+        errMsg.includes('504') ||
+        errMsg.includes('Bad Gateway') ||
+        errMsg.includes('fetch failed') ||
+        errMsg.includes('timeout') ||
+        errMsg.includes('terminated') ||
+        errMsg.includes('socket') ||
+        errMsg.includes('ECONNRESET') ||
+        errMsg.includes('warming up');
+
+      if (isTransientGlitch) {
         throw new ServiceUnavailableError(
-          'The AI scoring engine is currently warming up or downloading neural models. Your attempt was not deducted. Please click Submit again in 30 seconds!'
+          'The AI scoring engine is currently warming up or handling queue load. Your submission quota was NOT deducted. Please click Submit again!'
         );
       }
 

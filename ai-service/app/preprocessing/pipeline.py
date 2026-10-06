@@ -185,9 +185,10 @@ def preprocess_image_bytes(
             "DIMENSIONS_TOO_SMALL"
         )
 
-    # Gracefully downscale oversized images to fit within max_dimension bounds
-    if width > max_dimension or height > max_dimension:
-        rgb_img.thumbnail((max_dimension, max_dimension), Image.Resampling.LANCZOS)
+    # Gracefully downscale oversized images to fit within safe bounds (1024px) to protect 512MB RAM cap
+    max_bound = min(max_dimension, 1024)
+    if width > max_bound or height > max_bound:
+        rgb_img.thumbnail((max_bound, max_bound), Image.Resampling.BICUBIC)
         width, height = rgb_img.size
 
 
