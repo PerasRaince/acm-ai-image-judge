@@ -38,7 +38,7 @@ export function createApp(): Express {
       },
       credentials: true,
       methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+      allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-admin-key', 'X-Admin-Key']
     })
   );
 

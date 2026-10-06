@@ -7,7 +7,19 @@ import {
   UserProfile
 } from '../types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
+const DEFAULT_PROD_API_URL = 'https://ai-judge-backend.onrender.com/api/v1';
+
+export function getApiBaseUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (typeof window !== 'undefined') {
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    // If running in browser on a production domain (e.g. Vercel), never point to localhost
+    if (!isLocalhost && (!envUrl || envUrl.includes('localhost') || envUrl.includes('127.0.0.1'))) {
+      return DEFAULT_PROD_API_URL;
+    }
+  }
+  return envUrl || (process.env.NODE_ENV === 'production' ? DEFAULT_PROD_API_URL : 'http://localhost:4000/api/v1');
+}
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
   const { data: { session } } = await supabase.auth.getSession();
@@ -22,7 +34,7 @@ async function getAuthHeaders(): Promise<Record<string, string>> {
 
 export const apiClient = {
   async signup(data: { email: string; password: string; display_name: string }): Promise<UserProfile> {
-    const res = await fetch(`${API_BASE_URL}/auth/signup`, {
+    const res = await fetch(`${getApiBaseUrl()}/auth/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +54,7 @@ export const apiClient = {
     const headers = await getAuthHeaders();
     if (!headers['Authorization']) return null;
 
-    const res = await fetch(`${API_BASE_URL}/auth/me`, { headers });
+    const res = await fetch(`${getApiBaseUrl()}/auth/me`, { headers });
     if (!res.ok) return null;
     const json = await res.json();
     return json.data.user;
@@ -52,7 +64,7 @@ export const apiClient = {
     const headers = await getAuthHeaders();
     headers['Content-Type'] = 'application/json';
 
-    const res = await fetch(`${API_BASE_URL}/auth/sync-profile`, {
+    const res = await fetch(`${getApiBaseUrl()}/auth/sync-profile`, {
       method: 'POST',
       headers,
       body: JSON.stringify(data)
@@ -72,7 +84,7 @@ export const apiClient = {
       throw new Error('You must be logged in to delete your account.');
     }
 
-    const res = await fetch(`${API_BASE_URL}/auth/me`, {
+    const res = await fetch(`${getApiBaseUrl()}/auth/me`, {
       method: 'DELETE',
       headers
     });
@@ -91,7 +103,7 @@ export const apiClient = {
       query.append('host_id', params.host_id || params.organizer_id || '');
     }
 
-    const res = await fetch(`${API_BASE_URL}/competitions?${query.toString()}`, { headers });
+    const res = await fetch(`${getApiBaseUrl()}/competitions?${query.toString()}`, { headers });
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error?.message || 'Failed to fetch competitions');
@@ -102,7 +114,7 @@ export const apiClient = {
 
   async getCompetition(id: string): Promise<Competition> {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${API_BASE_URL}/competitions/${id}`, { headers });
+    const res = await fetch(`${getApiBaseUrl()}/competitions/${id}`, { headers });
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error?.message || 'Failed to fetch competition');
@@ -114,7 +126,7 @@ export const apiClient = {
   async getCompetitionByCode(code: string): Promise<Competition> {
     const headers = await getAuthHeaders();
     const cleanCode = encodeURIComponent(code.trim().toLowerCase());
-    const res = await fetch(`${API_BASE_URL}/competitions/code/${cleanCode}`, { headers });
+    const res = await fetch(`${getApiBaseUrl()}/competitions/code/${cleanCode}`, { headers });
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error?.message || 'Failed to find competition by code');
@@ -126,7 +138,7 @@ export const apiClient = {
   async createCompetition(formData: FormData): Promise<Competition> {
     const headers = await getAuthHeaders();
     // Do not set Content-Type header when sending FormData (browser sets boundary)
-    const res = await fetch(`${API_BASE_URL}/competitions`, {
+    const res = await fetch(`${getApiBaseUrl()}/competitions`, {
       method: 'POST',
       headers,
       body: formData
@@ -144,7 +156,7 @@ export const apiClient = {
     const headers = await getAuthHeaders();
     headers['Content-Type'] = 'application/json';
 
-    const res = await fetch(`${API_BASE_URL}/competitions/${id}`, {
+    const res = await fetch(`${getApiBaseUrl()}/competitions/${id}`, {
       method: 'PATCH',
       headers,
       body: JSON.stringify(data)
@@ -160,7 +172,7 @@ export const apiClient = {
 
   async joinCompetition(id: string): Promise<void> {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${API_BASE_URL}/competitions/${id}/join`, {
+    const res = await fetch(`${getApiBaseUrl()}/competitions/${id}/join`, {
       method: 'POST',
       headers
     });
@@ -175,7 +187,7 @@ export const apiClient = {
     const headers = await getAuthHeaders();
     headers['Content-Type'] = 'application/json';
 
-    const res = await fetch(`${API_BASE_URL}/competitions/join`, {
+    const res = await fetch(`${getApiBaseUrl()}/competitions/join`, {
       method: 'POST',
       headers,
       body: JSON.stringify({ code })
@@ -191,7 +203,7 @@ export const apiClient = {
 
   async listJoinedCompetitions(): Promise<Competition[]> {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${API_BASE_URL}/competitions/user/joined`, { headers });
+    const res = await fetch(`${getApiBaseUrl()}/competitions/user/joined`, { headers });
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error?.message || 'Failed to fetch joined competitions');
@@ -202,7 +214,7 @@ export const apiClient = {
 
   async submitRecreation(competitionId: string, formData: FormData): Promise<{ submission: Submission; score: Score }> {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${API_BASE_URL}/competitions/${competitionId}/submissions`, {
+    const res = await fetch(`${getApiBaseUrl()}/competitions/${competitionId}/submissions`, {
       method: 'POST',
       headers,
       body: formData
@@ -218,7 +230,7 @@ export const apiClient = {
 
   async getLeaderboard(competitionId: string): Promise<LeaderboardData> {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${API_BASE_URL}/competitions/${competitionId}/leaderboard`, { headers });
+    const res = await fetch(`${getApiBaseUrl()}/competitions/${competitionId}/leaderboard`, { headers });
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error?.message || 'Failed to fetch leaderboard');
@@ -233,7 +245,7 @@ export const apiClient = {
     if (params?.competition_id) query.append('competition_id', params.competition_id);
     if (params?.participant_id) query.append('participant_id', params.participant_id);
 
-    const res = await fetch(`${API_BASE_URL}/submissions?${query.toString()}`, { headers });
+    const res = await fetch(`${getApiBaseUrl()}/submissions?${query.toString()}`, { headers });
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error?.message || 'Failed to fetch submissions');
@@ -244,7 +256,7 @@ export const apiClient = {
 
   async getSubmission(id: string): Promise<Submission> {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${API_BASE_URL}/submissions/${id}`, { headers });
+    const res = await fetch(`${getApiBaseUrl()}/submissions/${id}`, { headers });
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error?.message || 'Failed to fetch submission');
@@ -263,7 +275,7 @@ export const apiClient = {
     const headers = await getAuthHeaders();
     if (adminKey) headers['x-admin-key'] = adminKey;
 
-    const res = await fetch(`${API_BASE_URL}/admin/stats`, { headers });
+    const res = await fetch(`${getApiBaseUrl()}/admin/stats`, { headers });
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.message || err.error?.message || 'Failed to fetch admin stats');
@@ -276,7 +288,7 @@ export const apiClient = {
     headers['Content-Type'] = 'application/json';
     if (adminKey) headers['x-admin-key'] = adminKey;
 
-    const res = await fetch(`${API_BASE_URL}/admin/purge-submission-images`, {
+    const res = await fetch(`${getApiBaseUrl()}/admin/purge-submission-images`, {
       method: 'POST',
       headers
     });
@@ -292,7 +304,7 @@ export const apiClient = {
     headers['Content-Type'] = 'application/json';
     if (adminKey) headers['x-admin-key'] = adminKey;
 
-    const res = await fetch(`${API_BASE_URL}/admin/purge-all-submissions`, {
+    const res = await fetch(`${getApiBaseUrl()}/admin/purge-all-submissions`, {
       method: 'POST',
       headers
     });
@@ -308,7 +320,7 @@ export const apiClient = {
     headers['Content-Type'] = 'application/json';
     if (adminKey) headers['x-admin-key'] = adminKey;
 
-    const res = await fetch(`${API_BASE_URL}/admin/promote-user`, {
+    const res = await fetch(`${getApiBaseUrl()}/admin/promote-user`, {
       method: 'POST',
       headers,
       body: JSON.stringify({ email, role })
@@ -325,7 +337,7 @@ export const apiClient = {
     headers['Content-Type'] = 'application/json';
     headers['x-admin-key'] = adminKey;
 
-    const res = await fetch(`${API_BASE_URL}/admin/verify-key`, {
+    const res = await fetch(`${getApiBaseUrl()}/admin/verify-key`, {
       method: 'POST',
       headers,
       body: JSON.stringify({ adminKey })
