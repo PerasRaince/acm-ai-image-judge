@@ -49,7 +49,7 @@ export async function authenticate(req: Request, _res: Response, next: NextFunct
       .eq('id', userId)
       .single();
 
-    let userRole: UserRole = 'participant';
+    let userRole: UserRole = 'user';
     let displayName = authData.user.email?.split('@')[0] || 'User';
 
     if (profile && !profileError) {
@@ -60,7 +60,7 @@ export async function authenticate(req: Request, _res: Response, next: NextFunct
       const initialProfile: Partial<Profile> = {
         id: userId,
         display_name: displayName,
-        role: (authData.user.user_metadata?.role as UserRole) || 'participant'
+        role: (authData.user.user_metadata?.role as UserRole) || 'user'
       };
       await supabaseAdmin.from('profiles').insert(initialProfile);
       userRole = initialProfile.role as UserRole;
@@ -82,8 +82,49 @@ export async function authenticate(req: Request, _res: Response, next: NextFunct
 }
 
 /**
+ * Middleware that populates req.user if Authorization header is present,
+ * but does not reject unauthenticated requests.
+ */
+export async function optionalAuthenticate(req: Request, _res: Response, next: NextFunction): Promise<void> {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return next();
+  }
+
+  const token = authHeader.split(' ')[1];
+  if (!token) {
+    return next();
+  }
+
+  try {
+    const { data: authData, error: authError } = await supabaseAdmin.auth.getUser(token);
+    if (!authError && authData.user) {
+      const userId = authData.user.id;
+      const { data: profile } = await supabaseAdmin
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle();
+
+      req.user = {
+        id: userId,
+        email: authData.user.email || '',
+        role: (profile?.role as UserRole) || 'user',
+        display_name: profile?.display_name || authData.user.email?.split('@')[0] || 'User',
+        token
+      };
+    }
+  } catch {
+    // Silently continue for optional auth
+  }
+
+  next();
+}
+
+/**
  * Role-based authorization middleware guard.
  */
+
 export function requireRole(...allowedRoles: UserRole[]) {
   return (req: Request, _res: Response, next: NextFunction): void => {
     if (!req.user) {

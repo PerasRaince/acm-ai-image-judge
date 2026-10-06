@@ -1,8 +1,8 @@
 -- 00001_rls_policies.sql
 -- AI Image Judge Platform - Row Level Security (RLS) Policies
--- Enforces least-privilege access across all data entities.
+-- User-driven model: Any authenticated user can host competitions.
+-- Creator automatically becomes the owner/host of that specific competition.
 
--- Enable Row Level Security on all tables
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.scoring_versions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.competitions ENABLE ROW LEVEL SECURITY;
@@ -22,26 +22,15 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Helper function to check if the current user has organizer role
-CREATE OR REPLACE FUNCTION public.is_organizer()
-RETURNS BOOLEAN AS $$
-BEGIN
-    RETURN EXISTS (
-        SELECT 1 FROM public.profiles
-        WHERE id = auth.uid() AND role IN ('organizer', 'admin')
-    );
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
 -- ============================================================================
 -- 1. PROFILES POLICIES
 -- ============================================================================
--- Anyone can view public profiles (needed for leaderboards, organizer displays)
+DROP POLICY IF EXISTS "Profiles are viewable by everyone" ON public.profiles;
 CREATE POLICY "Profiles are viewable by everyone"
     ON public.profiles FOR SELECT
     USING (true);
 
--- Users can update only their own profile
+DROP POLICY IF EXISTS "Users can update their own profile" ON public.profiles;
 CREATE POLICY "Users can update their own profile"
     ON public.profiles FOR UPDATE
     USING (auth.uid() = id)
@@ -50,18 +39,19 @@ CREATE POLICY "Users can update their own profile"
 -- ============================================================================
 -- 2. SCORING VERSIONS POLICIES
 -- ============================================================================
--- Scoring versions are visible to all authenticated users
+DROP POLICY IF EXISTS "Scoring versions are viewable by authenticated users" ON public.scoring_versions;
 CREATE POLICY "Scoring versions are viewable by authenticated users"
     ON public.scoring_versions FOR SELECT
     TO authenticated
     USING (true);
 
--- Only admins can create or update scoring versions
+DROP POLICY IF EXISTS "Admins can insert scoring versions" ON public.scoring_versions;
 CREATE POLICY "Admins can insert scoring versions"
     ON public.scoring_versions FOR INSERT
     TO authenticated
     WITH CHECK (public.is_admin());
 
+DROP POLICY IF EXISTS "Admins can update scoring versions" ON public.scoring_versions;
 CREATE POLICY "Admins can update scoring versions"
     ON public.scoring_versions FOR UPDATE
     TO authenticated
@@ -71,48 +61,44 @@ CREATE POLICY "Admins can update scoring versions"
 -- ============================================================================
 -- 3. COMPETITIONS POLICIES
 -- ============================================================================
--- Public / authenticated can view published competitions (scheduled, active, scoring, completed)
--- Draft and cancelled are visible only to the owning organizer or admins
+-- Public / authenticated can view published competitions or resolve by code
+DROP POLICY IF EXISTS "Published competitions are viewable by all" ON public.competitions;
 CREATE POLICY "Published competitions are viewable by all"
     ON public.competitions FOR SELECT
     USING (
         status IN ('scheduled', 'active', 'scoring', 'completed')
-        OR organizer_id = auth.uid()
+        OR host_id = auth.uid()
         OR public.is_admin()
     );
 
--- Only organizers and admins can create competitions
-CREATE POLICY "Organizers can create competitions"
+-- Any authenticated user can create a competition as the host!
+DROP POLICY IF EXISTS "Organizers can create competitions" ON public.competitions;
+DROP POLICY IF EXISTS "Authenticated users can create competitions as host" ON public.competitions;
+CREATE POLICY "Authenticated users can create competitions as host"
     ON public.competitions FOR INSERT
     TO authenticated
-    WITH CHECK (
-        auth.uid() = organizer_id
-        AND public.is_organizer()
-    );
+    WITH CHECK (auth.uid() = host_id);
 
--- Organizers can update their own competitions (or admins)
-CREATE POLICY "Organizers can update their own competitions"
+-- Only the host of that specific competition (or admin) can update it
+DROP POLICY IF EXISTS "Organizers can update their own competitions" ON public.competitions;
+DROP POLICY IF EXISTS "Hosts can update their own competitions" ON public.competitions;
+CREATE POLICY "Hosts can update their own competitions"
     ON public.competitions FOR UPDATE
     TO authenticated
-    USING (
-        organizer_id = auth.uid()
-        OR public.is_admin()
-    )
-    WITH CHECK (
-        organizer_id = auth.uid()
-        OR public.is_admin()
-    );
+    USING (host_id = auth.uid() OR public.is_admin())
+    WITH CHECK (host_id = auth.uid() OR public.is_admin());
 
 -- ============================================================================
 -- 4. COMPETITION PARTICIPANTS POLICIES
 -- ============================================================================
--- Participants can view competition participants
+DROP POLICY IF EXISTS "Participants list viewable by authenticated users" ON public.competition_participants;
 CREATE POLICY "Participants list viewable by authenticated users"
     ON public.competition_participants FOR SELECT
     TO authenticated
     USING (true);
 
--- Users can join competitions as themselves
+-- Any authenticated user can join an active/scheduled competition as themselves
+DROP POLICY IF EXISTS "Users can join active competitions" ON public.competition_participants;
 CREATE POLICY "Users can join active competitions"
     ON public.competition_participants FOR INSERT
     TO authenticated
@@ -125,7 +111,7 @@ CREATE POLICY "Users can join active competitions"
         )
     );
 
--- Users can withdraw themselves or organizers can manage
+DROP POLICY IF EXISTS "Manage participation status" ON public.competition_participants;
 CREATE POLICY "Manage participation status"
     ON public.competition_participants FOR UPDATE
     TO authenticated
@@ -134,14 +120,14 @@ CREATE POLICY "Manage participation status"
         OR EXISTS (
             SELECT 1 FROM public.competitions c
             WHERE c.id = competition_id
-            AND (c.organizer_id = auth.uid() OR public.is_admin())
+            AND (c.host_id = auth.uid() OR public.is_admin())
         )
     );
 
 -- ============================================================================
 -- 5. SUBMISSIONS POLICIES
 -- ============================================================================
--- Submissions viewable by owner, competition organizer, or anyone if competition completed and public
+DROP POLICY IF EXISTS "View submissions" ON public.submissions;
 CREATE POLICY "View submissions"
     ON public.submissions FOR SELECT
     TO authenticated
@@ -151,14 +137,14 @@ CREATE POLICY "View submissions"
             SELECT 1 FROM public.competitions c
             WHERE c.id = competition_id
             AND (
-                c.organizer_id = auth.uid()
+                c.host_id = auth.uid()
                 OR public.is_admin()
                 OR (c.status = 'completed' AND c.leaderboard_visibility = 'public')
             )
         )
     );
 
--- Participants can submit recreation attempts
+DROP POLICY IF EXISTS "Participants can create submissions" ON public.submissions;
 CREATE POLICY "Participants can create submissions"
     ON public.submissions FOR INSERT
     TO authenticated
@@ -182,7 +168,7 @@ CREATE POLICY "Participants can create submissions"
 -- ============================================================================
 -- 6. SCORES POLICIES
 -- ============================================================================
--- Scores viewable by submission owner, organizer, or leaderboard viewers
+DROP POLICY IF EXISTS "View scores" ON public.scores;
 CREATE POLICY "View scores"
     ON public.scores FOR SELECT
     TO authenticated
@@ -193,24 +179,18 @@ CREATE POLICY "View scores"
             WHERE s.id = submission_id
             AND (
                 s.participant_id = auth.uid()
-                OR c.organizer_id = auth.uid()
+                OR c.host_id = auth.uid()
                 OR public.is_admin()
                 OR c.leaderboard_visibility = 'public'
             )
         )
     );
 
--- Modification of scores is restricted to service_role (backend trusted runner).
--- Normal authenticated users have NO INSERT or UPDATE privileges on scores.
-
 -- ============================================================================
 -- 7. AUDIT LOGS POLICIES
 -- ============================================================================
-CREATE POLICY "Audit logs viewable by organizers and admins"
+DROP POLICY IF EXISTS "Audit logs viewable by organizers and admins" ON public.audit_logs;
+CREATE POLICY "Audit logs viewable by hosts and admins"
     ON public.audit_logs FOR SELECT
     TO authenticated
-    USING (
-        user_id = auth.uid()
-        OR public.is_admin()
-    );
-
+    USING (user_id = auth.uid() OR public.is_admin());

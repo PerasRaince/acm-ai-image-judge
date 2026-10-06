@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '../lib/supabaseClient';
 import { apiClient } from '../lib/apiClient';
 import { UserProfile } from '../types';
-import { Trophy, Image as ImageIcon, LayoutDashboard, Shield, LogOut, LogIn, UserPlus } from 'lucide-react';
+import { Trophy, LogOut, PlusCircle } from 'lucide-react';
 
 export function Navbar() {
   const pathname = usePathname();
@@ -28,7 +28,6 @@ export function Navbar() {
 
     loadUser();
 
-    // Listen to Supabase auth state change
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
       if (event === 'SIGNED_IN') {
         const u = await apiClient.getMe();
@@ -50,28 +49,38 @@ export function Navbar() {
     router.refresh();
   }
 
-  const isOrganizer = user?.role === 'organizer' || user?.role === 'admin';
-
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2.5 font-bold text-lg text-white tracking-tight">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-md">
-              <Trophy className="h-4 w-4" />
+          <Link href="/" className="flex items-center gap-3 text-white tracking-tight group">
+            <div className="relative h-9 w-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-1.5 shadow-md group-hover:border-sky-500/50 transition-colors">
+              <img
+                src="/acm-logo-blue.png"
+                alt="ACM Logo"
+                className="w-full h-full object-contain"
+              />
             </div>
-            <span>AI Image Judge</span>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1.5">
+                <span className="font-extrabold text-white text-sm tracking-tight leading-none">ACM Chapter</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.2 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                  AI Judge
+                </span>
+              </div>
+              <span className="text-[10px] text-slate-400 font-medium">Association for Computing Machinery</span>
+            </div>
           </Link>
 
           {/* Navigation links */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1.5">
             <Link
               href="/competitions"
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                pathname.startsWith('/competitions')
-                  ? 'text-white bg-zinc-800/80'
-                  : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                pathname === '/competitions'
+                  ? 'text-white bg-slate-800'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-900'
               }`}
             >
               Competitions
@@ -80,27 +89,13 @@ export function Navbar() {
             {user && (
               <Link
                 href="/dashboard"
-                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                  pathname === '/dashboard' || pathname.startsWith('/dashboard/submissions')
-                    ? 'text-white bg-zinc-800/80'
-                    : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                  pathname.startsWith('/dashboard')
+                    ? 'text-white bg-slate-800'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-900'
                 }`}
               >
                 Dashboard
-              </Link>
-            )}
-
-            {isOrganizer && (
-              <Link
-                href="/organizer"
-                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 ${
-                  pathname.startsWith('/organizer')
-                    ? 'text-indigo-400 bg-indigo-500/10'
-                    : 'text-zinc-400 hover:text-indigo-300 hover:bg-zinc-900'
-                }`}
-              >
-                <Shield className="h-3.5 w-3.5" />
-                Organizer Studio
               </Link>
             )}
           </nav>
@@ -108,27 +103,35 @@ export function Navbar() {
 
         {/* User Controls */}
         <div className="flex items-center gap-3">
+          {/* Host New Competition action button */}
+          <Link
+            href="/competitions/create"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-xs transition-all shadow-md shadow-indigo-950/30"
+          >
+            <PlusCircle className="w-3.5 h-3.5" />
+            <span>Host Challenge</span>
+          </Link>
+
           {loading ? (
-            <div className="h-8 w-20 animate-pulse rounded bg-zinc-800" />
+            <div className="h-8 w-20 animate-pulse rounded bg-slate-800" />
           ) : user ? (
             <div className="flex items-center gap-3">
               <Link
                 href="/dashboard/profile"
-                className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-zinc-900 transition-colors"
+                className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl hover:bg-slate-900 transition-colors"
               >
                 <div className="w-7 h-7 rounded-full bg-indigo-600/30 border border-indigo-500/30 flex items-center justify-center text-xs font-semibold text-indigo-300">
                   {user.display_name.slice(0, 1).toUpperCase()}
                 </div>
                 <div className="hidden sm:flex flex-col text-left">
-                  <span className="text-xs font-medium text-zinc-200">{user.display_name}</span>
-                  <span className="text-[10px] text-zinc-400 capitalize">{user.role}</span>
+                  <span className="text-xs font-medium text-slate-200">{user.display_name}</span>
                 </div>
               </Link>
 
               <button
                 onClick={handleSignOut}
                 title="Sign Out"
-                className="p-2 text-zinc-400 hover:text-rose-400 rounded-lg hover:bg-zinc-900 transition-colors"
+                className="p-2 text-slate-400 hover:text-rose-400 rounded-xl hover:bg-slate-900 transition-colors"
               >
                 <LogOut className="h-4 w-4" />
               </button>
@@ -137,13 +140,13 @@ export function Navbar() {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="px-3.5 py-1.5 text-xs font-medium text-zinc-300 hover:text-white rounded-md hover:bg-zinc-900 transition-colors"
+                className="px-3.5 py-1.5 text-xs font-semibold text-slate-300 hover:text-white rounded-lg hover:bg-slate-900 transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/signup"
-                className="px-3.5 py-1.5 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-md shadow-sm transition-colors"
+                className="px-3.5 py-1.5 text-xs font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl shadow-md shadow-indigo-950/40 transition-all"
               >
                 Sign Up
               </Link>

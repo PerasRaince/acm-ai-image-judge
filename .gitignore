@@ -41,6 +41,7 @@ models_cache/
 
 # OS and IDE files
 .DS_Store
+__MACOSX/
 *.pem
 Thumbs.db
 .vscode/
@@ -49,4 +50,9 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.eps
+*.tif
+.temp/
+doc/
+
 

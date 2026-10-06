@@ -178,18 +178,18 @@ def preprocess_image_bytes(
 
     width, height = rgb_img.size
 
-    # 6. Dimensions and aspect ratio validation
+    # 6. Dimensions bounds handling and aspect ratio validation
     if width < min_dimension or height < min_dimension:
         raise ImageValidationError(
             f"Image dimensions ({width}x{height}) are below minimum required ({min_dimension}px).",
             "DIMENSIONS_TOO_SMALL"
         )
 
+    # Gracefully downscale oversized images to fit within max_dimension bounds
     if width > max_dimension or height > max_dimension:
-        raise ImageValidationError(
-            f"Image dimensions ({width}x{height}) exceed maximum allowed ({max_dimension}px).",
-            "DIMENSIONS_TOO_LARGE"
-        )
+        rgb_img.thumbnail((max_dimension, max_dimension), Image.Resampling.LANCZOS)
+        width, height = rgb_img.size
+
 
     aspect_ratio = float(width) / float(height)
 

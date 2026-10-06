@@ -10,6 +10,8 @@ import { MetricBar } from '../../../../components/MetricBar';
 import { ImageComparison } from '../../../../components/ImageComparison';
 import { Upload, ArrowLeft, AlertCircle, CheckCircle2, Sparkles, Trophy } from 'lucide-react';
 
+import { supabase } from '../../../../lib/supabaseClient';
+
 export default function SubmitRecreationPage() {
   const params = useParams();
   const router = useRouter();
@@ -22,11 +24,19 @@ export default function SubmitRecreationPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submissionResult, setSubmissionResult] = useState<{ submission: Submission; score: Score } | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [joining, setJoining] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     async function load() {
       if (!id) return;
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push(`/login?returnUrl=${encodeURIComponent(`/competitions/${id}/submit`)}`);
+        return;
+      }
+
       try {
         const comp = await apiClient.getCompetition(id);
         setCompetition(comp);
@@ -35,7 +45,7 @@ export default function SubmitRecreationPage() {
       }
     }
     load();
-  }, [id]);
+  }, [id, router]);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -59,6 +69,57 @@ export default function SubmitRecreationPage() {
     };
     img.src = objectUrl;
   }
+
+  function cropToRequiredRatio() {
+    if (!previewUrl || !selectedFile || !competition) return;
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const req = competition.required_aspect_ratio;
+      let targetRatio = 1.0;
+      if (req === '16:9') targetRatio = 16 / 9;
+      else if (req === '9:16') targetRatio = 9 / 16;
+      else if (req === '4:3') targetRatio = 4 / 3;
+      else if (req === '3:4') targetRatio = 3 / 4;
+
+      const currentRatio = img.width / img.height;
+      let srcX = 0, srcY = 0, srcW = img.width, srcH = img.height;
+
+      if (currentRatio > targetRatio) {
+        srcW = img.height * targetRatio;
+        srcX = (img.width - srcW) / 2;
+      } else {
+        srcH = img.width / targetRatio;
+        srcY = (img.height - srcH) / 2;
+      }
+
+      canvas.width = Math.min(Math.round(srcW), 2048);
+      canvas.height = Math.min(Math.round(srcH), 2048);
+
+      ctx.drawImage(img, srcX, srcY, srcW, srcH, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const croppedFile = new File([blob], selectedFile.name.replace(/\.[^/.]+$/, '') + '_cropped.jpg', {
+          type: 'image/jpeg'
+        });
+        setSelectedFile(croppedFile);
+        const newUrl = URL.createObjectURL(croppedFile);
+        setPreviewUrl(newUrl);
+        setFileDimensions({
+          width: canvas.width,
+          height: canvas.height,
+          ratio: Math.round((canvas.width / canvas.height) * 100) / 100
+        });
+        setErrorMsg(null);
+      }, 'image/jpeg', 0.95);
+    };
+    img.src = previewUrl;
+  }
+
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -275,9 +336,34 @@ export default function SubmitRecreationPage() {
               </div>
 
               {fileDimensions && (
-                <div className="flex items-center justify-between text-[11px] text-zinc-400 px-1 font-mono">
-                  <span>{fileDimensions.width} x {fileDimensions.height} px</span>
-                  <span>Aspect ratio: {fileDimensions.ratio}:1</span>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-[11px] text-zinc-400 px-1 font-mono">
+                    <span>{fileDimensions.width} x {fileDimensions.height} px</span>
+                    <span>Aspect ratio: {fileDimensions.ratio}:1</span>
+                  </div>
+
+                  {competition.required_aspect_ratio &&
+                    competition.required_aspect_ratio !== 'any' &&
+                    (() => {
+                      const req = competition.required_aspect_ratio;
+                      const target = req === '1:1' ? 1.0 : req === '16:9' ? 16 / 9 : req === '9:16' ? 9 / 16 : req === '4:3' ? 4 / 3 : req === '3:4' ? 3 / 4 : 1.0;
+                      const isMismatch = Math.abs(fileDimensions.ratio - target) / target > 0.08;
+                      if (!isMismatch) return null;
+                      return (
+                        <div className="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs flex items-center justify-between gap-2">
+                          <span>
+                            Ratio is {fileDimensions.ratio}:1, but this competition requires <strong>{req}</strong>.
+                          </span>
+                          <button
+                            type="button"
+                            onClick={cropToRequiredRatio}
+                            className="px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs transition-colors shrink-0 shadow"
+                          >
+                            Auto-Crop to {req}
+                          </button>
+                        </div>
+                      );
+                    })()}
                 </div>
               )}
             </div>

@@ -3,11 +3,14 @@ import multer from 'multer';
 import {
   listCompetitions,
   getCompetition,
+  getCompetitionByCode,
   createCompetition,
   updateCompetition,
-  joinCompetition
+  joinCompetition,
+  joinCompetitionByCode,
+  listUserJoinedCompetitions
 } from '../controllers/competitionController';
-import { authenticate, requireRole } from '../middleware/authMiddleware';
+import { authenticate, optionalAuthenticate } from '../middleware/authMiddleware';
 import { APP_CONSTANTS } from '../config/constants';
 
 const upload = multer({
@@ -17,25 +20,27 @@ const upload = multer({
 
 export const competitionRouter = Router();
 
-// Public / Authenticated read routes
-competitionRouter.get('/', listCompetitions);
-competitionRouter.get('/:id', getCompetition);
+// Public / Authenticated read routes (populates req.user if token provided)
+competitionRouter.get('/', optionalAuthenticate, listCompetitions);
+competitionRouter.get('/code/:code', optionalAuthenticate, getCompetitionByCode);
+competitionRouter.get('/user/joined', authenticate, listUserJoinedCompetitions);
+competitionRouter.get('/:id', optionalAuthenticate, getCompetition);
 
-// Participant routes
+// Code-based and ID-based join routes
+competitionRouter.post('/join', authenticate, joinCompetitionByCode);
 competitionRouter.post('/:id/join', authenticate, joinCompetition);
 
-// Organizer routes
+// Any authenticated user can create a competition (host)
 competitionRouter.post(
   '/',
   authenticate,
-  requireRole('organizer', 'admin'),
   upload.single('reference_image'),
   createCompetition
 );
 
+// Host or Admin can update competition
 competitionRouter.patch(
   '/:id',
   authenticate,
-  requireRole('organizer', 'admin'),
   updateCompetition
 );

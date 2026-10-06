@@ -41,8 +41,9 @@ The **AI Image Judge** platform is designed as an end-to-end competition platfor
 
 ## 3. Data Flow Lifecycle
 
-1. **Competition Creation**: An organizer submits a competition title, dates, rules, aspect ratio, and uploads a benchmark reference image. The backend validates the payload, stores the image in a private storage bucket (`reference-images`), and creates the database record.
-2. **Contestant Participation**: A participant joins the competition and downloads/views the reference image via an authorized, short-lived signed URL.
-3. **Recreation Submission**: Contestants generate AI images and submit their recreation attempt. The backend validates deadlines, participant status, attempts remaining, image magic bytes, and SHA-256 fingerprints.
-4. **Automated AI Scoring**: The backend forwards reference and recreation image buffers to the AI service. The AI service computes the 6-metric ensemble, clamps scores to $[0.00, 100.00]$, detects exact byte-level matches, and returns an explainable breakdown.
-5. **Persistence & Leaderboard**: The composite **Reference Similarity Score** and individual metrics are committed to PostgreSQL. The leaderboard displays ranked contestants using deterministic tie-breaking rules.
+1. **Competition Creation**: Any authenticated user can host a competition by submitting a title, dates, rules, aspect ratio, and target reference image. The backend generates a unique, non-sequential Google Meet style competition code (e.g. `k9m-p4x-2wq`) and stores the image in a private storage bucket (`reference-images`). The creator automatically becomes the host (`host_id`).
+2. **Invitation & Joining Flow**: The host shares the unique code or invitation link (`/join/[code]`). Any contestant can join either by entering the code in the Google Meet style join input or by opening the link. Unauthenticated visitors see a competition preview and are prompted to log in with automatic `returnUrl` preservation.
+3. **Contestant Participation**: A joined contestant downloads/views the reference image via an authorized, short-lived signed URL.
+4. **Recreation Submission**: Contestants submit their AI-generated recreation attempts. The backend validates deadlines, contestant membership, attempt limits, aspect ratio, and SHA-256 fingerprints. Anti-cheat immediately rejects exact duplicates of the reference image.
+5. **Automated AI Scoring**: The backend downloads the reference buffer and forwards both images to the AI service. The AI service computes the 6-metric ensemble (DreamSim 35%, DINOv2 30%, OpenCLIP 15%, LPIPS 10%, Color 5%, Quality 5%), clamps scores to $[0.00, 100.00]$, and returns the explainable breakdown.
+6. **Persistence & Leaderboard**: The composite **Reference Similarity Score** and individual metrics are committed to PostgreSQL. The transparent leaderboard displays ranked contestants with deterministic tie-breaking rules.

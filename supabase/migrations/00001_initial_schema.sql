@@ -1,26 +1,26 @@
 -- 00001_initial_schema.sql
 -- AI Image Judge Platform - Initial Database Schema Migration
--- Standardized, normalized schema with strict foreign keys, check constraints, and performance indexes.
+-- User-driven competition platform with Google Meet style code-based joining flow.
 
--- Enable UUID extension if not already enabled
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- ============================================================================
 -- 1. PROFILES TABLE
--- Extends Supabase auth.users with public profile information and role
+-- Extends Supabase auth.users with public profile information
+-- Every authenticated user can host competitions and participate in them.
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS public.profiles (
     id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     display_name TEXT NOT NULL,
     avatar_url TEXT,
-    role TEXT NOT NULL DEFAULT 'participant' CHECK (role IN ('participant', 'organizer', 'admin')),
+    role TEXT NOT NULL DEFAULT 'user' CHECK (role IN ('user', 'admin')),
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
 );
 
 CREATE INDEX IF NOT EXISTS idx_profiles_role ON public.profiles(role);
 
--- Automatic updated_at trigger function
+-- Updated_at trigger function
 CREATE OR REPLACE FUNCTION public.handle_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -29,12 +29,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS set_profiles_updated_at ON public.profiles;
 CREATE TRIGGER set_profiles_updated_at
     BEFORE UPDATE ON public.profiles
     FOR EACH ROW
     EXECUTE FUNCTION public.handle_updated_at();
 
--- Trigger to automatically insert a profile when a new user signs up in auth.users
+-- Automatic profile creation on auth signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -43,19 +44,31 @@ BEGIN
         NEW.id,
         COALESCE(NEW.raw_user_meta_data->>'display_name', split_part(NEW.email, '@', 1)),
         NEW.raw_user_meta_data->>'avatar_url',
-        COALESCE(NEW.raw_user_meta_data->>'role', 'participant')
+        COALESCE(NEW.raw_user_meta_data->>'role', 'user')
     )
     ON CONFLICT (id) DO UPDATE SET
-        display_name = EXCLUDED.display_name,
+        display_name = COALESCE(EXCLUDED.display_name, public.profiles.display_name),
         avatar_url = COALESCE(EXCLUDED.avatar_url, public.profiles.avatar_url);
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
     FOR EACH ROW
     EXECUTE FUNCTION public.handle_new_user();
+
+-- Backfill any existing auth users into profiles
+INSERT INTO public.profiles (id, display_name, avatar_url, role)
+SELECT 
+    id,
+    COALESCE(raw_user_meta_data->>'display_name', split_part(email, '@', 1), 'User'),
+    raw_user_meta_data->>'avatar_url',
+    COALESCE(raw_user_meta_data->>'role', 'user')
+FROM auth.users
+ON CONFLICT (id) DO NOTHING;
+
 
 -- ============================================================================
 -- 2. SCORING VERSIONS TABLE
@@ -78,11 +91,12 @@ CREATE INDEX IF NOT EXISTS idx_scoring_versions_active ON public.scoring_version
 
 -- ============================================================================
 -- 3. COMPETITIONS TABLE
--- Competitions managed by organizers with reference images and rules
+-- Competitions hosted by any authenticated user with unique Google Meet style code
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS public.competitions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    organizer_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE RESTRICT,
+    code TEXT UNIQUE NOT NULL CHECK (char_length(trim(code)) >= 6),
+    host_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE RESTRICT,
     title TEXT NOT NULL CHECK (char_length(trim(title)) >= 3),
     description TEXT,
     rules TEXT,
@@ -95,17 +109,19 @@ CREATE TABLE IF NOT EXISTS public.competitions (
     ends_at TIMESTAMPTZ NOT NULL,
     submission_limit INTEGER NOT NULL DEFAULT 3 CHECK (submission_limit >= 1 AND submission_limit <= 50),
     leaderboard_visibility TEXT NOT NULL DEFAULT 'public' CHECK (leaderboard_visibility IN ('public', 'hidden_until_close', 'participants_only')),
-    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'scheduled', 'active', 'scoring', 'completed', 'cancelled')),
+    status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('draft', 'scheduled', 'active', 'scoring', 'completed', 'cancelled')),
     scoring_version_id UUID REFERENCES public.scoring_versions(id),
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
     CONSTRAINT chk_competition_dates CHECK (ends_at > starts_at)
 );
 
-CREATE INDEX IF NOT EXISTS idx_competitions_organizer ON public.competitions(organizer_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_competitions_code_lower ON public.competitions(lower(code));
+CREATE INDEX IF NOT EXISTS idx_competitions_host ON public.competitions(host_id);
 CREATE INDEX IF NOT EXISTS idx_competitions_status ON public.competitions(status);
 CREATE INDEX IF NOT EXISTS idx_competitions_dates ON public.competitions(starts_at, ends_at);
 
+DROP TRIGGER IF EXISTS set_competitions_updated_at ON public.competitions;
 CREATE TRIGGER set_competitions_updated_at
     BEFORE UPDATE ON public.competitions
     FOR EACH ROW
@@ -113,7 +129,7 @@ CREATE TRIGGER set_competitions_updated_at
 
 -- ============================================================================
 -- 4. COMPETITION PARTICIPANTS TABLE
--- Junction table tracking users who joined a competition
+-- Tracks contestants who joined via code or invitation link
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS public.competition_participants (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -181,7 +197,7 @@ CREATE INDEX IF NOT EXISTS idx_scores_final ON public.scores(final_score DESC);
 
 -- ============================================================================
 -- 7. AUDIT LOGS TABLE
--- Records sensitive events like status updates, scoring, or administrative actions
+-- Records sensitive events like status updates or administrative actions
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS public.audit_logs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -195,5 +211,3 @@ CREATE TABLE IF NOT EXISTS public.audit_logs (
 
 CREATE INDEX IF NOT EXISTS idx_audit_logs_user ON public.audit_logs(user_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON public.audit_logs(action);
-CREATE INDEX IF NOT EXISTS idx_audit_logs_target ON public.audit_logs(target_type, target_id);
-

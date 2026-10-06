@@ -1,4 +1,4 @@
-export type UserRole = 'participant' | 'organizer' | 'admin';
+export type UserRole = 'user' | 'admin' | 'participant' | 'organizer';
 
 export interface UserProfile {
   id: string;
@@ -10,9 +10,17 @@ export interface UserProfile {
 
 export type CompetitionStatus = 'draft' | 'scheduled' | 'active' | 'scoring' | 'completed' | 'cancelled';
 
+export interface HostProfile {
+  id: string;
+  display_name: string;
+  avatar_url?: string | null;
+  role: string;
+}
+
 export interface Competition {
   id: string;
-  organizer_id: string;
+  code: string;
+  host_id: string;
   title: string;
   description?: string | null;
   rules?: string | null;
@@ -29,13 +37,11 @@ export interface Competition {
   scoring_version_id?: string | null;
   created_at: string;
   updated_at: string;
-  organizer?: {
-    id: string;
-    display_name: string;
-    avatar_url?: string | null;
-    role: string;
-  };
+  host?: HostProfile;
+  organizer?: HostProfile; // Legacy alias
+  organizer_id?: string; // Legacy alias
   is_joined?: boolean;
+  is_host?: boolean;
   attempts_used?: number;
 }
 
@@ -71,6 +77,7 @@ export interface Submission {
   scoring_status: 'pending' | 'processing' | 'completed' | 'failed' | 'rejected';
   rejection_reason?: string | null;
   score?: Score;
+  participant?: HostProfile;
 }
 
 export interface LeaderboardEntry {

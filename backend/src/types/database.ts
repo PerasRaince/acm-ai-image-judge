@@ -1,4 +1,4 @@
-export type UserRole = 'participant' | 'organizer' | 'admin';
+export type UserRole = 'user' | 'admin' | 'participant' | 'organizer';
 
 export type CompetitionStatus = 'draft' | 'scheduled' | 'active' | 'scoring' | 'completed' | 'cancelled';
 
@@ -29,7 +29,8 @@ export interface ScoringVersion {
 
 export interface Competition {
   id: string;
-  organizer_id: string;
+  code: string;
+  host_id: string;
   title: string;
   description?: string | null;
   rules?: string | null;
@@ -46,6 +47,9 @@ export interface Competition {
   scoring_version_id?: string | null;
   created_at: string;
   updated_at: string;
+  host?: Profile;
+  // Legacy alias for compatibility
+  organizer_id?: string;
   organizer?: Profile;
 }
 

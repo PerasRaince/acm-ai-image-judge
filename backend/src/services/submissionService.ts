@@ -231,15 +231,15 @@ export class SubmissionService {
       throw new NotFoundError(`Submission not found: ${submissionId}`);
     }
 
-    // Authorization: owner, competition organizer, or admin can inspect
+    // Authorization: owner, competition host, or admin can inspect
     if (currentUserId && userRole !== 'admin' && sub.participant_id !== currentUserId) {
       const { data: comp } = await supabaseAdmin
         .from('competitions')
-        .select('organizer_id, leaderboard_visibility, status')
+        .select('host_id, leaderboard_visibility, status')
         .eq('id', sub.competition_id)
         .single();
 
-      if (comp?.organizer_id !== currentUserId && comp?.leaderboard_visibility !== 'public') {
+      if (comp?.host_id !== currentUserId && comp?.leaderboard_visibility !== 'public') {
         throw new ForbiddenError('You are not authorized to view this submission.');
       }
     }

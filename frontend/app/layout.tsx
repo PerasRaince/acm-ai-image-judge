@@ -15,8 +15,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'AI Image Judge - Explainable AI Image Competition Platform',
-  description: 'Deterministic, multi-metric AI scoring platform for image recreation competitions powered by DreamSim, DINOv2, CLIP, and LPIPS.',
+  title: 'ACM Student Chapter | AI Image Judge Platform',
+  description: 'Deterministic AI image recreation competition platform organized by the Institutional ACM Student Chapter (Association for Computing Machinery). Powered by DreamSim, DINOv2, OpenCLIP, and LPIPS.',
+  icons: {
+    icon: '/acm-icon.png',
+    shortcut: '/acm-icon.png',
+    apple: '/acm-icon.png',
+  },
 };
 
 export default function RootLayout({

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { apiClient } from '../../lib/apiClient';
 import { Competition } from '../../types';
-import { Trophy, Clock, Image as ImageIcon, ArrowRight, Filter } from 'lucide-react';
+import { Trophy, Clock, Image as ImageIcon, ArrowRight, Filter, Upload } from 'lucide-react';
 import { CountdownTimer } from '../../components/CountdownTimer';
 
 export default function CompetitionsPage() {
@@ -72,10 +72,10 @@ export default function CompetitionsPage() {
           </p>
           <div className="pt-2">
             <Link
-              href="/organizer/competitions/new"
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold inline-block transition-colors"
+              href="/competitions/create"
+              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold inline-block transition-colors"
             >
-              Create Competition
+              Host a Competition
             </Link>
           </div>
         </div>
@@ -156,13 +156,13 @@ export default function CompetitionsPage() {
                   <div className="grid grid-cols-2 gap-2 pt-2">
                     <Link
                       href={`/competitions/${comp.id}`}
-                      className="text-center py-2 px-3 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium transition-colors"
+                      className="text-center py-2 px-3 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/30 text-indigo-300 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
                     >
-                      Details & Target
+                      <span>View & Submit</span>
                     </Link>
                     <Link
                       href={`/competitions/${comp.id}/leaderboard`}
-                      className="text-center py-2 px-3 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-300 text-xs font-medium transition-colors flex items-center justify-center gap-1"
+                      className="text-center py-2 px-3 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-300 text-xs font-semibold transition-colors flex items-center justify-center gap-1"
                     >
                       <Trophy className="h-3 w-3" />
                       <span>Leaderboard</span>

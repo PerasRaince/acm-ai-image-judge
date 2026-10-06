@@ -21,6 +21,23 @@ async function getAuthHeaders(): Promise<Record<string, string>> {
 }
 
 export const apiClient = {
+  async signup(data: { email: string; password: string; display_name: string }): Promise<UserProfile> {
+    const res = await fetch(`${API_BASE_URL}/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    const json = await res.json();
+    if (!res.ok || !json.success) {
+      throw new Error(json.error?.message || 'Failed to create user account.');
+    }
+    return json.data.user;
+  },
+
   async getMe(): Promise<UserProfile | null> {
     const headers = await getAuthHeaders();
     if (!headers['Authorization']) return null;
@@ -49,11 +66,13 @@ export const apiClient = {
     return json.data;
   },
 
-  async listCompetitions(params?: { status?: string; organizer_id?: string }): Promise<Competition[]> {
+  async listCompetitions(params?: { status?: string; host_id?: string; organizer_id?: string }): Promise<Competition[]> {
     const headers = await getAuthHeaders();
     const query = new URLSearchParams();
     if (params?.status) query.append('status', params.status);
-    if (params?.organizer_id) query.append('organizer_id', params.organizer_id);
+    if (params?.host_id || params?.organizer_id) {
+      query.append('host_id', params.host_id || params.organizer_id || '');
+    }
 
     const res = await fetch(`${API_BASE_URL}/competitions?${query.toString()}`, { headers });
     if (!res.ok) {
@@ -70,6 +89,18 @@ export const apiClient = {
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error?.message || 'Failed to fetch competition');
+    }
+    const json = await res.json();
+    return json.data;
+  },
+
+  async getCompetitionByCode(code: string): Promise<Competition> {
+    const headers = await getAuthHeaders();
+    const cleanCode = encodeURIComponent(code.trim().toLowerCase());
+    const res = await fetch(`${API_BASE_URL}/competitions/code/${cleanCode}`, { headers });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || 'Failed to find competition by code');
     }
     const json = await res.json();
     return json.data;
@@ -121,6 +152,35 @@ export const apiClient = {
       const err = await res.json();
       throw new Error(err.error?.message || 'Failed to join competition');
     }
+  },
+
+  async joinCompetitionByCode(code: string): Promise<{ competition: Competition; participant: any; alreadyJoined: boolean }> {
+    const headers = await getAuthHeaders();
+    headers['Content-Type'] = 'application/json';
+
+    const res = await fetch(`${API_BASE_URL}/competitions/join`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ code })
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || 'Failed to join competition with code');
+    }
+    const json = await res.json();
+    return json.data;
+  },
+
+  async listJoinedCompetitions(): Promise<Competition[]> {
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${API_BASE_URL}/competitions/user/joined`, { headers });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || 'Failed to fetch joined competitions');
+    }
+    const json = await res.json();
+    return json.data;
   },
 
   async submitRecreation(competitionId: string, formData: FormData): Promise<{ submission: Submission; score: Score }> {

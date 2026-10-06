@@ -35,5 +35,10 @@ export const updateCompetitionSchema = z.object({
   path: ['ends_at']
 });
 
+export const joinCompetitionByCodeSchema = z.object({
+  code: z.string().trim().min(3, 'Competition code or link is required')
+});
+
 export type CreateCompetitionInput = z.infer<typeof createCompetitionSchema>;
 export type UpdateCompetitionInput = z.infer<typeof updateCompetitionSchema>;
+export type JoinCompetitionByCodeInput = z.infer<typeof joinCompetitionByCodeSchema>;

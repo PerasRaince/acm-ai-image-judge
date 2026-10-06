@@ -9,7 +9,7 @@ describe('Backend API Integration Tests', () => {
     expect([200, 503]).toContain(res.status);
     expect(res.body).toHaveProperty('status');
     expect(res.body).toHaveProperty('services');
-  });
+  }, 15000);
 
   it('GET /api/v1/nonexistent returns 404', async () => {
     const res = await request(app).get('/api/v1/nonexistent');

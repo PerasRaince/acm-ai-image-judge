@@ -17,7 +17,25 @@ export function createApp(): Express {
   // CORS configuration
   app.use(
     cors({
-      origin: [env.FRONTEND_URL, 'http://localhost:3000', 'http://127.0.0.1:3000'],
+      origin: (origin, callback) => {
+        // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+        if (!origin) return callback(null, true);
+
+        const cleanOrigin = origin.replace(/\/$/, '');
+        const cleanFrontend = env.FRONTEND_URL.replace(/\/$/, '');
+
+        if (
+          cleanOrigin === cleanFrontend ||
+          cleanOrigin === 'http://localhost:3000' ||
+          cleanOrigin === 'http://127.0.0.1:3000' ||
+          cleanOrigin.endsWith('.vercel.app') ||
+          cleanOrigin.endsWith('.onrender.com')
+        ) {
+          return callback(null, true);
+        }
+
+        return callback(null, true);
+      },
       credentials: true,
       methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
