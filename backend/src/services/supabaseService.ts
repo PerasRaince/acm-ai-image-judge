@@ -1,6 +1,12 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import WebSocket from 'ws';
 import { env } from '../config/env';
 import { logger } from '../utils/logger';
+
+// Polyfill global WebSocket for Supabase across Node runtimes
+if (typeof globalThis.WebSocket === 'undefined') {
+  (globalThis as any).WebSocket = WebSocket;
+}
 
 // Admin client using privileged secret key (server-only)
 export const supabaseAdmin: SupabaseClient = createClient(

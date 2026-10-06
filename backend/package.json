@@ -4,7 +4,7 @@
   "description": "Backend API service for AI Image Judge platform",
   "main": "dist/server.js",
   "engines": {
-    "node": ">=20.0.0 <=22.x"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "dev": "tsx watch src/server.ts",
@@ -21,6 +21,7 @@
     "@types/morgan": "^1.9.9",
     "@types/multer": "^1.4.12",
     "@types/node": "^22.13.1",
+    "@types/ws": "^8.18.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -30,6 +31,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "typescript": "^5.7.3",
+    "ws": "^8.22.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
