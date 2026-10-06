@@ -12,12 +12,9 @@ from PIL import Image
 from app.core.config import get_settings
 from app.models.registry import ModelRegistry
 from app.preprocessing.pipeline import PreprocessedImage
-from app.scoring.dreamsim_scorer import compute_dreamsim_score
-from app.scoring.dino_scorer import compute_dino_score
-from app.scoring.clip_scorer import compute_clip_score
-from app.scoring.lpips_scorer import compute_lpips_score
 from app.scoring.color_scorer import compute_color_score
 from app.scoring.quality_scorer import compute_quality_score
+from app.scoring.low_memory_scorer import compute_low_memory_scores
 
 logger = logging.getLogger("ai_judge.engine")
 
@@ -112,93 +109,114 @@ def score_images(
 
     raw_metrics_dict: Dict[str, Any] = {}
 
-    # 3. DreamSim Perceptual Similarity
-    try:
-        ds_score, ds_raw, ds_meta = compute_dreamsim_score(
+    if settings.LOW_MEMORY_MODE:
+        # High-efficiency low-memory pipeline (<180MB RAM for Render Free Tier)
+        comp_scores, raw_metrics_dict = compute_low_memory_scores(
             reference.pil_image,
             candidate.pil_image,
             registry,
             cached_ref
         )
-        raw_metrics_dict["dreamsim"] = ds_meta
-    except Exception as e:
-        logger.error(f"DreamSim evaluation error: {e}")
-        ds_score = 0.0
-        raw_metrics_dict["dreamsim"] = {"error": str(e)}
+        ds_score = comp_scores["dreamsim"]
+        dino_score = comp_scores["dino"]
+        clip_score = comp_scores["clip"]
+        lpips_score = comp_scores["lpips"]
+        color_score = comp_scores["color"]
+        quality_score = comp_scores["quality"]
+    else:
+        # Full heavy PyTorch model suite (requires >= 2GB RAM / GPU)
+        from app.scoring.dreamsim_scorer import compute_dreamsim_score
+        from app.scoring.dino_scorer import compute_dino_score
+        from app.scoring.clip_scorer import compute_clip_score
+        from app.scoring.lpips_scorer import compute_lpips_score
 
-    # 4. DINOv2 Structural Correspondence
-    try:
-        dino_score, dino_raw, dino_meta = compute_dino_score(
-            reference.pil_image,
-            candidate.pil_image,
-            registry,
-            cached_ref
-        )
-        if "ref_embed" in dino_meta:
-            cached_ref["dino_embedding"] = dino_meta["ref_embed"]
-            del dino_meta["ref_embed"]
-        raw_metrics_dict["dino"] = dino_meta
-    except Exception as e:
-        logger.error(f"DINO evaluation error: {e}")
-        dino_score = 0.0
-        raw_metrics_dict["dino"] = {"error": str(e)}
+        # 3. DreamSim Perceptual Similarity
+        try:
+            ds_score, ds_raw, ds_meta = compute_dreamsim_score(
+                reference.pil_image,
+                candidate.pil_image,
+                registry,
+                cached_ref
+            )
+            raw_metrics_dict["dreamsim"] = ds_meta
+        except Exception as e:
+            logger.error(f"DreamSim evaluation error: {e}")
+            ds_score = 0.0
+            raw_metrics_dict["dreamsim"] = {"error": str(e)}
 
-    # 5. OpenCLIP Semantic Similarity
-    try:
-        clip_score, clip_raw, clip_meta = compute_clip_score(
-            reference.pil_image,
-            candidate.pil_image,
-            registry,
-            cached_ref
-        )
-        if "ref_embed" in clip_meta:
-            cached_ref["clip_embedding"] = clip_meta["ref_embed"]
-            del clip_meta["ref_embed"]
-        raw_metrics_dict["clip"] = clip_meta
-    except Exception as e:
-        logger.error(f"CLIP evaluation error: {e}")
-        clip_score = 0.0
-        raw_metrics_dict["clip"] = {"error": str(e)}
+        # 4. DINOv2 Structural Correspondence
+        try:
+            dino_score, dino_raw, dino_meta = compute_dino_score(
+                reference.pil_image,
+                candidate.pil_image,
+                registry,
+                cached_ref
+            )
+            if "ref_embed" in dino_meta:
+                cached_ref["dino_embedding"] = dino_meta["ref_embed"]
+                del dino_meta["ref_embed"]
+            raw_metrics_dict["dino"] = dino_meta
+        except Exception as e:
+            logger.error(f"DINO evaluation error: {e}")
+            dino_score = 0.0
+            raw_metrics_dict["dino"] = {"error": str(e)}
+
+        # 5. OpenCLIP Semantic Similarity
+        try:
+            clip_score, clip_raw, clip_meta = compute_clip_score(
+                reference.pil_image,
+                candidate.pil_image,
+                registry,
+                cached_ref
+            )
+            if "ref_embed" in clip_meta:
+                cached_ref["clip_embedding"] = clip_meta["ref_embed"]
+                del clip_meta["ref_embed"]
+            raw_metrics_dict["clip"] = clip_meta
+        except Exception as e:
+            logger.error(f"CLIP evaluation error: {e}")
+            clip_score = 0.0
+            raw_metrics_dict["clip"] = {"error": str(e)}
+
+        # 6. LPIPS Perceptual Detail Distance
+        try:
+            lpips_score, lpips_raw, lpips_meta = compute_lpips_score(
+                reference.pil_image,
+                candidate.pil_image,
+                registry
+            )
+            raw_metrics_dict["lpips"] = lpips_meta
+        except Exception as e:
+            logger.error(f"LPIPS evaluation error: {e}")
+            lpips_score = 0.0
+            raw_metrics_dict["lpips"] = {"error": str(e)}
+
+        # 7. Color Distribution Similarity
+        try:
+            color_score, color_raw, color_meta = compute_color_score(
+                reference.pil_image,
+                candidate.pil_image
+            )
+            raw_metrics_dict["color"] = color_meta
+        except Exception as e:
+            logger.error(f"Color evaluation error: {e}")
+            color_score = 0.0
+            raw_metrics_dict["color"] = {"error": str(e)}
+
+        # 8. Technical Quality Score
+        try:
+            quality_score, quality_raw, quality_meta = compute_quality_score(
+                candidate.pil_image
+            )
+            raw_metrics_dict["quality"] = quality_meta
+        except Exception as e:
+            logger.error(f"Quality evaluation error: {e}")
+            quality_score = 0.0
+            raw_metrics_dict["quality"] = {"error": str(e)}
 
     # Cache precomputed reference embeddings for future submissions
     if settings.ENABLE_REFERENCE_CACHE and cached_ref:
         registry.cache_reference(reference.sha256, cached_ref)
-
-    # 6. LPIPS Perceptual Detail Distance
-    try:
-        lpips_score, lpips_raw, lpips_meta = compute_lpips_score(
-            reference.pil_image,
-            candidate.pil_image,
-            registry
-        )
-        raw_metrics_dict["lpips"] = lpips_meta
-    except Exception as e:
-        logger.error(f"LPIPS evaluation error: {e}")
-        lpips_score = 0.0
-        raw_metrics_dict["lpips"] = {"error": str(e)}
-
-    # 7. Color Distribution Similarity
-    try:
-        color_score, color_raw, color_meta = compute_color_score(
-            reference.pil_image,
-            candidate.pil_image
-        )
-        raw_metrics_dict["color"] = color_meta
-    except Exception as e:
-        logger.error(f"Color evaluation error: {e}")
-        color_score = 0.0
-        raw_metrics_dict["color"] = {"error": str(e)}
-
-    # 8. Technical Quality Score
-    try:
-        quality_score, quality_raw, quality_meta = compute_quality_score(
-            candidate.pil_image
-        )
-        raw_metrics_dict["quality"] = quality_meta
-    except Exception as e:
-        logger.error(f"Quality evaluation error: {e}")
-        quality_score = 0.0
-        raw_metrics_dict["quality"] = {"error": str(e)}
 
     # 9. Compute Weighted Final Reference Similarity Score
     w_ds = active_weights.get("dreamsim", 0.35)

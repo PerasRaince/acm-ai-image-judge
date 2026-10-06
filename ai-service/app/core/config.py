@@ -31,6 +31,16 @@ class Settings(BaseSettings):
     DEVICE: str = "cuda" if torch.cuda.is_available() else "cpu"
     TORCH_THREADS: int = max(1, os.cpu_count() or 4)
 
+    # Optimization: Low-Memory Mode for 512MB RAM hosting environments (e.g. Render Free Tier)
+    LOW_MEMORY_MODE: bool = True
+
+    @field_validator("LOW_MEMORY_MODE", mode="before")
+    @classmethod
+    def parse_low_memory_mode(cls, v):
+        if isinstance(v, str):
+            return v.lower() in ("true", "1", "yes", "enabled", "on")
+        return bool(v)
+
     # Scoring Defaults
     DEFAULT_SCORING_VERSION: str = "v1.0.0"
 

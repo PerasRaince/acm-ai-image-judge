@@ -41,12 +41,22 @@ async def health_check():
     registry = ModelRegistry.get_instance()
     cuda_avail = torch.cuda.is_available()
 
-    models_state = {
-        "dreamsim": registry._dreamsim_model is not None,
-        "dino": registry._dino_model is not None,
-        "clip": registry._clip_model is not None,
-        "lpips": registry._lpips_model is not None,
-    }
+    if settings.LOW_MEMORY_MODE:
+        models_state = {
+            "low_memory_mode": True,
+            "mobilenet_v3": registry._mobilenet_model is not None,
+            "ssim_engine": True,
+            "color_engine": True,
+            "quality_engine": True
+        }
+    else:
+        models_state = {
+            "low_memory_mode": False,
+            "dreamsim": registry._dreamsim_model is not None,
+            "dino": registry._dino_model is not None,
+            "clip": registry._clip_model is not None,
+            "lpips": registry._lpips_model is not None,
+        }
 
     return HealthResponse(
         status="healthy",
@@ -249,16 +259,21 @@ async def models_status():
         cache_size = len(registry._reference_cache)
         cached_keys = list(registry._reference_cache.keys())
 
+    settings = get_settings()
+    models_info = {
+        "low_memory_mode": settings.LOW_MEMORY_MODE,
+        "mobilenet_v3": registry._mobilenet_model is not None,
+        "dreamsim": registry._dreamsim_model is not None,
+        "dino": registry._dino_model is not None,
+        "clip": registry._clip_model is not None,
+        "lpips": registry._lpips_model is not None
+    }
+
     return {
         "device": str(registry.device),
         "cached_reference_images_count": cache_size,
         "cached_reference_hashes": cached_keys,
-        "models": {
-            "dreamsim": registry._dreamsim_model is not None,
-            "dino": registry._dino_model is not None,
-            "clip": registry._clip_model is not None,
-            "lpips": registry._lpips_model is not None
-        }
+        "models": models_info
     }
 
 

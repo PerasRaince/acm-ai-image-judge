@@ -8,8 +8,6 @@ import threading
 from typing import Optional, Dict, Any, Tuple
 import torch
 from PIL import Image
-import open_clip
-import lpips
 from app.core.config import get_settings
 
 logger = logging.getLogger("ai_judge.models")
@@ -22,7 +20,7 @@ class ModelRegistry:
     def __init__(self):
         self.settings = get_settings()
         self.device = torch.device(self.settings.DEVICE)
-        logger.info(f"Initializing ModelRegistry on device: {self.device}")
+        logger.info(f"Initializing ModelRegistry on device: {self.device} (low_memory_mode={self.settings.LOW_MEMORY_MODE})")
 
         # Models (lazily initialized)
         self._dreamsim_model = None
@@ -36,6 +34,10 @@ class ModelRegistry:
         self._clip_tokenizer = None
 
         self._lpips_model = None
+
+        # Lightweight model for Render 512MB RAM free tier
+        self._mobilenet_model = None
+        self._mobilenet_transform = None
 
         # In-memory cache for reference image embeddings
         # Key: reference_sha256 -> Dict[str, Any]
@@ -114,6 +116,7 @@ class ModelRegistry:
             with self._lock:
                 if self._clip_model is None:
                     try:
+                        import open_clip
                         logger.info(f"Loading OpenCLIP ({self.settings.CLIP_MODEL_NAME})...")
                         model, _, preprocess = open_clip.create_model_and_transforms(
                             self.settings.CLIP_MODEL_NAME,
@@ -137,6 +140,7 @@ class ModelRegistry:
             with self._lock:
                 if self._lpips_model is None:
                     try:
+                        import lpips
                         logger.info(f"Loading LPIPS (net={self.settings.LPIPS_NET})...")
                         loss_fn = lpips.LPIPS(net=self.settings.LPIPS_NET, verbose=False)
                         loss_fn = loss_fn.to(self.device)
@@ -147,6 +151,32 @@ class ModelRegistry:
                         logger.error(f"Failed to load LPIPS: {e}")
                         raise RuntimeError(f"LPIPS initialization error: {e}")
         return self._lpips_model
+
+    # -------------------------------------------------------------------------
+    # 5. Lightweight MobileNetV3 (Low Memory Mode for Render 512MB RAM)
+    # -------------------------------------------------------------------------
+    def get_mobilenet(self):
+        if self._mobilenet_model is None:
+            with self._lock:
+                if self._mobilenet_model is None:
+                    try:
+                        logger.info("Loading lightweight MobileNetV3 small model...")
+                        import torchvision.models as tv_models
+                        import torchvision.transforms as T
+                        model = tv_models.mobilenet_v3_small(weights='DEFAULT').to(self.device)
+                        model.eval()
+                        transform = T.Compose([
+                            T.Resize((224, 224), antialias=True),
+                            T.ToTensor(),
+                            T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+                        ])
+                        self._mobilenet_model = model
+                        self._mobilenet_transform = transform
+                        logger.info("MobileNetV3 loaded successfully (<10MB weights, ~25MB RAM).")
+                    except Exception as e:
+                        logger.error(f"Failed to load MobileNetV3: {e}")
+                        raise RuntimeError(f"MobileNetV3 initialization error: {e}")
+        return self._mobilenet_model, self._mobilenet_transform
 
     # -------------------------------------------------------------------------
     # Reference Image Embedding Cache
@@ -168,8 +198,17 @@ class ModelRegistry:
             self._reference_cache.clear()
 
     def preload_all(self) -> None:
-        """Pre-warms all neural models during startup so user requests never hit gateway timeouts."""
-        logger.info("Pre-warming all AI models at startup...")
+        """Pre-warms models at startup based on active memory profile."""
+        if self.settings.LOW_MEMORY_MODE:
+            logger.info("LOW_MEMORY_MODE active (<512MB RAM cap). Pre-warming lightweight model only...")
+            try:
+                self.get_mobilenet()
+                logger.info("Lightweight MobileNetV3 pre-warmed successfully. Server ready on low memory.")
+            except Exception as e:
+                logger.warning(f"Lightweight preload warning: {e}")
+            return
+
+        logger.info("Pre-warming all heavy AI models at startup...")
         try:
             self.get_dino()
         except Exception as e:
@@ -186,5 +225,5 @@ class ModelRegistry:
             self.get_dreamsim()
         except Exception as e:
             logger.warning(f"DreamSim preload warning: {e}")
-        logger.info("All AI models pre-warmed successfully.")
+        logger.info("All heavy AI models pre-warmed successfully.")
 
