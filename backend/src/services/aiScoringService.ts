@@ -26,7 +26,7 @@ export class AIScoringService {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = env.AI_SERVICE_URL;
+    this.baseUrl = env.AI_SERVICE_URL.replace(/\/$/, '');
   }
 
   /**
@@ -39,7 +39,8 @@ export class AIScoringService {
         headers: { Accept: 'application/json' }
       });
       return response.ok;
-    } catch {
+    } catch (err) {
+      logger.warn(`AI service health check failed at ${this.baseUrl}/health: ${(err as Error).message}`);
       return false;
     }
   }
