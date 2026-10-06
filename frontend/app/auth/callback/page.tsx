@@ -38,10 +38,10 @@ function CallbackContent() {
           </svg>
         </div>
         <h2 className="text-xl font-bold text-white">Sign-in Error</h2>
-        <p className="text-sm text-slate-400 max-w-sm">{errorMsg}</p>
+        <p className="text-sm text-slate-300 max-w-sm">{errorMsg}</p>
         <button
           onClick={() => router.push('/login')}
-          className="mt-4 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold"
+          className="mt-4 px-4 py-2 rounded-xl bg-[#0B1D35] hover:bg-[#002B49] border border-[#002B49] text-white text-xs font-semibold transition-colors"
         >
           Return to Sign In
         </button>
@@ -51,8 +51,8 @@ function CallbackContent() {
 
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center space-y-4">
-      <div className="w-8 h-8 border-2 border-sky-400 border-t-transparent rounded-full animate-spin" />
-      <p className="text-sm text-slate-400 font-medium">Completing authentication...</p>
+      <div className="w-8 h-8 border-2 border-[#0085CA] border-t-transparent rounded-full animate-spin" />
+      <p className="text-sm text-slate-300 font-medium">Completing authentication...</p>
     </div>
   );
 }
@@ -61,7 +61,7 @@ export default function AuthCallbackPage() {
   return (
     <Suspense fallback={
       <div className="min-h-[70vh] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-sky-400 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-[#0085CA] border-t-transparent rounded-full animate-spin" />
       </div>
     }>
       <CallbackContent />

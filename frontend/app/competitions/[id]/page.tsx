@@ -111,7 +111,7 @@ export default function CompetitionDetailPage() {
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-16">
-        <div className="h-96 rounded-2xl bg-slate-900/60 animate-pulse border border-slate-800" />
+        <div className="h-96 rounded-2xl bg-[#0B1D35]/60 animate-pulse border border-[#002B49]" />
       </div>
     );
   }
@@ -122,7 +122,7 @@ export default function CompetitionDetailPage() {
         <AlertCircle className="h-10 w-10 text-rose-500 mx-auto" />
         <h2 className="text-xl font-bold text-white">Competition Not Found</h2>
         <p className="text-xs text-slate-400">{errorMsg || 'The requested competition could not be retrieved.'}</p>
-        <Link href="/competitions" className="inline-block px-4 py-2 bg-slate-800 rounded-lg text-xs text-slate-200">
+        <Link href="/competitions" className="inline-block px-4 py-2 bg-[#0B1D35] hover:bg-[#002B49] border border-[#002B49] rounded-lg text-xs text-slate-200 transition-colors">
           Back to Directory
         </Link>
       </div>
@@ -149,12 +149,12 @@ export default function CompetitionDetailPage() {
 
         {/* Shareable Code Badge & Invitation Link */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs font-mono">
+          <div className="flex items-center bg-[#0B1D35] border border-[#002B49] rounded-xl px-3 py-1.5 text-xs font-mono">
             <span className="text-slate-400 mr-2">Code:</span>
-            <span className="text-indigo-400 font-bold tracking-wider">{competition.code}</span>
+            <span className="text-[#00A3E0] font-bold tracking-wider">{competition.code}</span>
             <button
               onClick={() => copyToClipboard(competition.code, false)}
-              className="ml-2 text-slate-400 hover:text-indigo-300 transition-colors"
+              className="ml-2 text-slate-400 hover:text-sky-300 transition-colors"
               title="Copy Code"
             >
               {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -163,31 +163,31 @@ export default function CompetitionDetailPage() {
 
           <button
             onClick={() => copyToClipboard(inviteUrl, true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-200 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0B1D35] hover:bg-[#002B49] border border-[#002B49] text-xs font-medium text-slate-200 transition-colors"
           >
-            {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5 text-indigo-400" />}
+            {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5 text-[#00A3E0]" />}
             <span>{copiedLink ? 'Link Copied!' : 'Copy Link'}</span>
           </button>
         </div>
       </div>
 
       {competition.is_host && (
-        <div className="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs flex items-center justify-between flex-wrap gap-3">
+        <div className="p-4 rounded-2xl bg-[#0085CA]/10 border border-[#0085CA]/30 text-sky-200 text-xs flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-2.5">
-            <Crown className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+            <Crown className="w-4 h-4 text-[#00A3E0] flex-shrink-0" />
             <span>
               <strong>You are the Host</strong> of this competition. Status:{' '}
               <span
                 className={`font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded text-[11px] ${
                   competition.status === 'active'
                     ? 'bg-emerald-500/20 text-emerald-300'
-                    : 'bg-zinc-800 text-zinc-300'
+                    : 'bg-[#002B49] text-slate-300'
                 }`}
               >
                 {competition.status}
               </span>
               . Contestants can join with code{' '}
-              <code className="font-mono font-bold text-white bg-indigo-900/60 px-1.5 py-0.5 rounded">
+              <code className="font-mono font-bold text-white bg-[#002B49] px-1.5 py-0.5 rounded border border-[#0085CA]/30">
                 {competition.code}
               </code>
               .
@@ -196,7 +196,7 @@ export default function CompetitionDetailPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => copyToClipboard(inviteUrl, true)}
-              className="px-3 py-1.5 rounded-lg bg-indigo-900/50 hover:bg-indigo-900 border border-indigo-700/50 text-indigo-200 text-xs font-medium transition-colors"
+              className="px-3 py-1.5 rounded-lg bg-[#002B49] hover:bg-[#003860] border border-[#0085CA]/30 text-sky-200 text-xs font-medium transition-colors"
             >
               Copy Invite URL
             </button>
@@ -236,7 +236,7 @@ export default function CompetitionDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Reference Image Target */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="relative aspect-square w-full rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 flex items-center justify-center shadow-xl">
+          <div className="relative aspect-square w-full rounded-2xl overflow-hidden border border-[#002B49] bg-[#040C16] flex items-center justify-center shadow-xl">
             {competition.reference_image_url ? (
               <Image
                 src={competition.reference_image_url}
@@ -247,12 +247,11 @@ export default function CompetitionDetailPage() {
                 priority
               />
             ) : (
-              <span className="text-xs text-slate-600">No reference image</span>
+              <span className="text-xs text-slate-500">No reference image</span>
             )}
           </div>
 
-
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2 text-xs">
+          <div className="p-4 rounded-xl bg-[#0B1D35]/60 border border-[#002B49] space-y-2 text-xs">
             <div className="flex justify-between text-slate-400">
               <span>Required Aspect Ratio:</span>
               <span className="font-mono text-slate-200 font-semibold">{competition.required_aspect_ratio}</span>
@@ -263,7 +262,7 @@ export default function CompetitionDetailPage() {
             </div>
             <div className="flex justify-between text-slate-400">
               <span>Attempts Remaining:</span>
-              <span className="font-mono text-indigo-400 font-semibold">
+              <span className="font-mono text-[#00A3E0] font-semibold">
                 {canSubmit ? `${attemptsRemaining} attempts left` : 'Join to participate'}
               </span>
             </div>
@@ -292,9 +291,9 @@ export default function CompetitionDetailPage() {
           </div>
 
           {/* Time Countdown */}
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+          <div className="p-4 rounded-xl bg-[#0B1D35]/60 border border-[#002B49] flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs text-slate-400">
-              <Clock className="h-4 w-4 text-indigo-400" />
+              <Clock className="h-4 w-4 text-[#00A3E0]" />
               <span>Time Remaining:</span>
             </div>
             <CountdownTimer targetDate={competition.ends_at} />
@@ -303,7 +302,7 @@ export default function CompetitionDetailPage() {
           {/* Description */}
           <div className="space-y-2">
             <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Description</h3>
-            <p className="text-xs text-slate-400 leading-relaxed whitespace-pre-line bg-slate-900/30 p-4 rounded-xl border border-slate-800">
+            <p className="text-xs text-slate-400 leading-relaxed whitespace-pre-line bg-[#0B1D35]/40 p-4 rounded-xl border border-[#002B49]">
               {competition.description || 'Use your AI image generation tool to recreate the target reference image as faithfully as possible.'}
             </p>
           </div>
@@ -312,19 +311,19 @@ export default function CompetitionDetailPage() {
           {competition.rules && (
             <div className="space-y-2">
               <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Competition Rules</h3>
-              <p className="text-xs text-slate-400 leading-relaxed whitespace-pre-line bg-slate-900/30 p-4 rounded-xl border border-slate-800">
+              <p className="text-xs text-slate-400 leading-relaxed whitespace-pre-line bg-[#0B1D35]/40 p-4 rounded-xl border border-[#002B49]">
                 {competition.rules}
               </p>
             </div>
           )}
 
           {/* Action Row */}
-          <div className="pt-4 border-t border-slate-800 flex flex-wrap items-center gap-4">
+          <div className="pt-4 border-t border-[#002B49] flex flex-wrap items-center gap-4">
             {!canSubmit ? (
               <button
                 onClick={handleJoin}
                 disabled={joining || !isActive}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 text-white font-semibold text-xs transition-all flex items-center gap-2 shadow-lg shadow-indigo-950/40 active:scale-95"
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] disabled:opacity-50 text-white font-semibold text-xs transition-all flex items-center gap-2 shadow-lg shadow-[#0085CA]/20 active:scale-95"
               >
                 <CheckCircle2 className="h-4 w-4" />
                 <span>{joining ? 'Joining...' : 'Join Competition'}</span>
@@ -332,7 +331,7 @@ export default function CompetitionDetailPage() {
             ) : (
               <Link
                 href={`/competitions/${competition.id}/submit`}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-xs transition-all flex items-center gap-2 shadow-lg shadow-indigo-950/40 active:scale-95"
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-semibold text-xs transition-all flex items-center gap-2 shadow-lg shadow-[#0085CA]/20 active:scale-95"
               >
                 <Upload className="h-4 w-4" />
                 <span>Submit AI Recreation</span>
@@ -341,7 +340,7 @@ export default function CompetitionDetailPage() {
 
             <Link
               href={`/competitions/${competition.id}/leaderboard`}
-              className="px-5 py-3 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold text-xs transition-colors flex items-center gap-2"
+              className="px-5 py-3 rounded-xl border border-[#002B49] bg-[#0B1D35] hover:bg-[#002B49] text-slate-200 font-semibold text-xs transition-colors flex items-center gap-2"
             >
               <Trophy className="h-4 w-4 text-amber-400" />
               <span>View Leaderboard</span>

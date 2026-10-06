@@ -115,7 +115,7 @@ export default function CreateCompetitionPage() {
 
     return (
       <div className="max-w-2xl mx-auto px-4 py-12">
-        <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-8 sm:p-10 shadow-2xl backdrop-blur-sm text-center space-y-6">
+        <div className="bg-[#0B1D35]/90 border border-[#002B49] rounded-3xl p-8 sm:p-10 shadow-2xl backdrop-blur-sm text-center space-y-6">
           <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
             <CheckCircle2 className="w-8 h-8" />
           </div>
@@ -130,7 +130,7 @@ export default function CreateCompetitionPage() {
           </div>
 
           {/* Unique Competition Code Box */}
-          <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 text-left space-y-3">
+          <div className="bg-[#071527] border border-[#002B49] rounded-2xl p-5 text-left space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
                 Competition Code
@@ -138,22 +138,22 @@ export default function CreateCompetitionPage() {
               <button
                 type="button"
                 onClick={() => copyToClipboard(createdComp.code, false)}
-                className="inline-flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs text-[#00A3E0] hover:text-sky-300 font-medium transition-colors"
               >
                 {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedCode ? 'Copied!' : 'Copy Code'}</span>
               </button>
             </div>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-indigo-400 tracking-wider">
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-[#00A3E0] tracking-wider">
               {createdComp.code}
             </div>
-            <p className="text-[11px] text-slate-500">
+            <p className="text-[11px] text-slate-400">
               Contestants can join directly by entering this code on the homepage or dashboard.
             </p>
           </div>
 
           {/* Invitation Link Box */}
-          <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 text-left space-y-3">
+          <div className="bg-[#071527] border border-[#002B49] rounded-2xl p-5 text-left space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
                 Shareable Invitation Link
@@ -161,13 +161,13 @@ export default function CreateCompetitionPage() {
               <button
                 type="button"
                 onClick={() => copyToClipboard(inviteUrl, true)}
-                className="inline-flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs text-[#00A3E0] hover:text-sky-300 font-medium transition-colors"
               >
                 {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedLink ? 'Copied!' : 'Copy Link'}</span>
               </button>
             </div>
-            <div className="text-xs font-mono text-slate-300 truncate bg-slate-900 px-3 py-2.5 rounded-lg border border-slate-800">
+            <div className="text-xs font-mono text-slate-300 truncate bg-[#0B1D35] px-3 py-2.5 rounded-lg border border-[#002B49]">
               {inviteUrl}
             </div>
           </div>
@@ -176,14 +176,14 @@ export default function CreateCompetitionPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
             <Link
               href={`/competitions/${createdComp.id}`}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-xs transition-all shadow-md shadow-indigo-950/40 inline-flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-semibold text-xs transition-all shadow-md shadow-[#0085CA]/20 inline-flex items-center justify-center gap-2 active:scale-95"
             >
               <span>Go to Competition</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/dashboard"
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition-all"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#002B49] hover:bg-[#003860] border border-[#0085CA]/20 text-slate-200 font-semibold text-xs transition-all"
             >
               Back to Dashboard
             </Link>
@@ -206,7 +206,7 @@ export default function CreateCompetitionPage() {
       </div>
 
       <div>
-        <div className="flex items-center gap-2 text-indigo-400 text-xs font-semibold mb-1 uppercase tracking-wider">
+        <div className="flex items-center gap-2 text-[#00A3E0] text-xs font-semibold mb-1 uppercase tracking-wider">
           <Sparkles className="w-4 h-4" />
           <span>Host a Challenge</span>
         </div>
@@ -233,11 +233,11 @@ export default function CreateCompetitionPage() {
           </label>
           <div
             onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer bg-slate-900/50 hover:bg-slate-900/80 transition-all text-center min-h-[220px]"
+            className="border-2 border-dashed border-[#002B49] hover:border-[#0085CA] rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer bg-[#0B1D35]/50 hover:bg-[#0B1D35]/80 transition-all text-center min-h-[220px]"
           >
             {previewUrl ? (
               <div className="space-y-3">
-                <div className="relative w-44 h-44 mx-auto rounded-xl overflow-hidden border border-slate-700 shadow-md">
+                <div className="relative w-44 h-44 mx-auto rounded-xl overflow-hidden border border-[#002B49] shadow-md">
                   <Image
                     src={previewUrl}
                     alt="Preview"
@@ -249,14 +249,14 @@ export default function CreateCompetitionPage() {
               </div>
             ) : (
               <div className="space-y-2 flex flex-col items-center">
-                <div className="p-3.5 rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                <div className="p-3.5 rounded-2xl bg-[#0085CA]/15 text-[#00A3E0] border border-[#0085CA]/30">
                   <Upload className="h-6 w-6" />
                 </div>
                 <div className="space-y-1">
                   <p className="font-semibold text-slate-200">
                     Upload high-resolution reference image
                   </p>
-                  <p className="text-slate-500 text-[11px]">PNG, JPEG, or WebP up to 15MB</p>
+                  <p className="text-slate-400 text-[11px]">PNG, JPEG, or WebP up to 15MB</p>
                 </div>
               </div>
             )}
@@ -285,7 +285,7 @@ export default function CreateCompetitionPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Cyberpunk Neon Cathedral Recreation"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
             />
           </div>
 
@@ -299,7 +299,7 @@ export default function CreateCompetitionPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe the challenge, themes, or style instructions..."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
             />
           </div>
 
@@ -313,7 +313,7 @@ export default function CreateCompetitionPage() {
               value={rules}
               onChange={(e) => setRules(e.target.value)}
               placeholder="e.g. Only Midjourney v6 or Stable Diffusion models allowed. No exact reference modifications."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
             />
           </div>
         </div>
@@ -328,7 +328,7 @@ export default function CreateCompetitionPage() {
               id="aspectRatio"
               value={aspectRatio}
               onChange={(e) => setAspectRatio(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA]"
             >
               <option value="any">Any Aspect Ratio</option>
               <option value="1:1">1:1 (Square)</option>
@@ -350,7 +350,7 @@ export default function CreateCompetitionPage() {
               max={50}
               value={submissionLimit}
               onChange={(e) => setSubmissionLimit(parseInt(e.target.value, 10) || 1)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA]"
             />
           </div>
 
@@ -364,7 +364,7 @@ export default function CreateCompetitionPage() {
               required
               value={startsAt}
               onChange={(e) => setStartsAt(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA]"
             />
           </div>
 
@@ -378,7 +378,7 @@ export default function CreateCompetitionPage() {
               required
               value={endsAt}
               onChange={(e) => setEndsAt(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA]"
             />
           </div>
 
@@ -390,7 +390,7 @@ export default function CreateCompetitionPage() {
               id="visibility"
               value={visibility}
               onChange={(e) => setVisibility(e.target.value as any)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA]"
             >
               <option value="public">Public (Visible to everyone in real time)</option>
               <option value="hidden_until_close">Hidden until competition closes</option>
@@ -399,11 +399,11 @@ export default function CreateCompetitionPage() {
           </div>
         </div>
 
-        <div className="pt-4 border-t border-slate-800">
+        <div className="pt-4 border-t border-[#002B49]">
           <button
             type="submit"
             disabled={loading}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 text-white font-semibold transition-all shadow-md shadow-indigo-950/40"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] disabled:opacity-50 text-white font-semibold transition-all shadow-md shadow-[#0085CA]/20 active:scale-95"
           >
             {loading ? 'Creating Competition & Generating Code...' : 'Create Competition & Get Code'}
           </button>

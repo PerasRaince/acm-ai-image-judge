@@ -48,14 +48,14 @@ export function CountdownTimer({ targetDate, onExpire }: CountdownTimerProps) {
   }
 
   return (
-    <div className="flex items-center gap-2 text-xs font-mono text-zinc-300">
+    <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
       <div className="flex items-center gap-1">
-        <span className="bg-zinc-800 px-2 py-1 rounded text-zinc-100 font-bold">{timeLeft.days}d</span>
-        <span className="bg-zinc-800 px-2 py-1 rounded text-zinc-100 font-bold">{timeLeft.hours}h</span>
-        <span className="bg-zinc-800 px-2 py-1 rounded text-zinc-100 font-bold">{timeLeft.minutes}m</span>
-        <span className="bg-zinc-800 px-2 py-1 rounded text-zinc-100 font-bold">{timeLeft.seconds}s</span>
+        <span className="bg-[#002B49] border border-[#0085CA]/25 px-2 py-1 rounded-md text-sky-200 font-bold">{timeLeft.days}d</span>
+        <span className="bg-[#002B49] border border-[#0085CA]/25 px-2 py-1 rounded-md text-sky-200 font-bold">{timeLeft.hours}h</span>
+        <span className="bg-[#002B49] border border-[#0085CA]/25 px-2 py-1 rounded-md text-sky-200 font-bold">{timeLeft.minutes}m</span>
+        <span className="bg-[#002B49] border border-[#0085CA]/25 px-2 py-1 rounded-md text-sky-200 font-bold">{timeLeft.seconds}s</span>
       </div>
-      <span className="text-[11px] text-zinc-500 font-sans">remaining</span>
+      <span className="text-[11px] text-slate-400 font-sans">remaining</span>
     </div>
   );
 }

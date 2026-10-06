@@ -91,7 +91,7 @@ export default function JoinCodeInput({
               if (errorMsg) setErrorMsg('');
             }}
             placeholder="Enter a code or link"
-            className={`w-full bg-slate-900/90 border border-slate-700/80 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all font-mono pl-11 pr-4 ${
+            className={`w-full bg-[#0B1D35]/90 border border-[#002B49] rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all font-mono pl-11 pr-4 ${
               isLarge ? 'py-3.5 text-base' : 'py-2.5 text-sm'
             }`}
           />
@@ -100,7 +100,7 @@ export default function JoinCodeInput({
         <button
           type="submit"
           disabled={!inputVal.trim() || loading}
-          className={`font-semibold rounded-xl text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 shadow-md shadow-indigo-900/30 active:scale-95 ${
+          className={`font-semibold rounded-xl text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] shadow-md shadow-[#0085CA]/20 active:scale-95 ${
             isLarge ? 'px-6 py-3.5 text-base' : 'px-4 py-2.5 text-sm'
           }`}
         >

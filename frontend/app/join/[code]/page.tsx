@@ -70,7 +70,7 @@ export default function JoinCompetitionPage() {
   if (loading) {
     return (
       <div className="min-h-[75vh] flex flex-col items-center justify-center space-y-4">
-        <div className="w-10 h-10 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-[#0085CA]/20 border-t-[#0085CA] rounded-full animate-spin" />
         <p className="text-slate-400 text-sm font-medium">Resolving competition invitation...</p>
       </div>
     );
@@ -79,18 +79,18 @@ export default function JoinCompetitionPage() {
   if (errorMsg && !competition) {
     return (
       <div className="min-h-[75vh] flex items-center justify-center px-4">
-        <div className="max-w-md w-full bg-slate-900/80 border border-slate-800 rounded-2xl p-8 text-center space-y-4">
+        <div className="max-w-md w-full bg-[#0B1D35]/90 border border-[#002B49] rounded-2xl p-8 text-center space-y-4">
           <div className="w-12 h-12 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center mx-auto">
             <AlertCircle className="w-6 h-6" />
           </div>
           <h2 className="text-xl font-bold text-white">Competition Not Found</h2>
           <p className="text-xs text-slate-400 leading-relaxed">
-            The competition code <span className="font-mono text-indigo-400">{code}</span> is invalid or may have been removed.
+            The competition code <span className="font-mono text-[#00A3E0]">{code}</span> is invalid or may have been removed.
           </p>
           <div className="pt-2">
             <Link
               href="/competitions"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#002B49] hover:bg-[#003860] border border-[#0085CA]/20 text-slate-200 text-xs font-semibold transition-all"
             >
               Browse Public Competitions
             </Link>
@@ -109,12 +109,12 @@ export default function JoinCompetitionPage() {
   return (
     <div className="min-h-[85vh] py-12 px-4 max-w-4xl mx-auto">
       {/* Invitation Header Card */}
-      <div className="bg-slate-900/80 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
+      <div className="bg-[#0B1D35]/90 border border-[#002B49] rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
         {/* Banner with competition badge */}
-        <div className="p-6 sm:p-8 bg-gradient-to-r from-indigo-950/60 via-slate-900 to-purple-950/60 border-b border-slate-800 flex flex-wrap items-center justify-between gap-4">
+        <div className="p-6 sm:p-8 bg-gradient-to-r from-[#002B49]/70 via-[#071527] to-[#002B49]/70 border-b border-[#002B49] flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 uppercase tracking-wider">
+              <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold bg-[#0085CA]/15 border border-[#0085CA]/30 text-[#00A3E0] uppercase tracking-wider">
                 Code: {competition.code}
               </span>
               <span className="px-2.5 py-1 rounded-md text-[11px] font-semibold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 capitalize">
@@ -133,7 +133,7 @@ export default function JoinCompetitionPage() {
             {isHost ? (
               <Link
                 href={`/competitions/${competition.id}`}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-sm transition-all shadow-lg shadow-indigo-950/40 inline-flex items-center gap-2"
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-semibold text-sm transition-all shadow-md shadow-[#0085CA]/20 inline-flex items-center gap-2 active:scale-95"
               >
                 <span>Host Console</span>
                 <ArrowRight className="w-4 h-4" />
@@ -141,7 +141,7 @@ export default function JoinCompetitionPage() {
             ) : isJoined ? (
               <Link
                 href={`/competitions/${competition.id}`}
-                className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition-all shadow-lg shadow-emerald-950/40 inline-flex items-center gap-2"
+                className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition-all shadow-md shadow-emerald-950/40 inline-flex items-center gap-2"
               >
                 <CheckCircle className="w-4 h-4" />
                 <span>Go to Competition</span>
@@ -150,7 +150,7 @@ export default function JoinCompetitionPage() {
               <button
                 onClick={handleJoin}
                 disabled={joining || isExpired}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 text-white font-semibold text-sm transition-all shadow-lg shadow-indigo-950/40 inline-flex items-center gap-2 active:scale-95"
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] disabled:opacity-50 text-white font-semibold text-sm transition-all shadow-md shadow-[#0085CA]/20 inline-flex items-center gap-2 active:scale-95"
               >
                 {joining ? (
                   <span>Joining...</span>
@@ -182,10 +182,10 @@ export default function JoinCompetitionPage() {
           {/* Reference Image Preview */}
           <div className="space-y-3">
             <h3 className="text-xs uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-indigo-400" />
+              <Sparkles className="w-4 h-4 text-[#00A3E0]" />
               Reference Target Image
             </h3>
-            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-inner flex items-center justify-center">
+            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-[#040C16] border border-[#002B49] shadow-inner flex items-center justify-center">
               {competition.reference_image_url ? (
                 <Image
                   src={competition.reference_image_url}
@@ -222,16 +222,16 @@ export default function JoinCompetitionPage() {
                   <h3 className="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-1">
                     Rules & Guidelines
                   </h3>
-                  <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 text-xs text-slate-300 whitespace-pre-wrap leading-relaxed">
+                  <div className="p-3.5 rounded-xl bg-[#040C16] border border-[#002B49] text-xs text-slate-300 whitespace-pre-wrap leading-relaxed">
                     {competition.rules}
                   </div>
                 </div>
               )}
 
-              <div className="p-4 rounded-xl bg-slate-950/50 border border-slate-800/80 space-y-2 text-xs">
+              <div className="p-4 rounded-xl bg-[#040C16] border border-[#002B49] space-y-2 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-indigo-400" />
+                    <Calendar className="w-3.5 h-3.5 text-[#00A3E0]" />
                     Deadline
                   </span>
                   <span className="text-slate-200 font-medium">
@@ -240,7 +240,7 @@ export default function JoinCompetitionPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#00A3E0]" />
                     AI Evaluation
                   </span>
                   <span className="text-slate-200 font-medium">
@@ -260,13 +260,13 @@ export default function JoinCompetitionPage() {
             </div>
 
             {/* Bottom Call-to-action */}
-            <div className="pt-4 border-t border-slate-800">
+            <div className="pt-4 border-t border-[#002B49]">
               {isHost ? (
                 <div className="text-xs text-slate-400 flex items-center justify-between">
                   <span>You created and host this competition.</span>
                   <Link
                     href={`/competitions/${competition.id}`}
-                    className="text-indigo-400 hover:text-indigo-300 font-semibold"
+                    className="text-[#00A3E0] hover:text-sky-300 font-semibold"
                   >
                     Go to host console &rarr;
                   </Link>
@@ -279,7 +279,7 @@ export default function JoinCompetitionPage() {
                   </span>
                   <Link
                     href={`/competitions/${competition.id}/submit`}
-                    className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-all"
+                    className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-all"
                   >
                     Submit Recreation
                   </Link>
@@ -288,7 +288,7 @@ export default function JoinCompetitionPage() {
                 <button
                   onClick={handleJoin}
                   disabled={joining || isExpired}
-                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 text-white font-semibold text-sm transition-all shadow-md shadow-indigo-950/40 flex items-center justify-center gap-2"
+                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] disabled:opacity-50 text-white font-semibold text-sm transition-all shadow-md shadow-[#0085CA]/20 flex items-center justify-center gap-2 active:scale-95"
                 >
                   {joining ? (
                     <span>Joining...</span>

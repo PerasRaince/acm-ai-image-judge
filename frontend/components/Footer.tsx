@@ -3,41 +3,43 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-slate-800/80 bg-slate-950/90 py-5 text-slate-500 text-xs">
+    <footer className="w-full border-t border-[#002B49] bg-[#071527]/95 py-6 text-slate-400 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
         {/* Main Row */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2.5">
-            <img
-              src="/acm-logo-blue.png"
-              alt="ACM Logo"
-              className="h-5 w-5 object-contain"
-            />
-            <span className="font-semibold text-slate-300">ACM Student Chapter</span>
-            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20">
+            <div className="h-6 w-6 rounded-md bg-[#002B49]/70 border border-[#0085CA]/30 flex items-center justify-center p-1">
+              <img
+                src="/acm-logo-blue.png"
+                alt="ACM Logo"
+                className="h-full w-full object-contain"
+              />
+            </div>
+            <span className="font-semibold text-slate-200">ACM Student Chapter</span>
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#0085CA]/15 text-[#00A3E0] border border-[#0085CA]/30">
               AI Judge
             </span>
             <span className="text-slate-600 hidden sm:inline">•</span>
-            <span className="text-slate-500 text-[11px]">
+            <span className="text-slate-400 text-[11px]">
               © {new Date().getFullYear()} Institutional Chapter
             </span>
           </div>
 
           <div className="flex items-center gap-4 text-xs text-slate-400">
-            <Link href="/competitions" className="hover:text-slate-200 transition-colors">
+            <Link href="/competitions" className="hover:text-white transition-colors">
               Competitions
             </Link>
-            <Link href="/dashboard" className="hover:text-slate-200 transition-colors">
+            <Link href="/dashboard" className="hover:text-white transition-colors">
               Dashboard
             </Link>
-            <Link href="/competitions/create" className="hover:text-slate-200 transition-colors">
+            <Link href="/competitions/create" className="hover:text-white transition-colors">
               Host Challenge
             </Link>
             <a
               href="https://www.acm.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-sky-400 transition-colors"
+              className="text-[#00A3E0] hover:text-sky-300 font-medium transition-colors"
             >
               acm.org
             </a>

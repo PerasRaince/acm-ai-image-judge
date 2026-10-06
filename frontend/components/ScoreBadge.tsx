@@ -21,7 +21,7 @@ export function ScoreBadge({
   } else if (score < 75) {
     colorClasses = 'bg-amber-500/10 text-amber-400 border-amber-500/20';
   } else if (score < 88) {
-    colorClasses = 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+    colorClasses = 'bg-[#0085CA]/15 text-[#00A3E0] border-[#0085CA]/30';
   }
 
   const sizeClasses = {

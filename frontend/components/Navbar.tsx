@@ -50,12 +50,12 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-[#002B49] bg-[#071527]/90 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand */}
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-3 text-white tracking-tight group">
-            <div className="relative h-9 w-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-1.5 shadow-md group-hover:border-sky-500/50 transition-colors">
+            <div className="relative h-9 w-9 rounded-xl bg-[#002B49]/60 border border-[#0085CA]/40 flex items-center justify-center p-1.5 shadow-md group-hover:border-[#0085CA] transition-colors">
               <img
                 src="/acm-logo-blue.png"
                 alt="ACM Logo"
@@ -65,7 +65,7 @@ export function Navbar() {
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
                 <span className="font-extrabold text-white text-sm tracking-tight leading-none">ACM Chapter</span>
-                <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.2 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#0085CA]/15 text-[#00A3E0] border border-[#0085CA]/30">
                   AI Judge
                 </span>
               </div>
@@ -79,8 +79,8 @@ export function Navbar() {
               href="/competitions"
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 pathname === '/competitions'
-                  ? 'text-white bg-slate-800'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                  ? 'text-white bg-[#002B49] border border-[#0085CA]/35'
+                  : 'text-slate-300 hover:text-white hover:bg-[#002B49]/40'
               }`}
             >
               Competitions
@@ -91,8 +91,8 @@ export function Navbar() {
                 href="/dashboard"
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                   pathname.startsWith('/dashboard')
-                    ? 'text-white bg-slate-800'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                    ? 'text-white bg-[#002B49] border border-[#0085CA]/35'
+                    : 'text-slate-300 hover:text-white hover:bg-[#002B49]/40'
                 }`}
               >
                 Dashboard
@@ -104,8 +104,8 @@ export function Navbar() {
                 href="/admin"
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
                   pathname.startsWith('/admin')
-                    ? 'text-red-400 bg-red-950/40 border border-red-800/50'
-                    : 'text-slate-400 hover:text-red-400 hover:bg-slate-900'
+                    ? 'text-rose-400 bg-rose-950/40 border border-rose-800/50'
+                    : 'text-slate-300 hover:text-rose-400 hover:bg-[#002B49]/40'
                 }`}
               >
                 <Shield className="w-3.5 h-3.5" />
@@ -120,21 +120,21 @@ export function Navbar() {
           {/* Host New Competition action button */}
           <Link
             href="/competitions/create"
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-xs transition-all shadow-md shadow-indigo-950/30"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-semibold text-xs transition-all shadow-md shadow-[#0085CA]/20 active:scale-95"
           >
             <PlusCircle className="w-3.5 h-3.5" />
             <span>Host Challenge</span>
           </Link>
 
           {loading ? (
-            <div className="h-8 w-20 animate-pulse rounded bg-slate-800" />
+            <div className="h-8 w-20 animate-pulse rounded bg-[#002B49]/50" />
           ) : user ? (
             <div className="flex items-center gap-3">
               <Link
                 href="/dashboard/profile"
-                className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl hover:bg-slate-900 transition-colors"
+                className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl hover:bg-[#002B49]/40 transition-colors"
               >
-                <div className="w-7 h-7 rounded-full bg-indigo-600/30 border border-indigo-500/30 flex items-center justify-center text-xs font-semibold text-indigo-300">
+                <div className="w-7 h-7 rounded-full bg-[#0085CA]/20 border border-[#0085CA]/40 flex items-center justify-center text-xs font-semibold text-sky-300">
                   {user.display_name.slice(0, 1).toUpperCase()}
                 </div>
                 <div className="hidden sm:flex flex-col text-left">
@@ -145,7 +145,7 @@ export function Navbar() {
               <button
                 onClick={handleSignOut}
                 title="Sign Out"
-                className="p-2 text-slate-400 hover:text-rose-400 rounded-xl hover:bg-slate-900 transition-colors"
+                className="p-2 text-slate-400 hover:text-rose-400 rounded-xl hover:bg-[#002B49]/40 transition-colors"
               >
                 <LogOut className="h-4 w-4" />
               </button>
@@ -154,13 +154,13 @@ export function Navbar() {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="px-3.5 py-1.5 text-xs font-semibold text-slate-300 hover:text-white rounded-lg hover:bg-slate-900 transition-colors"
+                className="px-3.5 py-1.5 text-xs font-semibold text-slate-300 hover:text-white rounded-lg hover:bg-[#002B49]/40 transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/signup"
-                className="px-3.5 py-1.5 text-xs font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl shadow-md shadow-indigo-950/40 transition-all"
+                className="px-3.5 py-1.5 text-xs font-semibold bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white rounded-xl shadow-md shadow-[#0085CA]/20 transition-all active:scale-95"
               >
                 Sign Up
               </Link>

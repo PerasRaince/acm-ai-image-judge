@@ -193,20 +193,20 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#071527] text-slate-100 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Navigation Bar */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-5">
+        <div className="flex items-center justify-between border-b border-[#002B49] pb-5">
           <div className="flex items-center space-x-3">
             <Link
               href="/dashboard"
-              className="p-2 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded-lg transition border border-slate-800"
+              className="p-2 bg-[#0B1D35] hover:bg-[#002B49] text-slate-400 hover:text-white rounded-lg transition border border-[#002B49]"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="p-1.5 bg-red-500/10 text-red-400 border border-red-500/20 rounded-md">
+                <span className="p-1.5 bg-[#0085CA]/15 text-[#00A3E0] border border-[#0085CA]/30 rounded-md">
                   <Shield className="w-5 h-5" />
                 </span>
                 <h1 className="text-2xl font-bold tracking-tight text-white">System Admin & Storage Controller</h1>
@@ -221,7 +221,7 @@ export default function AdminPage() {
             <button
               onClick={() => loadStats()}
               disabled={loading || actionLoading}
-              className="inline-flex items-center px-3.5 py-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 text-sm text-slate-300 hover:text-white transition shadow-sm"
+              className="inline-flex items-center px-3.5 py-2 rounded-lg bg-[#0B1D35] border border-[#002B49] hover:border-[#0085CA]/50 text-sm text-slate-300 hover:text-white transition shadow-sm"
             >
               <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
               Refresh Metrics
@@ -254,13 +254,13 @@ export default function AdminPage() {
 
         {/* Unlock Screen if not authorized */}
         {!authorized ? (
-          <div className="max-w-md mx-auto my-12 p-8 bg-slate-900/90 border border-slate-800 rounded-2xl shadow-xl backdrop-blur-sm">
-            <div className="w-12 h-12 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center mx-auto mb-4">
+          <div className="max-w-md mx-auto my-12 p-8 bg-[#0B1D35]/90 border border-[#002B49] rounded-2xl shadow-xl backdrop-blur-sm">
+            <div className="w-12 h-12 bg-[#0085CA]/15 border border-[#0085CA]/30 text-[#00A3E0] rounded-xl flex items-center justify-center mx-auto mb-4">
               <Key className="w-6 h-6" />
             </div>
             <h2 className="text-xl font-bold text-center text-white mb-2">Restricted Admin Area</h2>
             <p className="text-sm text-slate-400 text-center mb-6">
-              Enter your Administrator Secret Key or sign in with an account having the <code className="text-indigo-400">admin</code> role.
+              Enter your Administrator Secret Key or sign in with an account having the <code className="text-[#00A3E0]">admin</code> role.
             </p>
 
             <form onSubmit={handleUnlock} className="space-y-4">
@@ -274,14 +274,14 @@ export default function AdminPage() {
                   onChange={(e) => setKeyInput(e.target.value)}
                   placeholder="Enter Administrator Secret Key..."
                   required
-                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+                  className="w-full px-4 py-2.5 bg-[#040C16] border border-[#002B49] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] text-sm transition-all"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={actionLoading}
-                className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-lg transition text-sm shadow-md flex items-center justify-center space-x-2 disabled:opacity-50"
+                className="w-full py-2.5 px-4 bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-medium rounded-xl transition text-sm shadow-md shadow-[#0085CA]/20 flex items-center justify-center space-x-2 disabled:opacity-50 active:scale-95"
               >
                 {actionLoading ? (
                   <RefreshCw className="w-4 h-4 animate-spin" />
@@ -298,9 +298,9 @@ export default function AdminPage() {
           /* Main Admin Dashboard */
           <div className="space-y-8">
             {/* Storage Architecture Comparison Banner */}
-            <div className="p-5 bg-gradient-to-r from-blue-950/30 via-indigo-950/30 to-purple-950/20 border border-indigo-500/20 rounded-2xl">
+            <div className="p-5 bg-gradient-to-r from-[#002B49]/50 via-[#0B1D35] to-[#002B49]/50 border border-[#0085CA]/30 rounded-2xl">
               <div className="flex items-start space-x-4">
-                <div className="p-2.5 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-xl flex-shrink-0 mt-0.5">
+                <div className="p-2.5 bg-[#0085CA]/15 border border-[#0085CA]/30 text-[#00A3E0] rounded-xl flex-shrink-0 mt-0.5">
                   <Server className="w-6 h-6" />
                 </div>
                 <div className="space-y-1">
@@ -316,7 +316,7 @@ export default function AdminPage() {
 
             {/* Live Metrics Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-5 bg-slate-900/80 border border-slate-800 rounded-xl space-y-2">
+              <div className="p-5 bg-[#0B1D35]/80 border border-[#002B49] rounded-2xl space-y-2">
                 <div className="flex items-center justify-between text-slate-400">
                   <span className="text-xs font-semibold uppercase tracking-wider">Candidate Recreations</span>
                   <FileImage className="w-4 h-4 text-cyan-400" />
@@ -324,21 +324,21 @@ export default function AdminPage() {
                 <div className="text-3xl font-extrabold text-white">
                   {loading ? '...' : stats?.storage.submission_images_count || 0}
                 </div>
-                <p className="text-xs text-slate-500">Stored in private <code className="text-slate-400">submission-images</code> bucket</p>
+                <p className="text-xs text-slate-400">Stored in private <code className="text-slate-300">submission-images</code> bucket</p>
               </div>
 
-              <div className="p-5 bg-slate-900/80 border border-slate-800 rounded-xl space-y-2">
+              <div className="p-5 bg-[#0B1D35]/80 border border-[#002B49] rounded-2xl space-y-2">
                 <div className="flex items-center justify-between text-slate-400">
                   <span className="text-xs font-semibold uppercase tracking-wider">Reference Targets</span>
-                  <Layers className="w-4 h-4 text-purple-400" />
+                  <Layers className="w-4 h-4 text-[#00A3E0]" />
                 </div>
                 <div className="text-3xl font-extrabold text-white">
                   {loading ? '...' : stats?.storage.reference_images_count || 0}
                 </div>
-                <p className="text-xs text-slate-500">Official host competition targets</p>
+                <p className="text-xs text-slate-400">Official host competition targets</p>
               </div>
 
-              <div className="p-5 bg-slate-900/80 border border-slate-800 rounded-xl space-y-2">
+              <div className="p-5 bg-[#0B1D35]/80 border border-[#002B49] rounded-2xl space-y-2">
                 <div className="flex items-center justify-between text-slate-400">
                   <span className="text-xs font-semibold uppercase tracking-wider">Submissions Evaluated</span>
                   <Award className="w-4 h-4 text-emerald-400" />
@@ -346,10 +346,10 @@ export default function AdminPage() {
                 <div className="text-3xl font-extrabold text-white">
                   {loading ? '...' : stats?.database.submissions || 0}
                 </div>
-                <p className="text-xs text-slate-500">{stats?.database.scores || 0} calibrated AI score records</p>
+                <p className="text-xs text-slate-400">{stats?.database.scores || 0} calibrated AI score records</p>
               </div>
 
-              <div className="p-5 bg-slate-900/80 border border-slate-800 rounded-xl space-y-2">
+              <div className="p-5 bg-[#0B1D35]/80 border border-[#002B49] rounded-2xl space-y-2">
                 <div className="flex items-center justify-between text-slate-400">
                   <span className="text-xs font-semibold uppercase tracking-wider">Estimated Cloud Usage</span>
                   <HardDrive className="w-4 h-4 text-amber-400" />
@@ -357,15 +357,15 @@ export default function AdminPage() {
                 <div className="text-3xl font-extrabold text-amber-400">
                   {loading ? '...' : `~${stats?.storage.approx_storage_mb || 0} MB`}
                 </div>
-                <p className="text-xs text-slate-500">Total {stats?.storage.total_images_count || 0} images in Supabase</p>
+                <p className="text-xs text-slate-400">Total {stats?.storage.total_images_count || 0} images in Supabase</p>
               </div>
             </div>
 
             {/* Storage Management Operations */}
-            <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 space-y-6">
+            <div className="bg-[#0B1D35]/80 border border-[#002B49] rounded-2xl p-6 space-y-6">
               <div>
                 <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-                  <Database className="w-5 h-5 text-indigo-400" />
+                  <Database className="w-5 h-5 text-[#00A3E0]" />
                   <span>Storage Optimization & Purge Controls</span>
                 </h3>
                 <p className="text-sm text-slate-400 mt-1">
@@ -375,7 +375,7 @@ export default function AdminPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Purge Option 1: Storage Only (Preserves Leaderboard) */}
-                <div className="p-5 bg-slate-950/60 border border-slate-800 hover:border-slate-700 rounded-xl flex flex-col justify-between space-y-4">
+                <div className="p-5 bg-[#040C16] border border-[#002B49] hover:border-[#0085CA]/40 rounded-xl flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <span className="px-2 py-0.5 text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-md">
@@ -394,7 +394,7 @@ export default function AdminPage() {
                       setConfirmInput('');
                     }}
                     disabled={actionLoading || (stats?.storage.submission_images_count || 0) === 0}
-                    className="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-emerald-400 font-medium rounded-lg border border-slate-700 transition text-sm flex items-center justify-center space-x-2 disabled:opacity-40"
+                    className="w-full py-2.5 px-4 bg-[#002B49] hover:bg-[#003860] text-emerald-400 font-medium rounded-xl border border-[#0085CA]/25 transition text-sm flex items-center justify-center space-x-2 disabled:opacity-40"
                   >
                     <HardDrive className="w-4 h-4" />
                     <span>Purge Candidate Files ({stats?.storage.submission_images_count || 0})</span>
@@ -402,7 +402,7 @@ export default function AdminPage() {
                 </div>
 
                 {/* Purge Option 2: Nuclear Wipe (All Submissions & Scores) */}
-                <div className="p-5 bg-slate-950/60 border border-red-950/50 hover:border-red-900/50 rounded-xl flex flex-col justify-between space-y-4">
+                <div className="p-5 bg-[#040C16] border border-red-950/50 hover:border-red-900/50 rounded-xl flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <span className="px-2 py-0.5 text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20 rounded-md">
@@ -421,7 +421,7 @@ export default function AdminPage() {
                       setConfirmInput('');
                     }}
                     disabled={actionLoading}
-                    className="w-full py-2.5 px-4 bg-red-950/40 hover:bg-red-900/60 text-red-300 font-medium rounded-lg border border-red-800/50 transition text-sm flex items-center justify-center space-x-2 disabled:opacity-40"
+                    className="w-full py-2.5 px-4 bg-red-950/40 hover:bg-red-900/60 text-red-300 font-medium rounded-xl border border-red-800/50 transition text-sm flex items-center justify-center space-x-2 disabled:opacity-40"
                   >
                     <Trash2 className="w-4 h-4 text-red-400" />
                     <span>Wipe All Submissions History</span>
@@ -431,9 +431,9 @@ export default function AdminPage() {
             </div>
 
             {/* Admin Management Section */}
-            <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 space-y-4">
+            <div className="bg-[#0B1D35]/80 border border-[#002B49] rounded-2xl p-6 space-y-4">
               <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-                <UserCheck className="w-5 h-5 text-indigo-400" />
+                <UserCheck className="w-5 h-5 text-[#00A3E0]" />
                 <span>Promote Teammate to Admin</span>
               </h3>
               <p className="text-sm text-slate-400">
@@ -447,12 +447,12 @@ export default function AdminPage() {
                   onChange={(e) => setPromoteEmail(e.target.value)}
                   placeholder="contestant@acm.org"
                   required
-                  className="flex-1 px-4 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                  className="flex-1 px-4 py-2 bg-[#040C16] border border-[#002B49] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] text-sm transition-all"
                 />
                 <button
                   type="submit"
                   disabled={promoteLoading || !promoteEmail}
-                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-lg transition text-sm flex items-center justify-center space-x-2 disabled:opacity-50"
+                  className="px-5 py-2 bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-medium rounded-xl transition text-sm flex items-center justify-center space-x-2 disabled:opacity-50 shadow-md shadow-[#0085CA]/20 active:scale-95"
                 >
                   {promoteLoading ? (
                     <RefreshCw className="w-4 h-4 animate-spin" />
@@ -471,7 +471,7 @@ export default function AdminPage() {
         {/* Confirmation Modal */}
         {modalType && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl">
+            <div className="bg-[#0B1D35] border border-[#002B49] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl">
               <div className="flex items-center space-x-3 text-red-400">
                 <div className="p-2 bg-red-500/10 border border-red-500/20 rounded-lg">
                   <AlertTriangle className="w-6 h-6" />
@@ -499,7 +499,7 @@ export default function AdminPage() {
                   value={confirmInput}
                   onChange={(e) => setConfirmInput(e.target.value)}
                   placeholder={modalType === 'purge_images' ? 'Type PURGE' : 'Type WIPE'}
-                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-white font-mono placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                  className="w-full px-4 py-2.5 bg-[#040C16] border border-[#002B49] rounded-xl text-white font-mono placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
                 />
               </div>
 
@@ -511,7 +511,7 @@ export default function AdminPage() {
                     setConfirmInput('');
                   }}
                   disabled={actionLoading}
-                  className="flex-1 py-2 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium rounded-lg text-sm transition"
+                  className="flex-1 py-2 px-4 bg-[#002B49] hover:bg-[#003860] text-slate-300 font-medium rounded-xl text-sm transition"
                 >
                   Cancel
                 </button>
@@ -523,7 +523,7 @@ export default function AdminPage() {
                     (modalType === 'purge_images' && confirmInput !== 'PURGE') ||
                     (modalType === 'wipe_all' && confirmInput !== 'WIPE')
                   }
-                  className="flex-1 py-2 px-4 bg-red-600 hover:bg-red-500 text-white font-medium rounded-lg text-sm transition flex items-center justify-center space-x-2 disabled:opacity-40"
+                  className="flex-1 py-2 px-4 bg-red-600 hover:bg-red-500 text-white font-medium rounded-xl text-sm transition flex items-center justify-center space-x-2 disabled:opacity-40"
                 >
                   {actionLoading ? (
                     <RefreshCw className="w-4 h-4 animate-spin" />

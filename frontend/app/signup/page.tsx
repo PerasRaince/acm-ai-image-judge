@@ -109,13 +109,13 @@ function SignupForm() {
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md space-y-6 bg-slate-900/70 border border-slate-800 p-8 rounded-2xl shadow-2xl backdrop-blur-sm">
+      <div className="w-full max-w-md space-y-6 bg-[#0B1D35]/90 border border-[#002B49] p-8 rounded-2xl shadow-2xl backdrop-blur-sm">
         <div className="text-center space-y-2">
-          <div className="inline-flex p-3 rounded-2xl bg-indigo-500/10 text-indigo-400 mb-2 border border-indigo-500/20">
+          <div className="inline-flex p-3 rounded-2xl bg-[#0085CA]/15 text-[#00A3E0] mb-2 border border-[#0085CA]/30">
             <UserPlus className="h-6 w-6" />
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">Create Account</h1>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-300">
             Host your own competitions or join as a contestant with a code
           </p>
         </div>
@@ -139,7 +139,7 @@ function SignupForm() {
           type="button"
           onClick={handleGoogleSignUp}
           disabled={oauthLoading || loading}
-          className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700/80 border border-slate-700 text-slate-200 text-xs font-semibold transition-all shadow-sm disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl bg-[#040C16] hover:bg-[#002B49]/40 border border-[#002B49] text-slate-200 text-xs font-semibold transition-all shadow-sm disabled:opacity-50"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -163,8 +163,8 @@ function SignupForm() {
         </button>
 
         <div className="relative flex items-center justify-center my-3">
-          <div className="border-t border-slate-800 w-full" />
-          <span className="bg-slate-900 px-3 text-[11px] uppercase tracking-wider text-slate-500 absolute font-medium">
+          <div className="border-t border-[#002B49] w-full" />
+          <span className="bg-[#0B1D35] px-3 text-[11px] uppercase tracking-wider text-slate-400 absolute font-medium">
             or with email
           </span>
         </div>
@@ -181,7 +181,7 @@ function SignupForm() {
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               placeholder="e.g. Alex Rivera"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
             />
           </div>
 
@@ -196,7 +196,7 @@ function SignupForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@domain.com"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
             />
           </div>
 
@@ -211,7 +211,7 @@ function SignupForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Create a strong password"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
             />
           </div>
 
@@ -229,10 +229,10 @@ function SignupForm() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Re-enter your password"
-              className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 transition-all ${
+              className={`w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 transition-all ${
                 confirmPassword && !passwordsMatch
                   ? 'border-rose-500 focus:ring-rose-500/50'
-                  : 'border-slate-800 focus:ring-indigo-500/50 focus:border-indigo-500'
+                  : 'border-[#002B49] focus:ring-[#0085CA]/50 focus:border-[#0085CA]'
               }`}
             />
             {confirmPassword && !passwordsMatch && (
@@ -243,17 +243,17 @@ function SignupForm() {
           <button
             type="submit"
             disabled={loading || !passwordMeetsRequirements || !passwordsMatch}
-            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold transition-all shadow-md shadow-indigo-950/40 active:scale-[0.99] mt-3"
+            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold transition-all shadow-md shadow-[#002B49]/40 active:scale-[0.99] mt-3"
           >
             {loading ? 'Creating Account...' : 'Create Account'}
           </button>
         </form>
 
-        <p className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+        <p className="text-center text-xs text-slate-400 pt-2 border-t border-[#002B49]">
           Already have an account?{' '}
           <Link
             href={`/login${returnUrl ? `?returnUrl=${encodeURIComponent(returnUrl)}` : ''}`}
-            className="text-indigo-400 font-medium hover:text-indigo-300 hover:underline"
+            className="text-[#00A3E0] font-medium hover:text-[#0085CA] hover:underline"
           >
             Sign in
           </Link>

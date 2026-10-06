@@ -52,8 +52,8 @@ export default function PasswordRequirements({ password, showAlways = false }: P
   ];
 
   return (
-    <div className="bg-slate-900/70 border border-slate-800 rounded-lg p-3 text-xs space-y-1.5 transition-all">
-      <div className="text-slate-400 font-medium mb-1">Password Requirements:</div>
+    <div className="bg-[#0B1D35]/80 border border-[#002B49] rounded-xl p-3 text-xs space-y-1.5 transition-all">
+      <div className="text-slate-300 font-medium mb-1">Password Requirements:</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
         {criteria.map((item, idx) => (
           <div key={idx} className="flex items-center space-x-1.5">

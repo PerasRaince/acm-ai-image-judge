@@ -74,13 +74,13 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md space-y-6 bg-slate-900/70 border border-slate-800 p-8 rounded-2xl shadow-2xl backdrop-blur-sm">
+      <div className="w-full max-w-md space-y-6 bg-[#0B1D35]/90 border border-[#002B49] p-8 rounded-2xl shadow-2xl backdrop-blur-sm">
         <div className="text-center space-y-2">
-          <div className="inline-flex p-3 rounded-2xl bg-indigo-500/10 text-indigo-400 mb-2 border border-indigo-500/20">
+          <div className="inline-flex p-3 rounded-2xl bg-[#0085CA]/15 text-[#00A3E0] mb-2 border border-[#0085CA]/30">
             <Lock className="h-6 w-6" />
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">Set New Password</h1>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-300">
             Choose a secure new password for your AI Image Judge account
           </p>
         </div>
@@ -118,7 +118,7 @@ export default function ResetPasswordPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter new strong password"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
               />
             </div>
 
@@ -135,10 +135,10 @@ export default function ResetPasswordPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Re-enter new password"
-                className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 transition-all ${
+                className={`w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 transition-all ${
                   confirmPassword && !passwordsMatch
                     ? 'border-rose-500 focus:ring-rose-500/50'
-                    : 'border-slate-800 focus:ring-indigo-500/50 focus:border-indigo-500'
+                    : 'border-[#002B49] focus:ring-[#0085CA]/50 focus:border-[#0085CA]'
                 }`}
               />
               {confirmPassword && !passwordsMatch && (
@@ -149,17 +149,17 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={loading || !passwordMeetsRequirements || !passwordsMatch}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold transition-all shadow-md shadow-indigo-950/40 active:scale-[0.99] mt-3"
+              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold transition-all shadow-md shadow-[#002B49]/40 active:scale-[0.99] mt-3"
             >
               {loading ? 'Updating Password...' : 'Save New Password'}
             </button>
           </form>
         )}
 
-        <div className="pt-2 border-t border-slate-800/80 text-center">
+        <div className="pt-2 border-t border-[#002B49] text-center">
           <Link
             href="/login"
-            className="text-xs text-indigo-400 hover:text-indigo-300 font-medium hover:underline"
+            className="text-xs text-[#00A3E0] hover:text-[#0085CA] font-medium hover:underline"
           >
             Back to Sign In
           </Link>

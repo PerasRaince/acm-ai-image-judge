@@ -143,7 +143,7 @@ export default function SubmitRecreationPage() {
 
   if (!competition) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-16 text-center text-zinc-400 text-xs">
+      <div className="max-w-4xl mx-auto px-4 py-16 text-center text-slate-400 text-xs">
         Loading competition data...
       </div>
     );
@@ -156,7 +156,7 @@ export default function SubmitRecreationPage() {
       <div>
         <Link
           href={`/competitions/${competition.id}`}
-          className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           <span>Back to {competition.title}</span>
@@ -167,7 +167,7 @@ export default function SubmitRecreationPage() {
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
           Submit AI Recreation
         </h1>
-        <p className="text-xs text-zinc-400">
+        <p className="text-xs text-slate-400">
           Upload your recreation image. Our versioned multi-metric AI scoring engine will evaluate it against the reference benchmark.
         </p>
       </div>
@@ -181,8 +181,8 @@ export default function SubmitRecreationPage() {
 
       {/* Result Card: Shown when scoring completes */}
       {submissionResult && submissionResult.score && (
-        <div className="rounded-2xl border border-emerald-500/30 bg-zinc-900/80 p-6 sm:p-8 space-y-6 shadow-2xl">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-6">
+        <div className="rounded-2xl border border-emerald-500/30 bg-[#0B1D35]/90 p-6 sm:p-8 space-y-6 shadow-2xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#002B49] pb-6">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400">
@@ -190,7 +190,7 @@ export default function SubmitRecreationPage() {
                 </span>
                 <h2 className="text-xl font-bold text-white">Evaluation Complete!</h2>
               </div>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-slate-400">
                 Deterministic versioned evaluation computed in {submissionResult.score.inference_duration_ms}ms on {submissionResult.score.device}
               </p>
             </div>
@@ -208,7 +208,7 @@ export default function SubmitRecreationPage() {
 
           {/* Detailed Metric Bars */}
           <div className="space-y-3 pt-2">
-            <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-wider">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
               Explainable Component Breakdown
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -254,7 +254,7 @@ export default function SubmitRecreationPage() {
           <div className="pt-4 flex flex-wrap gap-3">
             <Link
               href={`/competitions/${competition.id}/leaderboard`}
-              className="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center gap-2 transition-colors"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white text-xs font-semibold flex items-center gap-2 transition-all shadow-md shadow-[#0085CA]/20 active:scale-95"
             >
               <Trophy className="h-4 w-4" />
               <span>View Ranked Leaderboard</span>
@@ -265,7 +265,7 @@ export default function SubmitRecreationPage() {
                 setSelectedFile(null);
                 setPreviewUrl(null);
               }}
-              className="px-4 py-2.5 rounded-lg border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold transition-colors"
+              className="px-4 py-2.5 rounded-xl border border-[#002B49] bg-[#002B49] hover:bg-[#003860] text-slate-200 text-xs font-semibold transition-colors"
             >
               Submit Another Attempt
             </button>
@@ -279,8 +279,8 @@ export default function SubmitRecreationPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             {/* Target Reference preview */}
             <div className="space-y-2">
-              <span className="text-xs font-medium text-zinc-400">Target Reference Image</span>
-              <div className="relative aspect-square w-full rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950 flex items-center justify-center">
+              <span className="text-xs font-medium text-slate-400">Target Reference Image</span>
+              <div className="relative aspect-square w-full rounded-xl overflow-hidden border border-[#002B49] bg-[#040C16] flex items-center justify-center">
                 {competition.reference_image_url ? (
                   <img
                     src={competition.reference_image_url}
@@ -288,20 +288,20 @@ export default function SubmitRecreationPage() {
                     className="w-full h-full object-contain"
                   />
                 ) : (
-                  <span className="text-xs text-zinc-600">No reference image</span>
+                  <span className="text-xs text-slate-500">No reference image</span>
                 )}
               </div>
             </div>
 
             {/* Candidate Recreation Upload dropzone */}
             <div className="space-y-2">
-              <span className="text-xs font-medium text-zinc-400">Your Recreation File</span>
+              <span className="text-xs font-medium text-slate-400">Your Recreation File</span>
               <div
                 onClick={() => fileInputRef.current?.click()}
                 className={`relative aspect-square w-full rounded-xl border-2 border-dashed flex flex-col items-center justify-center p-6 text-center cursor-pointer transition-all ${
                   previewUrl
-                    ? 'border-zinc-700 bg-zinc-950'
-                    : 'border-zinc-800 hover:border-zinc-700 bg-zinc-900/30 hover:bg-zinc-900/60'
+                    ? 'border-[#0085CA]/40 bg-[#040C16]'
+                    : 'border-[#002B49] hover:border-[#0085CA] bg-[#0B1D35]/40 hover:bg-[#0B1D35]/70'
                 }`}
               >
                 {previewUrl ? (
@@ -312,14 +312,14 @@ export default function SubmitRecreationPage() {
                   />
                 ) : (
                   <div className="space-y-3">
-                    <div className="mx-auto w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400">
+                    <div className="mx-auto w-12 h-12 rounded-full bg-[#002B49] flex items-center justify-center text-[#00A3E0]">
                       <Upload className="h-6 w-6" />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-xs font-semibold text-zinc-200">
+                      <p className="text-xs font-semibold text-slate-200">
                         Click to browse or drop recreation image
                       </p>
-                      <p className="text-[11px] text-zinc-500">
+                      <p className="text-[11px] text-slate-400">
                         JPEG, PNG, or WebP up to 25MB
                       </p>
                     </div>
@@ -337,7 +337,7 @@ export default function SubmitRecreationPage() {
 
               {fileDimensions && (
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between text-[11px] text-zinc-400 px-1 font-mono">
+                  <div className="flex items-center justify-between text-[11px] text-slate-400 px-1 font-mono">
                     <span>{fileDimensions.width} x {fileDimensions.height} px</span>
                     <span>Aspect ratio: {fileDimensions.ratio}:1</span>
                   </div>
@@ -370,15 +370,15 @@ export default function SubmitRecreationPage() {
           </div>
 
           {/* Submission button */}
-          <div className="pt-4 border-t border-zinc-800 flex items-center justify-between">
-            <span className="text-xs text-zinc-400">
+          <div className="pt-4 border-t border-[#002B49] flex items-center justify-between">
+            <span className="text-xs text-slate-400">
               {attemptsRemaining > 0 ? `${attemptsRemaining} attempts left` : 'No attempts left'}
             </span>
 
             <button
               type="submit"
               disabled={submitting || !selectedFile || attemptsRemaining <= 0}
-              className="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold text-xs transition-colors flex items-center gap-2 shadow-lg shadow-blue-600/20"
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] disabled:opacity-50 text-white font-semibold text-xs transition-all flex items-center gap-2 shadow-md shadow-[#0085CA]/20 active:scale-95"
             >
               <Sparkles className="h-4 w-4" />
               <span>{submitting ? 'Scoring Recreation with AI Models...' : 'Submit & Score'}</span>

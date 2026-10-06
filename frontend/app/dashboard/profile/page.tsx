@@ -115,9 +115,9 @@ export default function ProfilePage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-zinc-900/40 border border-zinc-800 p-6 rounded-2xl text-xs">
+      <form onSubmit={handleSubmit} className="space-y-6 bg-[#0B1D35]/80 border border-[#002B49] p-6 rounded-2xl text-xs">
         <div className="space-y-1.5">
-          <label className="text-zinc-300 font-medium" htmlFor="email">
+          <label className="text-slate-300 font-medium" htmlFor="email">
             Email Address (Read-only)
           </label>
           <input
@@ -125,12 +125,12 @@ export default function ProfilePage() {
             type="email"
             disabled
             value={profile?.email || ''}
-            className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-950/50 border border-zinc-800 text-zinc-500 cursor-not-allowed"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-500 cursor-not-allowed"
           />
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-zinc-300 font-medium" htmlFor="displayName">
+          <label className="text-slate-300 font-medium" htmlFor="displayName">
             Public Display Name
           </label>
           <input
@@ -139,27 +139,27 @@ export default function ProfilePage() {
             required
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-zinc-300 font-medium">Account Role</label>
+          <label className="text-slate-300 font-medium">Account Role</label>
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
               onClick={() => setRole('participant')}
               className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all ${
                 role === 'participant'
-                  ? 'border-blue-500 bg-blue-500/10 text-white'
-                  : 'border-zinc-800 bg-zinc-950 text-zinc-400'
+                  ? 'border-[#0085CA] bg-[#0085CA]/15 text-white'
+                  : 'border-[#002B49] bg-[#040C16] text-slate-400'
               }`}
             >
               <div className="flex items-center gap-1.5 font-semibold text-xs">
-                <Trophy className="h-3.5 w-3.5 text-blue-400" />
+                <Trophy className="h-3.5 w-3.5 text-[#00A3E0]" />
                 <span>Participant</span>
               </div>
-              <span className="text-[10px] text-zinc-400">Compete & submit</span>
+              <span className="text-[10px] text-slate-400">Compete & submit</span>
             </button>
 
             <button
@@ -167,15 +167,15 @@ export default function ProfilePage() {
               onClick={() => setRole('organizer')}
               className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all ${
                 role === 'organizer'
-                  ? 'border-indigo-500 bg-indigo-500/10 text-white'
-                  : 'border-zinc-800 bg-zinc-950 text-zinc-400'
+                  ? 'border-[#0075A2] bg-[#0075A2]/20 text-white'
+                  : 'border-[#002B49] bg-[#040C16] text-slate-400'
               }`}
             >
               <div className="flex items-center gap-1.5 font-semibold text-xs">
-                <Shield className="h-3.5 w-3.5 text-indigo-400" />
+                <Shield className="h-3.5 w-3.5 text-[#38BDF8]" />
                 <span>Organizer</span>
               </div>
-              <span className="text-[10px] text-zinc-400">Host competitions</span>
+              <span className="text-[10px] text-slate-400">Host competitions</span>
             </button>
           </div>
         </div>
@@ -183,7 +183,7 @@ export default function ProfilePage() {
         <button
           type="submit"
           disabled={saving}
-          className="w-full py-2.5 px-4 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold transition-colors mt-2"
+          className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] disabled:opacity-50 text-white font-semibold transition-all shadow-md shadow-[#0085CA]/20 mt-2 active:scale-95"
         >
           {saving ? 'Saving changes...' : 'Save Profile'}
         </button>
@@ -195,7 +195,7 @@ export default function ProfilePage() {
           <AlertTriangle className="h-4 w-4" />
           <span>Danger Zone: Permanent Account Deletion</span>
         </div>
-        <p className="text-zinc-400 leading-relaxed text-[11px]">
+        <p className="text-slate-400 leading-relaxed text-[11px]">
           Permanently delete your profile, authentication credentials, hosted competitions, submitted images, and scoring data from this system and Supabase. This action is irreversible.
         </p>
         <button
@@ -215,7 +215,7 @@ export default function ProfilePage() {
       {/* Modal Dialog for Confirmation */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-5 shadow-2xl">
+          <div className="w-full max-w-md bg-[#0B1D35] border border-[#002B49] rounded-2xl p-6 space-y-5 shadow-2xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-rose-400 font-bold text-sm">
                 <AlertTriangle className="h-4 w-4" />
@@ -223,17 +223,17 @@ export default function ProfilePage() {
               </div>
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="text-zinc-500 hover:text-white p-1"
+                className="text-slate-400 hover:text-white p-1"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
-            <div className="space-y-2 text-xs text-zinc-300 leading-relaxed">
+            <div className="space-y-2 text-xs text-slate-200 leading-relaxed">
               <p>
                 This action will permanently erase:
               </p>
-              <ul className="list-disc list-inside space-y-1 text-zinc-400 text-[11px] pl-1">
+              <ul className="list-disc list-inside space-y-1 text-slate-400 text-[11px] pl-1">
                 <li>Your profile and login credentials in Supabase Auth</li>
                 <li>All recreation images uploaded by you in storage</li>
                 <li>All competitions hosted by you (including reference images)</li>
@@ -252,7 +252,7 @@ export default function ProfilePage() {
             )}
 
             <div className="space-y-1.5">
-              <label className="text-[11px] text-zinc-400">
+              <label className="text-[11px] text-slate-400">
                 To confirm, type <span className="font-bold text-rose-400">DELETE</span> below:
               </label>
               <input
@@ -260,7 +260,7 @@ export default function ProfilePage() {
                 value={deleteConfirmationInput}
                 onChange={(e) => setDeleteConfirmationInput(e.target.value)}
                 placeholder="DELETE"
-                className="w-full px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-white font-mono text-xs focus:outline-none focus:border-rose-500"
+                className="w-full px-3 py-2 rounded-xl bg-[#040C16] border border-[#002B49] text-white font-mono text-xs focus:outline-none focus:border-rose-500"
               />
             </div>
 
@@ -269,7 +269,7 @@ export default function ProfilePage() {
                 type="button"
                 onClick={() => setShowDeleteModal(false)}
                 disabled={deleting}
-                className="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold"
+                className="px-4 py-2 rounded-xl bg-[#002B49] hover:bg-[#003860] text-slate-300 text-xs font-semibold"
               >
                 Cancel
               </button>
@@ -277,7 +277,7 @@ export default function ProfilePage() {
                 type="button"
                 onClick={handleDeleteAccount}
                 disabled={deleting || deleteConfirmationInput.trim() !== 'DELETE'}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 disabled:opacity-40 text-white text-xs font-semibold transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 disabled:opacity-40 text-white text-xs font-semibold transition-colors"
               >
                 <Trash2 className="h-3.5 w-3.5" />
                 <span>{deleting ? 'Deleting account...' : 'Permanently Delete'}</span>

@@ -110,7 +110,7 @@ export default function DashboardPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       {/* Google Meet style Top Join Bar */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm">
+      <div className="bg-gradient-to-r from-[#0B1D35] via-[#071527] to-[#0B1D35] border border-[#002B49] rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-1.5 max-w-xl">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
@@ -124,7 +124,7 @@ export default function DashboardPage() {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <Link
               href="/competitions/create"
-              className="px-5 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-xs transition-all shadow-md shadow-indigo-950/40 flex items-center justify-center gap-2 whitespace-nowrap active:scale-95"
+              className="px-5 py-3 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-semibold text-xs transition-all shadow-md shadow-[#0085CA]/20 flex items-center justify-center gap-2 whitespace-nowrap active:scale-95"
             >
               <PlusCircle className="w-4 h-4" />
               <span>Host New Competition</span>
@@ -139,24 +139,24 @@ export default function DashboardPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-1 shadow-sm">
+        <div className="p-5 rounded-2xl bg-[#0B1D35]/70 border border-[#002B49] space-y-1 shadow-sm">
           <span className="text-xs text-slate-400">Hosted Competitions</span>
           <div className="text-3xl font-extrabold text-white font-mono">{hostedComps.length}</div>
-          <span className="text-[11px] text-slate-500">Active challenges created by you</span>
+          <span className="text-[11px] text-slate-400">Active challenges created by you</span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-1 shadow-sm">
+        <div className="p-5 rounded-2xl bg-[#0B1D35]/70 border border-[#002B49] space-y-1 shadow-sm">
           <span className="text-xs text-slate-400">Personal Best Score</span>
           <div className="text-3xl font-extrabold text-emerald-400 font-mono">
             {bestScore > 0 ? bestScore.toFixed(1) : '—'}
           </div>
-          <span className="text-[11px] text-slate-500">Across {totalSubmissions} recreation attempts</span>
+          <span className="text-[11px] text-slate-400">Across {totalSubmissions} recreation attempts</span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-1 shadow-sm">
+        <div className="p-5 rounded-2xl bg-[#0B1D35]/70 border border-[#002B49] space-y-1 shadow-sm">
           <span className="text-xs text-slate-400">Joined Competitions</span>
-          <div className="text-3xl font-extrabold text-indigo-400 font-mono">{joinedComps.length}</div>
-          <span className="text-[11px] text-slate-500">Challenges entered as contestant</span>
+          <div className="text-3xl font-extrabold text-[#00A3E0] font-mono">{joinedComps.length}</div>
+          <span className="text-[11px] text-slate-400">Challenges entered as contestant</span>
         </div>
       </div>
 
@@ -164,12 +164,12 @@ export default function DashboardPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-indigo-400" />
+            <Sparkles className="w-4 h-4 text-[#00A3E0]" />
             <h2 className="text-lg font-bold text-white tracking-tight">Hosted by You</h2>
           </div>
           <Link
             href="/competitions/create"
-            className="text-xs text-indigo-400 hover:text-indigo-300 font-medium hover:underline flex items-center gap-1"
+            className="text-xs text-[#00A3E0] hover:text-sky-300 font-medium hover:underline flex items-center gap-1"
           >
             <span>Create another</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -177,15 +177,15 @@ export default function DashboardPage() {
         </div>
 
         {loading ? (
-          <div className="h-32 rounded-2xl bg-slate-900/40 animate-pulse border border-slate-800" />
+          <div className="h-32 rounded-2xl bg-[#0B1D35]/50 animate-pulse border border-[#002B49]" />
         ) : hostedComps.length === 0 ? (
-          <div className="p-8 rounded-2xl bg-slate-900/30 border border-slate-800/80 text-center space-y-3">
+          <div className="p-8 rounded-2xl bg-[#0B1D35]/30 border border-[#002B49] text-center space-y-3">
             <p className="text-xs text-slate-400">
               You haven&apos;t hosted any competitions yet. Create one to get a unique code and invite others!
             </p>
             <Link
               href="/competitions/create"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-all"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#002B49] hover:bg-[#003860] border border-[#0085CA]/20 text-slate-200 text-xs font-semibold transition-all"
             >
               <PlusCircle className="w-3.5 h-3.5" />
               <span>Create Your First Competition</span>
@@ -196,7 +196,7 @@ export default function DashboardPage() {
             {hostedComps.map((comp) => (
               <div
                 key={comp.id}
-                className="bg-slate-900/60 border border-slate-800 hover:border-slate-700 rounded-2xl p-5 space-y-4 transition-all hover:shadow-lg hover:shadow-indigo-950/20 flex flex-col justify-between"
+                className="bg-[#0B1D35]/70 border border-[#002B49] hover:border-[#0085CA]/40 rounded-2xl p-5 space-y-4 transition-all hover:shadow-lg hover:shadow-[#0085CA]/10 flex flex-col justify-between"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -205,7 +205,7 @@ export default function DashboardPage() {
                     </span>
                     <button
                       onClick={() => copyCode(comp.code)}
-                      className="inline-flex items-center gap-1 text-[11px] font-mono text-indigo-400 hover:text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded transition-colors"
+                      className="inline-flex items-center gap-1 text-[11px] font-mono text-[#00A3E0] hover:text-sky-300 bg-[#0085CA]/15 border border-[#0085CA]/30 px-2 py-0.5 rounded transition-colors"
                       title="Click to copy code"
                     >
                       {copiedCode === comp.code ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
@@ -221,7 +221,7 @@ export default function DashboardPage() {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                <div className="pt-3 border-t border-[#002B49] flex items-center justify-between gap-2 text-xs">
                   <button
                     onClick={() => handleToggleHostStatus(comp)}
                     disabled={updatingCompId === comp.id}
@@ -247,7 +247,7 @@ export default function DashboardPage() {
 
                   <Link
                     href={`/competitions/${comp.id}`}
-                    className="text-indigo-400 hover:text-indigo-300 font-semibold inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg hover:bg-slate-800 transition-colors"
+                    className="text-[#00A3E0] hover:text-sky-300 font-semibold inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg hover:bg-[#002B49]/40 transition-colors"
                   >
                     <span>Manage</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -263,12 +263,12 @@ export default function DashboardPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-purple-400" />
+            <Users className="w-4 h-4 text-[#00A3E0]" />
             <h2 className="text-lg font-bold text-white tracking-tight">Joined as Contestant</h2>
           </div>
           <Link
             href="/competitions"
-            className="text-xs text-indigo-400 hover:text-indigo-300 font-medium hover:underline flex items-center gap-1"
+            className="text-xs text-[#00A3E0] hover:text-sky-300 font-medium hover:underline flex items-center gap-1"
           >
             <span>Browse public competitions</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -276,9 +276,9 @@ export default function DashboardPage() {
         </div>
 
         {loading ? (
-          <div className="h-28 rounded-2xl bg-slate-900/40 animate-pulse border border-slate-800" />
+          <div className="h-28 rounded-2xl bg-[#0B1D35]/50 animate-pulse border border-[#002B49]" />
         ) : joinedComps.length === 0 ? (
-          <div className="p-8 rounded-2xl bg-slate-900/30 border border-slate-800/80 text-center space-y-2">
+          <div className="p-8 rounded-2xl bg-[#0B1D35]/30 border border-[#002B49] text-center space-y-2">
             <p className="text-xs text-slate-400">
               You haven&apos;t joined any competitions yet. Enter a code above or browse the directory.
             </p>
@@ -288,11 +288,11 @@ export default function DashboardPage() {
             {joinedComps.map((comp) => (
               <div
                 key={comp.id}
-                className="bg-slate-900/60 border border-slate-800 hover:border-slate-700 rounded-2xl p-5 space-y-4 transition-all flex flex-col justify-between"
+                className="bg-[#0B1D35]/70 border border-[#002B49] hover:border-[#0085CA]/40 rounded-2xl p-5 space-y-4 transition-all flex flex-col justify-between"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 uppercase">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#0085CA]/15 border border-[#0085CA]/30 text-[#00A3E0] uppercase font-mono">
                       Code: {comp.code}
                     </span>
                     <span className="text-[11px] text-slate-400">
@@ -305,10 +305,10 @@ export default function DashboardPage() {
                   </h3>
                 </div>
 
-                <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+                <div className="pt-3 border-t border-[#002B49] flex items-center justify-between text-xs">
                   <Link
                     href={`/competitions/${comp.id}/submit`}
-                    className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition-colors"
+                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-semibold text-xs transition-all shadow-sm shadow-[#0085CA]/20 active:scale-95"
                   >
                     Submit Recreation
                   </Link>
@@ -329,7 +329,7 @@ export default function DashboardPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-white tracking-tight">Recent Submissions</h2>
-          <Link href="/dashboard/submissions" className="text-xs text-indigo-400 hover:underline">
+          <Link href="/dashboard/submissions" className="text-xs text-[#00A3E0] hover:underline">
             View full history &rarr;
           </Link>
         </div>
@@ -337,11 +337,11 @@ export default function DashboardPage() {
         {loading ? (
           <div className="space-y-3">
             {[1, 2].map((i) => (
-              <div key={i} className="h-16 rounded-xl bg-slate-900/40 animate-pulse border border-slate-800" />
+              <div key={i} className="h-16 rounded-xl bg-[#0B1D35]/50 animate-pulse border border-[#002B49]" />
             ))}
           </div>
         ) : submissions.length === 0 ? (
-          <div className="p-8 rounded-2xl bg-slate-900/30 border border-slate-800/80 text-center space-y-2">
+          <div className="p-8 rounded-2xl bg-[#0B1D35]/30 border border-[#002B49] text-center space-y-2">
             <p className="text-xs text-slate-400">No submissions uploaded yet.</p>
           </div>
         ) : (
@@ -349,10 +349,10 @@ export default function DashboardPage() {
             {submissions.slice(0, 5).map((sub) => (
               <div
                 key={sub.id}
-                className="flex items-center justify-between p-4 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-colors"
+                className="flex items-center justify-between p-4 rounded-xl bg-[#0B1D35]/70 border border-[#002B49] hover:border-[#0085CA]/40 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-[#040C16] border border-[#002B49] overflow-hidden flex items-center justify-center flex-shrink-0">
                     {sub.signed_image_url ? (
                       <img src={sub.signed_image_url} alt="Submission" className="w-full h-full object-cover" />
                     ) : (
@@ -373,11 +373,11 @@ export default function DashboardPage() {
                   {sub.score ? (
                     <ScoreBadge score={sub.score.final_score} size="sm" />
                   ) : (
-                    <span className="text-[11px] text-slate-500 capitalize">{sub.scoring_status}</span>
+                    <span className="text-[11px] text-slate-400 capitalize">{sub.scoring_status}</span>
                   )}
                   <Link
                     href={`/competitions/${sub.competition_id}`}
-                    className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold"
+                    className="text-xs text-[#00A3E0] hover:text-sky-300 font-semibold"
                   >
                     View &rarr;
                   </Link>
