@@ -1,0 +1,4 @@
+reference_id,candidate_id,human_score,human_rank,dreamsim,dino,clip,lpips,color,quality,final_score
+ref-comp-001,cand-sub-001,92.5,1,94.2,91.5,93.1,89.4,96.0,95.0,92.83
+ref-comp-001,cand-sub-002,78.0,2,81.3,79.4,85.0,72.1,74.5,88.0,79.62
+ref-comp-001,cand-sub-003,45.0,3,52.1,48.0,61.2,41.0,39.0,70.0,49.33
