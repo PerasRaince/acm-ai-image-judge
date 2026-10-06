@@ -78,12 +78,24 @@ export class AIScoringService {
     const response = await fetch(`${this.baseUrl}/v1/score`, {
       method: 'POST',
       body: form.getBuffer() as unknown as BodyInit,
-      headers: form.getHeaders()
+      headers: form.getHeaders(),
+      signal: AbortSignal.timeout(180000)
     });
 
     if (!response.ok) {
       const errText = await response.text();
       logger.error(`AI scoring service returned error (${response.status}): ${errText}`);
+      if (response.status === 502 || response.status === 503 || response.status === 504) {
+        throw new Error('AI service gateway timeout or warming up (502/503). The models may still be downloading.');
+      }
+      try {
+        const parsed = JSON.parse(errText);
+        if (parsed.detail) {
+          throw new Error(parsed.detail);
+        }
+      } catch {
+        // Not json, throw text
+      }
       throw new Error(`AI Scoring Service error: ${errText || response.statusText}`);
     }
 

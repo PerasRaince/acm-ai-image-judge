@@ -167,3 +167,24 @@ class ModelRegistry:
         with self._cache_lock:
             self._reference_cache.clear()
 
+    def preload_all(self) -> None:
+        """Pre-warms all neural models during startup so user requests never hit gateway timeouts."""
+        logger.info("Pre-warming all AI models at startup...")
+        try:
+            self.get_dino()
+        except Exception as e:
+            logger.warning(f"DINO preload warning: {e}")
+        try:
+            self.get_clip()
+        except Exception as e:
+            logger.warning(f"CLIP preload warning: {e}")
+        try:
+            self.get_lpips()
+        except Exception as e:
+            logger.warning(f"LPIPS preload warning: {e}")
+        try:
+            self.get_dreamsim()
+        except Exception as e:
+            logger.warning(f"DreamSim preload warning: {e}")
+        logger.info("All AI models pre-warmed successfully.")
+

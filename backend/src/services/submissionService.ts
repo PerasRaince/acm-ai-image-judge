@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { supabaseAdmin, uploadImageToStorage, downloadImageFromStorage, getSignedImageUrl } from './supabaseService';
 import { aiScoringService } from './aiScoringService';
-import { NotFoundError, BadRequestError, ForbiddenError, ConflictError } from '../utils/errors';
+import { NotFoundError, BadRequestError, ForbiddenError, ConflictError, ServiceUnavailableError } from '../utils/errors';
 import { Submission, Score } from '../types/database';
 import { APP_CONSTANTS } from '../config/constants';
 import { logger } from '../utils/logger';
@@ -55,12 +55,13 @@ export class SubmissionService {
       throw new ForbiddenError('You must join this competition before submitting.');
     }
 
-    // 3. Verify attempt limit
+    // 3. Verify attempt limit (failed attempts do not count against user limit)
     const { count: existingAttempts } = await supabaseAdmin
       .from('submissions')
       .select('id', { count: 'exact' })
       .eq('competition_id', competitionId)
-      .eq('participant_id', participantId);
+      .eq('participant_id', participantId)
+      .neq('scoring_status', 'failed');
 
     const attemptsUsed = existingAttempts || 0;
     if (attemptsUsed >= comp.submission_limit) {
@@ -78,18 +79,28 @@ export class SubmissionService {
       throw new BadRequestError('Anti-Cheat: Exact reference image cannot be submitted as a recreation.');
     }
 
-    // Check duplicate submission
+    // Check duplicate submission among successful/in-progress attempts
     const { data: duplicate } = await supabaseAdmin
       .from('submissions')
       .select('id')
       .eq('competition_id', competitionId)
       .eq('participant_id', participantId)
       .eq('sha256', sha256)
+      .neq('scoring_status', 'failed')
       .maybeSingle();
 
     if (duplicate) {
       throw new ConflictError('You have already submitted this identical image for this competition.');
     }
+
+    // Clean up any stale failed attempts with this sha256 so retry succeeds cleanly
+    await supabaseAdmin
+      .from('submissions')
+      .delete()
+      .eq('competition_id', competitionId)
+      .eq('participant_id', participantId)
+      .eq('sha256', sha256)
+      .eq('scoring_status', 'failed');
 
     // 5. Upload recreation image to private Supabase Storage
     const storagePath = `sub_${competitionId}_${participantId}_att${attemptNumber}_${Date.now()}.jpg`;
@@ -206,14 +217,26 @@ export class SubmissionService {
         score
       };
     } catch (err: unknown) {
+      // Delete the incomplete/failed submission record so it does not count against user's attempt limit or block re-uploading
       await supabaseAdmin
         .from('submissions')
-        .update({
-          scoring_status: 'failed',
-          rejection_reason: err instanceof Error ? err.message : 'Scoring engine evaluation failed'
-        })
+        .delete()
         .eq('id', submission.id);
-      throw err;
+
+      const errMsg = err instanceof Error ? err.message : String(err);
+      logger.error(`AI scoring failed for submission ${submission.id}: ${errMsg}`);
+
+      if (errMsg.includes('502') || errMsg.includes('503') || errMsg.includes('504') || errMsg.includes('Bad Gateway') || errMsg.includes('fetch failed') || errMsg.includes('timeout') || errMsg.includes('warming up')) {
+        throw new ServiceUnavailableError(
+          'The AI scoring engine is currently warming up or downloading neural models. Your attempt was not deducted. Please click Submit again in 30 seconds!'
+        );
+      }
+
+      if (errMsg.includes('aspect ratio')) {
+        throw new BadRequestError(errMsg);
+      }
+
+      throw new BadRequestError(`Scoring failed: ${errMsg}`);
     }
   }
 

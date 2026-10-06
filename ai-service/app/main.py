@@ -25,8 +25,12 @@ async def lifespan(app: FastAPI):
     logger.info(f"Starting {settings.APP_NAME} v{settings.VERSION}")
     logger.info(f"Execution Device: {settings.DEVICE}")
 
-    # Initialize model registry
+    # Initialize model registry and pre-warm models
     registry = ModelRegistry.get_instance()
+    try:
+        registry.preload_all()
+    except Exception as e:
+        logger.warning(f"Model pre-warm warning (deferred to first call): {e}")
     logger.info("Model registry ready.")
 
     yield

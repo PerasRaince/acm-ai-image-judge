@@ -48,3 +48,10 @@ export class UnprocessableEntityError extends AppError {
     super(message, 422, 'UNPROCESSABLE_ENTITY', details);
   }
 }
+
+export class ServiceUnavailableError extends AppError {
+  constructor(message = 'Service temporarily unavailable', details?: unknown) {
+    super(message, 503, 'SERVICE_UNAVAILABLE', details);
+  }
+}
+
