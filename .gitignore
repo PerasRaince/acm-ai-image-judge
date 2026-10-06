@@ -35,9 +35,11 @@ coverage/
 *.bin
 *.onnx
 .cache/
-models/
+/models/
 checkpoints/
 models_cache/
+!ai-service/app/models/
+!ai-service/app/models/*.py
 
 # OS and IDE files
 .DS_Store
