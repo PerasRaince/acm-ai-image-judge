@@ -14,7 +14,8 @@ const envSchema = z.object({
   SUPABASE_URL: z.string().url('SUPABASE_URL must be a valid URL'),
   SUPABASE_PUBLISHABLE_KEY: z.string().min(1, 'SUPABASE_PUBLISHABLE_KEY is required'),
   SUPABASE_SECRET_KEY: z.string().min(1, 'SUPABASE_SECRET_KEY is required'),
-  SUPABASE_JWKS_URL: z.string().optional()
+  SUPABASE_JWKS_URL: z.string().optional(),
+  ADMIN_SECRET_KEY: z.string().default('acm-admin-secret-2026')
 });
 
 const parsed = envSchema.safeParse(process.env);

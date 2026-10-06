@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '../lib/supabaseClient';
 import { apiClient } from '../lib/apiClient';
 import { UserProfile } from '../types';
-import { Trophy, LogOut, PlusCircle } from 'lucide-react';
+import { Trophy, LogOut, PlusCircle, Shield } from 'lucide-react';
 
 export function Navbar() {
   const pathname = usePathname();
@@ -96,6 +96,20 @@ export function Navbar() {
                 }`}
               >
                 Dashboard
+              </Link>
+            )}
+
+            {user && user.role === 'admin' && (
+              <Link
+                href="/admin"
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+                  pathname.startsWith('/admin')
+                    ? 'text-red-400 bg-red-950/40 border border-red-800/50'
+                    : 'text-slate-400 hover:text-red-400 hover:bg-slate-900'
+                }`}
+              >
+                <Shield className="w-3.5 h-3.5" />
+                <span>Admin</span>
               </Link>
             )}
           </nav>

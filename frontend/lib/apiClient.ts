@@ -251,5 +251,85 @@ export const apiClient = {
     }
     const json = await res.json();
     return json.data;
+  },
+
+  // --------------------------------------------------------------------------
+  // Admin Storage & Maintenance Operations
+  // --------------------------------------------------------------------------
+  async getAdminStats(adminKey?: string): Promise<{
+    database: { competitions: number; submissions: number; scores: number; users: number };
+    storage: { submission_images_count: number; reference_images_count: number; total_images_count: number; approx_storage_mb: number; provider: string };
+  }> {
+    const headers = await getAuthHeaders();
+    if (adminKey) headers['x-admin-key'] = adminKey;
+
+    const res = await fetch(`${API_BASE_URL}/admin/stats`, { headers });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message || err.error?.message || 'Failed to fetch admin stats');
+    }
+    return res.json();
+  },
+
+  async purgeSubmissionImages(adminKey?: string): Promise<{ success: boolean; files_deleted: number; message: string }> {
+    const headers = await getAuthHeaders();
+    headers['Content-Type'] = 'application/json';
+    if (adminKey) headers['x-admin-key'] = adminKey;
+
+    const res = await fetch(`${API_BASE_URL}/admin/purge-submission-images`, {
+      method: 'POST',
+      headers
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      throw new Error(json.message || json.error?.message || 'Failed to purge submission images');
+    }
+    return json;
+  },
+
+  async purgeAllSubmissions(adminKey?: string): Promise<{ success: boolean; files_deleted: number; message: string }> {
+    const headers = await getAuthHeaders();
+    headers['Content-Type'] = 'application/json';
+    if (adminKey) headers['x-admin-key'] = adminKey;
+
+    const res = await fetch(`${API_BASE_URL}/admin/purge-all-submissions`, {
+      method: 'POST',
+      headers
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      throw new Error(json.message || json.error?.message || 'Failed to wipe submissions');
+    }
+    return json;
+  },
+
+  async promoteUser(email: string, role: string = 'admin', adminKey?: string): Promise<{ success: boolean; message: string }> {
+    const headers = await getAuthHeaders();
+    headers['Content-Type'] = 'application/json';
+    if (adminKey) headers['x-admin-key'] = adminKey;
+
+    const res = await fetch(`${API_BASE_URL}/admin/promote-user`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ email, role })
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      throw new Error(json.message || json.error?.message || 'Failed to update user role');
+    }
+    return json;
+  },
+
+  async verifyAdminKey(adminKey: string): Promise<{ authorized: boolean; role?: string }> {
+    const headers = await getAuthHeaders();
+    headers['Content-Type'] = 'application/json';
+    headers['x-admin-key'] = adminKey;
+
+    const res = await fetch(`${API_BASE_URL}/admin/verify-key`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ adminKey })
+    });
+    return res.json();
   }
 };

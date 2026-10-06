@@ -56,5 +56,5 @@ yarn-error.log*
 *.tif
 .temp/
 doc/
-
+.claude/
 
