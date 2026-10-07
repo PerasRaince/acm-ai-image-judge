@@ -119,9 +119,8 @@ export class LeaderboardService {
     const sortedEntries = Array.from(bestByParticipant.values()).sort((a, b) => this.compareScores(a, b));
 
     // 5. Assign 1-indexed ranks and sign recreation image URLs
-    let currentRank = 1;
     const rankedWithUrls = await Promise.all(
-      sortedEntries.map(async (entry) => {
+      sortedEntries.map(async (entry, index) => {
         let recreationUrl: string | undefined;
         try {
           recreationUrl = await getSignedImageUrl(APP_CONSTANTS.STORAGE_BUCKETS.SUBMISSIONS, entry.image_path);
@@ -130,7 +129,7 @@ export class LeaderboardService {
         }
 
         const rankedEntry: LeaderboardEntry & { recreation_image_url?: string } = {
-          rank: currentRank++,
+          rank: index + 1,
           submission_id: entry.submission_id,
           participant_id: entry.participant_id,
           participant_name: entry.participant_name,

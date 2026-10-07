@@ -40,9 +40,23 @@ export default function LeaderboardPage() {
         ]);
 
         const isHost = Boolean(lData.is_host || compRes?.is_host);
+        const normalizedEntries = (lData.entries || [])
+          .slice()
+          .sort((a: LeaderboardEntry, b: LeaderboardEntry) => {
+            if (b.final_score !== a.final_score) return b.final_score - a.final_score;
+            if (b.dreamsim_score !== a.dreamsim_score) return b.dreamsim_score - a.dreamsim_score;
+            if (b.dino_score !== a.dino_score) return b.dino_score - a.dino_score;
+            return new Date(a.submitted_at).getTime() - new Date(b.submitted_at).getTime();
+          })
+          .map((entry: LeaderboardEntry, idx: number) => ({
+            ...entry,
+            rank: idx + 1
+          }));
+
         setLeaderboard({
           ...lData,
-          is_host: isHost
+          is_host: isHost,
+          entries: normalizedEntries
         });
       } catch (err: unknown) {
         setErrorMsg(err instanceof Error ? err.message : 'Failed to load leaderboard');
