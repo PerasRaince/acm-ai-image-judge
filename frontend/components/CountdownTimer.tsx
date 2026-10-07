@@ -41,21 +41,21 @@ export function CountdownTimer({ targetDate, onExpire }: CountdownTimerProps) {
 
   if (timeLeft.isExpired) {
     return (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-rose-500/10 text-rose-400 text-xs font-semibold">
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-rose-50 text-rose-700 border border-rose-200 text-xs font-semibold">
         Closed
       </span>
     );
   }
 
   return (
-    <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
+    <div className="flex items-center gap-2 text-xs font-mono text-[#101A35]">
       <div className="flex items-center gap-1">
-        <span className="bg-[#002B49] border border-[#0085CA]/25 px-2 py-1 rounded-md text-sky-200 font-bold">{timeLeft.days}d</span>
-        <span className="bg-[#002B49] border border-[#0085CA]/25 px-2 py-1 rounded-md text-sky-200 font-bold">{timeLeft.hours}h</span>
-        <span className="bg-[#002B49] border border-[#0085CA]/25 px-2 py-1 rounded-md text-sky-200 font-bold">{timeLeft.minutes}m</span>
-        <span className="bg-[#002B49] border border-[#0085CA]/25 px-2 py-1 rounded-md text-sky-200 font-bold">{timeLeft.seconds}s</span>
+        <span className="bg-[#E7ECFA] border border-[#DCE4F3] px-2 py-1 rounded-md text-[#376DDD] font-bold">{timeLeft.days}d</span>
+        <span className="bg-[#E7ECFA] border border-[#DCE4F3] px-2 py-1 rounded-md text-[#376DDD] font-bold">{timeLeft.hours}h</span>
+        <span className="bg-[#E7ECFA] border border-[#DCE4F3] px-2 py-1 rounded-md text-[#376DDD] font-bold">{timeLeft.minutes}m</span>
+        <span className="bg-[#E7ECFA] border border-[#DCE4F3] px-2 py-1 rounded-md text-[#376DDD] font-bold">{timeLeft.seconds}s</span>
       </div>
-      <span className="text-[11px] text-slate-400 font-sans">remaining</span>
+      <span className="text-[11px] text-[#526079] font-sans">remaining</span>
     </div>
   );
 }

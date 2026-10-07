@@ -77,7 +77,7 @@ export default function JoinCodeInput({
     <div className={`w-full max-w-md ${className}`}>
       <form onSubmit={handleSubmit} className="relative flex items-center gap-2">
         <div className="relative flex-1">
-          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#526079]">
             {/* Keyboard / Link icon */}
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
@@ -91,7 +91,7 @@ export default function JoinCodeInput({
               if (errorMsg) setErrorMsg('');
             }}
             placeholder="Enter a code or link"
-            className={`w-full bg-[#0B1D35]/90 border border-[#002B49] rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all font-mono pl-11 pr-4 ${
+            className={`w-full bg-[#FFFFFF] border border-[#DCE4F3] rounded-xl text-[#101A35] placeholder-[#526079] shadow-xs focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD] transition-all font-mono pl-11 pr-4 ${
               isLarge ? 'py-3.5 text-base' : 'py-2.5 text-sm'
             }`}
           />
@@ -100,7 +100,7 @@ export default function JoinCodeInput({
         <button
           type="submit"
           disabled={!inputVal.trim() || loading}
-          className={`font-semibold rounded-xl text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] shadow-md shadow-[#0085CA]/20 active:scale-95 ${
+          className={`font-semibold rounded-xl text-white transition-all disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] shadow-sm shadow-[#376DDD]/20 active:scale-95 ${
             isLarge ? 'px-6 py-3.5 text-base' : 'px-4 py-2.5 text-sm'
           }`}
         >

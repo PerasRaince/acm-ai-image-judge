@@ -239,6 +239,32 @@ export const apiClient = {
     return json.data;
   },
 
+  async downloadSubmissionImage(competitionId: string, submissionId: string, fallbackFilename: string): Promise<void> {
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${getApiBaseUrl()}/competitions/${competitionId}/leaderboard/download/${submissionId}`, { headers });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || 'Failed to download submission image. Host permission required.');
+    }
+
+    const disposition = res.headers.get('content-disposition');
+    let filename = fallbackFilename;
+    if (disposition && disposition.includes('filename=')) {
+      const match = disposition.match(/filename="?([^";]+)"?/);
+      if (match && match[1]) filename = match[1];
+    }
+
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  },
+
   async listSubmissions(params?: { competition_id?: string; participant_id?: string }): Promise<Submission[]> {
     const headers = await getAuthHeaders();
     const query = new URLSearchParams();

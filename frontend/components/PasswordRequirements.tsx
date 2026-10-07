@@ -52,21 +52,21 @@ export default function PasswordRequirements({ password, showAlways = false }: P
   ];
 
   return (
-    <div className="bg-[#0B1D35]/80 border border-[#002B49] rounded-xl p-3 text-xs space-y-1.5 transition-all">
-      <div className="text-slate-300 font-medium mb-1">Password Requirements:</div>
+    <div className="bg-[#FCFDFF] border border-[#DCE4F3] rounded-xl p-3 text-xs space-y-1.5 transition-all">
+      <div className="text-[#101A35] font-semibold mb-1">Password Requirements:</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
         {criteria.map((item, idx) => (
           <div key={idx} className="flex items-center space-x-1.5">
             {item.met ? (
-              <svg className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>
             ) : (
-              <svg className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-3.5 h-3.5 text-[#526079]/60 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <circle cx="10" cy="10" r="7" />
               </svg>
             )}
-            <span className={item.met ? 'text-emerald-300 font-medium' : 'text-slate-400'}>
+            <span className={item.met ? 'text-emerald-700 font-medium' : 'text-[#526079]'}>
               {item.label}
             </span>
           </div>

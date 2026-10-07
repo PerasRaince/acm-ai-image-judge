@@ -193,25 +193,25 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#071527] text-slate-100 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#FCFDFF] text-[#101A35] py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Navigation Bar */}
-        <div className="flex items-center justify-between border-b border-[#002B49] pb-5">
+        <div className="flex items-center justify-between border-b border-[#DCE4F3] pb-5">
           <div className="flex items-center space-x-3">
             <Link
               href="/dashboard"
-              className="p-2 bg-[#0B1D35] hover:bg-[#002B49] text-slate-400 hover:text-white rounded-lg transition border border-[#002B49]"
+              className="p-2 bg-[#FFFFFF] hover:bg-[#E7ECFA] text-[#526079] hover:text-[#101A35] rounded-lg transition border border-[#DCE4F3]"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="p-1.5 bg-[#0085CA]/15 text-[#00A3E0] border border-[#0085CA]/30 rounded-md">
+                <span className="p-1.5 bg-[#E7ECFA] text-[#376DDD] border border-[#DCE4F3] rounded-md">
                   <Shield className="w-5 h-5" />
                 </span>
-                <h1 className="text-2xl font-bold tracking-tight text-white">System Admin & Storage Controller</h1>
+                <h1 className="text-2xl font-bold tracking-tight text-[#101A35]">System Admin & Storage Controller</h1>
               </div>
-              <p className="text-sm text-slate-400 mt-0.5">
+              <p className="text-sm text-[#526079] mt-0.5">
                 Cloud storage optimization, database integrity, and image lifecycle management.
               </p>
             </div>
@@ -221,7 +221,7 @@ export default function AdminPage() {
             <button
               onClick={() => loadStats()}
               disabled={loading || actionLoading}
-              className="inline-flex items-center px-3.5 py-2 rounded-lg bg-[#0B1D35] border border-[#002B49] hover:border-[#0085CA]/50 text-sm text-slate-300 hover:text-white transition shadow-sm"
+              className="inline-flex items-center px-3.5 py-2 rounded-lg bg-[#FFFFFF] border border-[#DCE4F3] hover:border-[#376DDD]/50 text-sm text-[#526079] hover:text-[#101A35] transition shadow-xs"
             >
               <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
               Refresh Metrics
@@ -234,19 +234,19 @@ export default function AdminPage() {
           <div
             className={`p-4 rounded-xl border flex items-center justify-between ${
               feedback.type === 'success'
-                ? 'bg-emerald-950/40 border-emerald-500/30 text-emerald-300'
-                : 'bg-red-950/40 border-red-500/30 text-red-300'
+                ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                : 'bg-rose-50 border-rose-200 text-rose-700'
             }`}
           >
             <div className="flex items-center space-x-3">
               {feedback.type === 'success' ? (
-                <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-emerald-400" />
+                <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-emerald-600" />
               ) : (
-                <AlertTriangle className="w-5 h-5 flex-shrink-0 text-red-400" />
+                <AlertTriangle className="w-5 h-5 flex-shrink-0 text-rose-600" />
               )}
               <span className="text-sm font-medium">{feedback.message}</span>
             </div>
-            <button onClick={() => setFeedback(null)} className="text-slate-400 hover:text-white">
+            <button onClick={() => setFeedback(null)} className="text-[#526079] hover:text-[#101A35]">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -254,18 +254,18 @@ export default function AdminPage() {
 
         {/* Unlock Screen if not authorized */}
         {!authorized ? (
-          <div className="max-w-md mx-auto my-12 p-8 bg-[#0B1D35]/90 border border-[#002B49] rounded-2xl shadow-xl backdrop-blur-sm">
-            <div className="w-12 h-12 bg-[#0085CA]/15 border border-[#0085CA]/30 text-[#00A3E0] rounded-xl flex items-center justify-center mx-auto mb-4">
+          <div className="max-w-md mx-auto my-12 p-8 bg-[#FFFFFF] border border-[#DCE4F3] rounded-2xl shadow-sm">
+            <div className="w-12 h-12 bg-[#E7ECFA] border border-[#DCE4F3] text-[#376DDD] rounded-xl flex items-center justify-center mx-auto mb-4">
               <Key className="w-6 h-6" />
             </div>
-            <h2 className="text-xl font-bold text-center text-white mb-2">Restricted Admin Area</h2>
-            <p className="text-sm text-slate-400 text-center mb-6">
-              Enter your Administrator Secret Key or sign in with an account having the <code className="text-[#00A3E0]">admin</code> role.
+            <h2 className="text-xl font-bold text-center text-[#101A35] mb-2">Restricted Admin Area</h2>
+            <p className="text-sm text-[#526079] text-center mb-6">
+              Enter your Administrator Secret Key or sign in with an account having the <code className="text-[#376DDD]">admin</code> role.
             </p>
 
             <form onSubmit={handleUnlock} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#101A35] mb-1.5">
                   Admin Secret Key
                 </label>
                 <input
@@ -274,14 +274,14 @@ export default function AdminPage() {
                   onChange={(e) => setKeyInput(e.target.value)}
                   placeholder="Enter Administrator Secret Key..."
                   required
-                  className="w-full px-4 py-2.5 bg-[#040C16] border border-[#002B49] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] text-sm transition-all"
+                  className="w-full px-4 py-2.5 bg-[#FFFFFF] border border-[#DCE4F3] rounded-xl text-[#101A35] placeholder-[#526079] focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD] text-sm transition-all"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={actionLoading}
-                className="w-full py-2.5 px-4 bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-medium rounded-xl transition text-sm shadow-md shadow-[#0085CA]/20 flex items-center justify-center space-x-2 disabled:opacity-50 active:scale-95"
+                className="w-full py-2.5 px-4 bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] text-white font-medium rounded-xl transition text-sm shadow-xs flex items-center justify-center space-x-2 disabled:opacity-50 active:scale-95"
               >
                 {actionLoading ? (
                   <RefreshCw className="w-4 h-4 animate-spin" />
@@ -298,16 +298,16 @@ export default function AdminPage() {
           /* Main Admin Dashboard */
           <div className="space-y-8">
             {/* Storage Architecture Comparison Banner */}
-            <div className="p-5 bg-gradient-to-r from-[#002B49]/50 via-[#0B1D35] to-[#002B49]/50 border border-[#0085CA]/30 rounded-2xl">
+            <div className="p-5 bg-[#E7ECFA]/70 border border-[#DCE4F3] rounded-2xl">
               <div className="flex items-start space-x-4">
-                <div className="p-2.5 bg-[#0085CA]/15 border border-[#0085CA]/30 text-[#00A3E0] rounded-xl flex-shrink-0 mt-0.5">
+                <div className="p-2.5 bg-[#FFFFFF] border border-[#DCE4F3] text-[#376DDD] rounded-xl flex-shrink-0 mt-0.5 shadow-xs">
                   <Server className="w-6 h-6" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="font-semibold text-white text-base">
-                    Active Storage Engine: <span className="text-emerald-400 font-mono">Supabase Storage (AWS S3 Cloud)</span>
+                  <h3 className="font-semibold text-[#101A35] text-base">
+                    Active Storage Engine: <span className="text-emerald-700 font-mono">Supabase Storage (AWS S3 Cloud)</span>
                   </h3>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                  <p className="text-sm text-[#526079] leading-relaxed">
                     <strong>Why Supabase is superior to Render for images:</strong> Render has no native S3 bucket storage; saving images to Render's container disk consumes server RAM, slows down Node.js, and is wiped on redeploys. Supabase Storage is purpose-built on AWS S3 with global CDN edge caching, 1GB–100GB+ capacity, and zero memory overhead on your API.
                   </p>
                 </div>
@@ -316,74 +316,74 @@ export default function AdminPage() {
 
             {/* Live Metrics Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-5 bg-[#0B1D35]/80 border border-[#002B49] rounded-2xl space-y-2">
-                <div className="flex items-center justify-between text-slate-400">
+              <div className="p-5 bg-[#FFFFFF] border border-[#DCE4F3] rounded-2xl space-y-2 shadow-xs">
+                <div className="flex items-center justify-between text-[#526079]">
                   <span className="text-xs font-semibold uppercase tracking-wider">Candidate Recreations</span>
-                  <FileImage className="w-4 h-4 text-cyan-400" />
+                  <FileImage className="w-4 h-4 text-[#31B8D0]" />
                 </div>
-                <div className="text-3xl font-extrabold text-white">
+                <div className="text-3xl font-extrabold text-[#101A35]">
                   {loading ? '...' : stats?.storage.submission_images_count || 0}
                 </div>
-                <p className="text-xs text-slate-400">Stored in private <code className="text-slate-300">submission-images</code> bucket</p>
+                <p className="text-xs text-[#526079]">Stored in private <code className="text-[#101A35]">submission-images</code> bucket</p>
               </div>
 
-              <div className="p-5 bg-[#0B1D35]/80 border border-[#002B49] rounded-2xl space-y-2">
-                <div className="flex items-center justify-between text-slate-400">
+              <div className="p-5 bg-[#FFFFFF] border border-[#DCE4F3] rounded-2xl space-y-2 shadow-xs">
+                <div className="flex items-center justify-between text-[#526079]">
                   <span className="text-xs font-semibold uppercase tracking-wider">Reference Targets</span>
-                  <Layers className="w-4 h-4 text-[#00A3E0]" />
+                  <Layers className="w-4 h-4 text-[#376DDD]" />
                 </div>
-                <div className="text-3xl font-extrabold text-white">
+                <div className="text-3xl font-extrabold text-[#101A35]">
                   {loading ? '...' : stats?.storage.reference_images_count || 0}
                 </div>
-                <p className="text-xs text-slate-400">Official host competition targets</p>
+                <p className="text-xs text-[#526079]">Official host competition targets</p>
               </div>
 
-              <div className="p-5 bg-[#0B1D35]/80 border border-[#002B49] rounded-2xl space-y-2">
-                <div className="flex items-center justify-between text-slate-400">
+              <div className="p-5 bg-[#FFFFFF] border border-[#DCE4F3] rounded-2xl space-y-2 shadow-xs">
+                <div className="flex items-center justify-between text-[#526079]">
                   <span className="text-xs font-semibold uppercase tracking-wider">Submissions Evaluated</span>
-                  <Award className="w-4 h-4 text-emerald-400" />
+                  <Award className="w-4 h-4 text-emerald-600" />
                 </div>
-                <div className="text-3xl font-extrabold text-white">
+                <div className="text-3xl font-extrabold text-[#101A35]">
                   {loading ? '...' : stats?.database.submissions || 0}
                 </div>
-                <p className="text-xs text-slate-400">{stats?.database.scores || 0} calibrated AI score records</p>
+                <p className="text-xs text-[#526079]">{stats?.database.scores || 0} calibrated AI score records</p>
               </div>
 
-              <div className="p-5 bg-[#0B1D35]/80 border border-[#002B49] rounded-2xl space-y-2">
-                <div className="flex items-center justify-between text-slate-400">
+              <div className="p-5 bg-[#FFFFFF] border border-[#DCE4F3] rounded-2xl space-y-2 shadow-xs">
+                <div className="flex items-center justify-between text-[#526079]">
                   <span className="text-xs font-semibold uppercase tracking-wider">Estimated Cloud Usage</span>
-                  <HardDrive className="w-4 h-4 text-amber-400" />
+                  <HardDrive className="w-4 h-4 text-amber-500" />
                 </div>
-                <div className="text-3xl font-extrabold text-amber-400">
+                <div className="text-3xl font-extrabold text-amber-600">
                   {loading ? '...' : `~${stats?.storage.approx_storage_mb || 0} MB`}
                 </div>
-                <p className="text-xs text-slate-400">Total {stats?.storage.total_images_count || 0} images in Supabase</p>
+                <p className="text-xs text-[#526079]">Total {stats?.storage.total_images_count || 0} images in Supabase</p>
               </div>
             </div>
 
             {/* Storage Management Operations */}
-            <div className="bg-[#0B1D35]/80 border border-[#002B49] rounded-2xl p-6 space-y-6">
+            <div className="bg-[#FFFFFF] border border-[#DCE4F3] rounded-2xl p-6 space-y-6 shadow-xs">
               <div>
-                <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-                  <Database className="w-5 h-5 text-[#00A3E0]" />
+                <h3 className="text-lg font-bold text-[#101A35] flex items-center space-x-2">
+                  <Database className="w-5 h-5 text-[#376DDD]" />
                   <span>Storage Optimization & Purge Controls</span>
                 </h3>
-                <p className="text-sm text-slate-400 mt-1">
+                <p className="text-sm text-[#526079] mt-1">
                   Safely free up storage space when large volumes of images are uploaded without breaking competition leaderboards.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Purge Option 1: Storage Only (Preserves Leaderboard) */}
-                <div className="p-5 bg-[#040C16] border border-[#002B49] hover:border-[#0085CA]/40 rounded-xl flex flex-col justify-between space-y-4">
+                <div className="p-5 bg-[#FCFDFF] border border-[#DCE4F3] hover:border-[#376DDD]/40 rounded-xl flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
-                      <span className="px-2 py-0.5 text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-md">
+                      <span className="px-2 py-0.5 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-md">
                         Recommended
                       </span>
-                      <h4 className="font-semibold text-white">Free Up Storage (Keep Scores & Leaderboards)</h4>
+                      <h4 className="font-semibold text-[#101A35]">Free Up Storage (Keep Scores & Leaderboards)</h4>
                     </div>
-                    <p className="text-xs text-slate-400 leading-relaxed">
+                    <p className="text-xs text-[#526079] leading-relaxed">
                       Deletes all recreation image files from Supabase Storage bucket, immediately recovering 100% of candidate disk space. <strong>All competition ranks, scores, timestamps, and contestant leaderboards stay completely intact.</strong>
                     </p>
                   </div>
@@ -394,7 +394,7 @@ export default function AdminPage() {
                       setConfirmInput('');
                     }}
                     disabled={actionLoading || (stats?.storage.submission_images_count || 0) === 0}
-                    className="w-full py-2.5 px-4 bg-[#002B49] hover:bg-[#003860] text-emerald-400 font-medium rounded-xl border border-[#0085CA]/25 transition text-sm flex items-center justify-center space-x-2 disabled:opacity-40"
+                    className="w-full py-2.5 px-4 bg-[#E7ECFA] hover:bg-[#DCE4F3] text-[#376DDD] font-semibold rounded-xl border border-[#DCE4F3] transition text-sm flex items-center justify-center space-x-2 disabled:opacity-40"
                   >
                     <HardDrive className="w-4 h-4" />
                     <span>Purge Candidate Files ({stats?.storage.submission_images_count || 0})</span>
@@ -402,15 +402,15 @@ export default function AdminPage() {
                 </div>
 
                 {/* Purge Option 2: Nuclear Wipe (All Submissions & Scores) */}
-                <div className="p-5 bg-[#040C16] border border-red-950/50 hover:border-red-900/50 rounded-xl flex flex-col justify-between space-y-4">
+                <div className="p-5 bg-[#FCFDFF] border border-rose-200 hover:border-rose-300 rounded-xl flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
-                      <span className="px-2 py-0.5 text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20 rounded-md">
+                      <span className="px-2 py-0.5 text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 rounded-md">
                         Nuclear Action
                       </span>
-                      <h4 className="font-semibold text-red-200">Wipe All Submissions & Scores</h4>
+                      <h4 className="font-semibold text-rose-800">Wipe All Submissions & Scores</h4>
                     </div>
-                    <p className="text-xs text-slate-400 leading-relaxed">
+                    <p className="text-xs text-[#526079] leading-relaxed">
                       Deletes all submission image files from cloud storage <strong>AND</strong> deletes every submission attempt and AI score record from the database. Resets competition leaderboards to zero.
                     </p>
                   </div>
@@ -421,9 +421,9 @@ export default function AdminPage() {
                       setConfirmInput('');
                     }}
                     disabled={actionLoading}
-                    className="w-full py-2.5 px-4 bg-red-950/40 hover:bg-red-900/60 text-red-300 font-medium rounded-xl border border-red-800/50 transition text-sm flex items-center justify-center space-x-2 disabled:opacity-40"
+                    className="w-full py-2.5 px-4 bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold rounded-xl border border-rose-200 transition text-sm flex items-center justify-center space-x-2 disabled:opacity-40"
                   >
-                    <Trash2 className="w-4 h-4 text-red-400" />
+                    <Trash2 className="w-4 h-4 text-rose-600" />
                     <span>Wipe All Submissions History</span>
                   </button>
                 </div>
@@ -431,12 +431,12 @@ export default function AdminPage() {
             </div>
 
             {/* Admin Management Section */}
-            <div className="bg-[#0B1D35]/80 border border-[#002B49] rounded-2xl p-6 space-y-4">
-              <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-                <UserCheck className="w-5 h-5 text-[#00A3E0]" />
+            <div className="bg-[#FFFFFF] border border-[#DCE4F3] rounded-2xl p-6 space-y-4 shadow-xs">
+              <h3 className="text-lg font-bold text-[#101A35] flex items-center space-x-2">
+                <UserCheck className="w-5 h-5 text-[#376DDD]" />
                 <span>Promote Teammate to Admin</span>
               </h3>
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-[#526079]">
                 Grant full administrator privileges to another user email address.
               </p>
 
@@ -447,12 +447,12 @@ export default function AdminPage() {
                   onChange={(e) => setPromoteEmail(e.target.value)}
                   placeholder="contestant@acm.org"
                   required
-                  className="flex-1 px-4 py-2 bg-[#040C16] border border-[#002B49] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] text-sm transition-all"
+                  className="flex-1 px-4 py-2 bg-[#FCFDFF] border border-[#DCE4F3] rounded-xl text-[#101A35] placeholder-[#526079] focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD] text-sm transition-all"
                 />
                 <button
                   type="submit"
                   disabled={promoteLoading || !promoteEmail}
-                  className="px-5 py-2 bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-medium rounded-xl transition text-sm flex items-center justify-center space-x-2 disabled:opacity-50 shadow-md shadow-[#0085CA]/20 active:scale-95"
+                  className="px-5 py-2 bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] text-white font-medium rounded-xl transition text-sm flex items-center justify-center space-x-2 disabled:opacity-50 shadow-xs active:scale-95"
                 >
                   {promoteLoading ? (
                     <RefreshCw className="w-4 h-4 animate-spin" />
@@ -470,25 +470,25 @@ export default function AdminPage() {
 
         {/* Confirmation Modal */}
         {modalType && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-            <div className="bg-[#0B1D35] border border-[#002B49] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl">
-              <div className="flex items-center space-x-3 text-red-400">
-                <div className="p-2 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+            <div className="bg-[#FFFFFF] border border-[#DCE4F3] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-xl">
+              <div className="flex items-center space-x-3 text-rose-600">
+                <div className="p-2 bg-rose-50 border border-rose-200 rounded-lg">
                   <AlertTriangle className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-white">
+                <h3 className="text-lg font-bold text-[#101A35]">
                   {modalType === 'purge_images' ? 'Confirm Storage Purge' : 'Confirm Complete Wipe'}
                 </h3>
               </div>
 
-              <p className="text-sm text-slate-300 leading-relaxed">
+              <p className="text-sm text-[#526079] leading-relaxed">
                 {modalType === 'purge_images' ? (
                   <>
-                    This will permanently delete all candidate recreation image files from Supabase Storage. Scores and leaderboard positions will be preserved. To confirm, type <strong className="text-emerald-400 font-mono">PURGE</strong> below:
+                    This will permanently delete all candidate recreation image files from Supabase Storage. Scores and leaderboard positions will be preserved. To confirm, type <strong className="text-emerald-700 font-mono">PURGE</strong> below:
                   </>
                 ) : (
                   <>
-                    This will permanently delete all submission image files and wipe all scores from the database. This action is irreversible. To confirm, type <strong className="text-red-400 font-mono">WIPE</strong> below:
+                    This will permanently delete all submission image files and wipe all scores from the database. This action is irreversible. To confirm, type <strong className="text-rose-600 font-mono">WIPE</strong> below:
                   </>
                 )}
               </p>
@@ -499,7 +499,7 @@ export default function AdminPage() {
                   value={confirmInput}
                   onChange={(e) => setConfirmInput(e.target.value)}
                   placeholder={modalType === 'purge_images' ? 'Type PURGE' : 'Type WIPE'}
-                  className="w-full px-4 py-2.5 bg-[#040C16] border border-[#002B49] rounded-xl text-white font-mono placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                  className="w-full px-4 py-2.5 bg-[#FCFDFF] border border-[#DCE4F3] rounded-xl text-[#101A35] font-mono placeholder-[#526079] focus:outline-none focus:ring-2 focus:ring-rose-500 text-sm"
                 />
               </div>
 
@@ -511,7 +511,7 @@ export default function AdminPage() {
                     setConfirmInput('');
                   }}
                   disabled={actionLoading}
-                  className="flex-1 py-2 px-4 bg-[#002B49] hover:bg-[#003860] text-slate-300 font-medium rounded-xl text-sm transition"
+                  className="flex-1 py-2 px-4 bg-[#E7ECFA] hover:bg-[#DCE4F3] text-[#526079] font-medium rounded-xl text-sm transition"
                 >
                   Cancel
                 </button>
@@ -523,7 +523,7 @@ export default function AdminPage() {
                     (modalType === 'purge_images' && confirmInput !== 'PURGE') ||
                     (modalType === 'wipe_all' && confirmInput !== 'WIPE')
                   }
-                  className="flex-1 py-2 px-4 bg-red-600 hover:bg-red-500 text-white font-medium rounded-xl text-sm transition flex items-center justify-center space-x-2 disabled:opacity-40"
+                  className="flex-1 py-2 px-4 bg-rose-600 hover:bg-rose-700 text-white font-medium rounded-xl text-sm transition flex items-center justify-center space-x-2 disabled:opacity-40 shadow-xs"
                 >
                   {actionLoading ? (
                     <RefreshCw className="w-4 h-4 animate-spin" />

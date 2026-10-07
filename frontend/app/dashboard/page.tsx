@@ -110,13 +110,13 @@ export default function DashboardPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       {/* Google Meet style Top Join Bar */}
-      <div className="bg-gradient-to-r from-[#0B1D35] via-[#071527] to-[#0B1D35] border border-[#002B49] rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm">
+      <div className="bg-[#E7ECFA]/70 border border-[#DCE4F3] rounded-3xl p-6 sm:p-8 shadow-xs">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-1.5 max-w-xl">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#101A35] tracking-tight">
               Welcome, {user?.display_name || 'Creator'}
             </h1>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-[#526079]">
               Host your own competition or join another challenge using a code or invitation link.
             </p>
           </div>
@@ -124,7 +124,7 @@ export default function DashboardPage() {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <Link
               href="/competitions/create"
-              className="px-5 py-3 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-semibold text-xs transition-all shadow-md shadow-[#0085CA]/20 flex items-center justify-center gap-2 whitespace-nowrap active:scale-95"
+              className="px-5 py-3 rounded-xl bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] text-white font-semibold text-xs transition-all shadow-xs flex items-center justify-center gap-2 whitespace-nowrap active:scale-95"
             >
               <PlusCircle className="w-4 h-4" />
               <span>Host New Competition</span>
@@ -139,24 +139,24 @@ export default function DashboardPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        <div className="p-5 rounded-2xl bg-[#0B1D35]/70 border border-[#002B49] space-y-1 shadow-sm">
-          <span className="text-xs text-slate-400">Hosted Competitions</span>
-          <div className="text-3xl font-extrabold text-white font-mono">{hostedComps.length}</div>
-          <span className="text-[11px] text-slate-400">Active challenges created by you</span>
+        <div className="p-5 rounded-2xl bg-[#FFFFFF] border border-[#DCE4F3] space-y-1 shadow-xs">
+          <span className="text-xs text-[#526079]">Hosted Competitions</span>
+          <div className="text-3xl font-extrabold text-[#101A35] font-mono">{hostedComps.length}</div>
+          <span className="text-[11px] text-[#526079]">Active challenges created by you</span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0B1D35]/70 border border-[#002B49] space-y-1 shadow-sm">
-          <span className="text-xs text-slate-400">Personal Best Score</span>
-          <div className="text-3xl font-extrabold text-emerald-400 font-mono">
+        <div className="p-5 rounded-2xl bg-[#FFFFFF] border border-[#DCE4F3] space-y-1 shadow-xs">
+          <span className="text-xs text-[#526079]">Personal Best Score</span>
+          <div className="text-3xl font-extrabold text-emerald-700 font-mono">
             {bestScore > 0 ? bestScore.toFixed(1) : '—'}
           </div>
-          <span className="text-[11px] text-slate-400">Across {totalSubmissions} recreation attempts</span>
+          <span className="text-[11px] text-[#526079]">Across {totalSubmissions} recreation attempts</span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0B1D35]/70 border border-[#002B49] space-y-1 shadow-sm">
-          <span className="text-xs text-slate-400">Joined Competitions</span>
-          <div className="text-3xl font-extrabold text-[#00A3E0] font-mono">{joinedComps.length}</div>
-          <span className="text-[11px] text-slate-400">Challenges entered as contestant</span>
+        <div className="p-5 rounded-2xl bg-[#FFFFFF] border border-[#DCE4F3] space-y-1 shadow-xs">
+          <span className="text-xs text-[#526079]">Joined Competitions</span>
+          <div className="text-3xl font-extrabold text-[#376DDD] font-mono">{joinedComps.length}</div>
+          <span className="text-[11px] text-[#526079]">Challenges entered as contestant</span>
         </div>
       </div>
 
@@ -164,12 +164,12 @@ export default function DashboardPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#00A3E0]" />
-            <h2 className="text-lg font-bold text-white tracking-tight">Hosted by You</h2>
+            <Sparkles className="w-4 h-4 text-[#376DDD]" />
+            <h2 className="text-lg font-bold text-[#101A35] tracking-tight">Hosted by You</h2>
           </div>
           <Link
             href="/competitions/create"
-            className="text-xs text-[#00A3E0] hover:text-sky-300 font-medium hover:underline flex items-center gap-1"
+            className="text-xs text-[#376DDD] hover:text-[#285BC4] font-medium hover:underline flex items-center gap-1"
           >
             <span>Create another</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -177,15 +177,15 @@ export default function DashboardPage() {
         </div>
 
         {loading ? (
-          <div className="h-32 rounded-2xl bg-[#0B1D35]/50 animate-pulse border border-[#002B49]" />
+          <div className="h-32 rounded-2xl bg-[#FFFFFF] animate-pulse border border-[#DCE4F3]" />
         ) : hostedComps.length === 0 ? (
-          <div className="p-8 rounded-2xl bg-[#0B1D35]/30 border border-[#002B49] text-center space-y-3">
-            <p className="text-xs text-slate-400">
+          <div className="p-8 rounded-2xl bg-[#FFFFFF] border border-[#DCE4F3] text-center space-y-3 shadow-xs">
+            <p className="text-xs text-[#526079]">
               You haven&apos;t hosted any competitions yet. Create one to get a unique code and invite others!
             </p>
             <Link
               href="/competitions/create"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#002B49] hover:bg-[#003860] border border-[#0085CA]/20 text-slate-200 text-xs font-semibold transition-all"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#E7ECFA] hover:bg-[#DCE4F3] border border-[#DCE4F3] text-[#376DDD] text-xs font-semibold transition-all"
             >
               <PlusCircle className="w-3.5 h-3.5" />
               <span>Create Your First Competition</span>
@@ -196,39 +196,39 @@ export default function DashboardPage() {
             {hostedComps.map((comp) => (
               <div
                 key={comp.id}
-                className="bg-[#0B1D35]/70 border border-[#002B49] hover:border-[#0085CA]/40 rounded-2xl p-5 space-y-4 transition-all hover:shadow-lg hover:shadow-[#0085CA]/10 flex flex-col justify-between"
+                className="bg-[#FFFFFF] border border-[#DCE4F3] hover:border-[#376DDD]/40 rounded-2xl p-5 space-y-4 transition-all shadow-xs flex flex-col justify-between"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 border border-emerald-200 text-emerald-700 uppercase">
                       {comp.status}
                     </span>
                     <button
                       onClick={() => copyCode(comp.code)}
-                      className="inline-flex items-center gap-1 text-[11px] font-mono text-[#00A3E0] hover:text-sky-300 bg-[#0085CA]/15 border border-[#0085CA]/30 px-2 py-0.5 rounded transition-colors"
+                      className="inline-flex items-center gap-1 text-[11px] font-mono text-[#376DDD] hover:text-[#285BC4] bg-[#E7ECFA] border border-[#DCE4F3] px-2 py-0.5 rounded transition-colors"
                       title="Click to copy code"
                     >
-                      {copiedCode === comp.code ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                      {copiedCode === comp.code ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
                       <span>{comp.code}</span>
                     </button>
                   </div>
 
-                  <h3 className="font-bold text-white text-sm line-clamp-1">
+                  <h3 className="font-bold text-[#101A35] text-sm line-clamp-1">
                     {comp.title}
                   </h3>
-                  <p className="text-xs text-slate-400 line-clamp-2">
+                  <p className="text-xs text-[#526079] line-clamp-2">
                     {comp.description || 'No description provided.'}
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-[#002B49] flex items-center justify-between gap-2 text-xs">
+                <div className="pt-3 border-t border-[#DCE4F3] flex items-center justify-between gap-2 text-xs">
                   <button
                     onClick={() => handleToggleHostStatus(comp)}
                     disabled={updatingCompId === comp.id}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-xs ${
                       comp.status === 'active'
-                        ? 'bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30'
-                        : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                        ? 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200'
+                        : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200'
                     }`}
                   >
                     {comp.status === 'active' ? (
@@ -247,7 +247,7 @@ export default function DashboardPage() {
 
                   <Link
                     href={`/competitions/${comp.id}`}
-                    className="text-[#00A3E0] hover:text-sky-300 font-semibold inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg hover:bg-[#002B49]/40 transition-colors"
+                    className="text-[#376DDD] hover:text-[#285BC4] font-semibold inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg hover:bg-[#E7ECFA] transition-colors"
                   >
                     <span>Manage</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -263,12 +263,12 @@ export default function DashboardPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-[#00A3E0]" />
-            <h2 className="text-lg font-bold text-white tracking-tight">Joined as Contestant</h2>
+            <Users className="w-4 h-4 text-[#376DDD]" />
+            <h2 className="text-lg font-bold text-[#101A35] tracking-tight">Joined as Contestant</h2>
           </div>
           <Link
             href="/competitions"
-            className="text-xs text-[#00A3E0] hover:text-sky-300 font-medium hover:underline flex items-center gap-1"
+            className="text-xs text-[#376DDD] hover:text-[#285BC4] font-medium hover:underline flex items-center gap-1"
           >
             <span>Browse public competitions</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -276,10 +276,10 @@ export default function DashboardPage() {
         </div>
 
         {loading ? (
-          <div className="h-28 rounded-2xl bg-[#0B1D35]/50 animate-pulse border border-[#002B49]" />
+          <div className="h-28 rounded-2xl bg-[#FFFFFF] animate-pulse border border-[#DCE4F3]" />
         ) : joinedComps.length === 0 ? (
-          <div className="p-8 rounded-2xl bg-[#0B1D35]/30 border border-[#002B49] text-center space-y-2">
-            <p className="text-xs text-slate-400">
+          <div className="p-8 rounded-2xl bg-[#FFFFFF] border border-[#DCE4F3] text-center space-y-2 shadow-xs">
+            <p className="text-xs text-[#526079]">
               You haven&apos;t joined any competitions yet. Enter a code above or browse the directory.
             </p>
           </div>
@@ -288,33 +288,33 @@ export default function DashboardPage() {
             {joinedComps.map((comp) => (
               <div
                 key={comp.id}
-                className="bg-[#0B1D35]/70 border border-[#002B49] hover:border-[#0085CA]/40 rounded-2xl p-5 space-y-4 transition-all flex flex-col justify-between"
+                className="bg-[#FFFFFF] border border-[#DCE4F3] hover:border-[#376DDD]/40 rounded-2xl p-5 space-y-4 transition-all shadow-xs flex flex-col justify-between"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#0085CA]/15 border border-[#0085CA]/30 text-[#00A3E0] uppercase font-mono">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#E7ECFA] border border-[#DCE4F3] text-[#376DDD] uppercase font-mono">
                       Code: {comp.code}
                     </span>
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-[11px] text-[#526079]">
                       Host: {comp.host?.display_name || 'Creator'}
                     </span>
                   </div>
 
-                  <h3 className="font-bold text-white text-sm line-clamp-1">
+                  <h3 className="font-bold text-[#101A35] text-sm line-clamp-1">
                     {comp.title}
                   </h3>
                 </div>
 
-                <div className="pt-3 border-t border-[#002B49] flex items-center justify-between text-xs">
+                <div className="pt-3 border-t border-[#DCE4F3] flex items-center justify-between text-xs">
                   <Link
                     href={`/competitions/${comp.id}/submit`}
-                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-semibold text-xs transition-all shadow-sm shadow-[#0085CA]/20 active:scale-95"
+                    className="px-3.5 py-1.5 rounded-xl bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] text-white font-semibold text-xs transition-all shadow-xs active:scale-95"
                   >
                     Submit Recreation
                   </Link>
                   <Link
                     href={`/competitions/${comp.id}/leaderboard`}
-                    className="text-slate-400 hover:text-white font-medium"
+                    className="text-[#526079] hover:text-[#101A35] font-medium"
                   >
                     Leaderboard
                   </Link>
@@ -328,8 +328,8 @@ export default function DashboardPage() {
       {/* Recent Submissions Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-white tracking-tight">Recent Submissions</h2>
-          <Link href="/dashboard/submissions" className="text-xs text-[#00A3E0] hover:underline">
+          <h2 className="text-lg font-bold text-[#101A35] tracking-tight">Recent Submissions</h2>
+          <Link href="/dashboard/submissions" className="text-xs text-[#376DDD] hover:underline">
             View full history &rarr;
           </Link>
         </div>
@@ -337,33 +337,33 @@ export default function DashboardPage() {
         {loading ? (
           <div className="space-y-3">
             {[1, 2].map((i) => (
-              <div key={i} className="h-16 rounded-xl bg-[#0B1D35]/50 animate-pulse border border-[#002B49]" />
+              <div key={i} className="h-16 rounded-xl bg-[#FFFFFF] animate-pulse border border-[#DCE4F3]" />
             ))}
           </div>
         ) : submissions.length === 0 ? (
-          <div className="p-8 rounded-2xl bg-[#0B1D35]/30 border border-[#002B49] text-center space-y-2">
-            <p className="text-xs text-slate-400">No submissions uploaded yet.</p>
+          <div className="p-8 rounded-2xl bg-[#FFFFFF] border border-[#DCE4F3] text-center space-y-2 shadow-xs">
+            <p className="text-xs text-[#526079]">No submissions uploaded yet.</p>
           </div>
         ) : (
           <div className="space-y-2.5">
             {submissions.slice(0, 5).map((sub) => (
               <div
                 key={sub.id}
-                className="flex items-center justify-between p-4 rounded-xl bg-[#0B1D35]/70 border border-[#002B49] hover:border-[#0085CA]/40 transition-colors"
+                className="flex items-center justify-between p-4 rounded-xl bg-[#FFFFFF] border border-[#DCE4F3] hover:border-[#376DDD]/40 transition-colors shadow-xs"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-[#040C16] border border-[#002B49] overflow-hidden flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-[#FCFDFF] border border-[#DCE4F3] overflow-hidden flex items-center justify-center flex-shrink-0">
                     {sub.signed_image_url ? (
                       <img src={sub.signed_image_url} alt="Submission" className="w-full h-full object-cover" />
                     ) : (
-                      <Layers className="w-4 h-4 text-slate-600" />
+                      <Layers className="w-4 h-4 text-[#526079]" />
                     )}
                   </div>
                   <div>
-                    <div className="text-xs font-semibold text-white">
+                    <div className="text-xs font-semibold text-[#101A35]">
                       Attempt #{sub.attempt_number}
                     </div>
-                    <div className="text-[11px] text-slate-400">
+                    <div className="text-[11px] text-[#526079]">
                       {new Date(sub.submitted_at).toLocaleString()}
                     </div>
                   </div>
@@ -373,11 +373,11 @@ export default function DashboardPage() {
                   {sub.score ? (
                     <ScoreBadge score={sub.score.final_score} size="sm" />
                   ) : (
-                    <span className="text-[11px] text-slate-400 capitalize">{sub.scoring_status}</span>
+                    <span className="text-[11px] text-[#526079] capitalize">{sub.scoring_status}</span>
                   )}
                   <Link
                     href={`/competitions/${sub.competition_id}`}
-                    className="text-xs text-[#00A3E0] hover:text-sky-300 font-semibold"
+                    className="text-xs text-[#376DDD] hover:text-[#285BC4] font-semibold"
                   >
                     View &rarr;
                   </Link>

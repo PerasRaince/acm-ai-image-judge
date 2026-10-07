@@ -65,19 +65,19 @@ function LoginForm() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md space-y-6 bg-[#0B1D35]/90 border border-[#002B49] p-8 rounded-2xl shadow-2xl backdrop-blur-sm">
+      <div className="w-full max-w-md space-y-6 bg-[#FFFFFF] border border-[#DCE4F3] p-8 rounded-2xl shadow-sm">
         <div className="text-center space-y-2">
-          <div className="inline-flex p-3 rounded-2xl bg-[#0085CA]/15 text-[#00A3E0] mb-2 border border-[#0085CA]/30">
+          <div className="inline-flex p-3 rounded-2xl bg-[#E7ECFA] text-[#376DDD] mb-2 border border-[#DCE4F3]">
             <LogIn className="h-6 w-6" />
           </div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Sign In</h1>
-          <p className="text-xs text-slate-400">
+          <h1 className="text-2xl font-bold text-[#101A35] tracking-tight">Sign In</h1>
+          <p className="text-xs text-[#526079]">
             Access your AI Image competitions, submissions, and leaderboard rankings
           </p>
         </div>
 
         {errorMsg && (
-          <div className="flex items-center gap-2.5 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs">
+          <div className="flex items-center gap-2.5 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 text-xs">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{errorMsg}</span>
           </div>
@@ -88,7 +88,7 @@ function LoginForm() {
           type="button"
           onClick={handleGoogleSignIn}
           disabled={oauthLoading || loading}
-          className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl bg-[#040C16] hover:bg-[#002B49] border border-[#002B49] text-slate-200 text-xs font-semibold transition-all shadow-sm disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl bg-[#FFFFFF] hover:bg-[#E7ECFA]/40 border border-[#DCE4F3] text-[#101A35] text-xs font-semibold transition-all shadow-xs disabled:opacity-50"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -112,15 +112,15 @@ function LoginForm() {
         </button>
 
         <div className="relative flex items-center justify-center my-4">
-          <div className="border-t border-[#002B49] w-full" />
-          <span className="bg-[#0B1D35] px-3 text-[11px] uppercase tracking-wider text-slate-400 absolute font-medium">
+          <div className="border-t border-[#DCE4F3] w-full" />
+          <span className="bg-[#FFFFFF] px-3 text-[11px] uppercase tracking-wider text-[#526079] absolute font-medium">
             or with email
           </span>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium" htmlFor="email">
+            <label className="text-[#101A35] font-medium" htmlFor="email">
               Email Address
             </label>
             <input
@@ -130,18 +130,18 @@ function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@domain.com"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#FFFFFF] border border-[#DCE4F3] text-[#101A35] placeholder-[#526079] shadow-xs focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD] transition-all"
             />
           </div>
 
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="text-slate-300 font-medium" htmlFor="password">
+              <label className="text-[#101A35] font-medium" htmlFor="password">
                 Password
               </label>
               <Link
                 href="/forgot-password"
-                className="text-[#00A3E0] hover:text-sky-300 hover:underline transition-colors"
+                className="text-[#376DDD] hover:text-[#285BC4] hover:underline transition-colors font-medium"
               >
                 Forgot password?
               </Link>
@@ -153,24 +153,24 @@ function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#FFFFFF] border border-[#DCE4F3] text-[#101A35] placeholder-[#526079] shadow-xs focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD] transition-all"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] disabled:opacity-50 text-white font-semibold transition-all shadow-md shadow-[#0085CA]/20 active:scale-[0.99] mt-2"
+            className="w-full py-3 px-4 rounded-xl bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] disabled:opacity-50 text-white font-semibold transition-all shadow-sm shadow-[#376DDD]/20 active:scale-[0.99] mt-2"
           >
             {loading ? 'Authenticating...' : 'Sign In'}
           </button>
         </form>
 
-        <p className="text-center text-xs text-slate-400 pt-2 border-t border-[#002B49]">
+        <p className="text-center text-xs text-[#526079] pt-2 border-t border-[#DCE4F3]">
           Don&apos;t have an account?{' '}
           <Link
             href={`/signup${returnUrl ? `?returnUrl=${encodeURIComponent(returnUrl)}` : ''}`}
-            className="text-[#00A3E0] font-medium hover:text-sky-300 hover:underline"
+            className="text-[#376DDD] font-medium hover:text-[#285BC4] hover:underline"
           >
             Create an account
           </Link>

@@ -1,5 +1,5 @@
-import { supabaseAdmin, getSignedImageUrl } from './supabaseService';
-import { NotFoundError } from '../utils/errors';
+import { supabaseAdmin, getSignedImageUrl, downloadImageFromStorage } from './supabaseService';
+import { NotFoundError, ForbiddenError } from '../utils/errors';
 import { LeaderboardEntry } from '../types/database';
 import { APP_CONSTANTS } from '../config/constants';
 import { logger } from '../utils/logger';
@@ -14,22 +14,29 @@ export class LeaderboardService {
    * 3. DINO Structural Similarity Score (DESC)
    * 4. Earlier Submission Timestamp (ASC)
    */
-  async getCompetitionLeaderboard(competitionId: string): Promise<{
+  async getCompetitionLeaderboard(competitionId: string, currentUserId?: string, userRole?: string): Promise<{
     competition_id: string;
     competition_title: string;
     scoring_version: string;
+    is_host: boolean;
+    host_id?: string;
     entries: (LeaderboardEntry & { recreation_image_url?: string })[];
   }> {
     // 1. Fetch competition
     const { data: comp, error: compError } = await supabaseAdmin
       .from('competitions')
-      .select('id, title, leaderboard_visibility, status, scoring_version_id')
+      .select('id, title, host_id, organizer_id, leaderboard_visibility, status, scoring_version_id')
       .eq('id', competitionId)
       .single();
 
     if (compError || !comp) {
       throw new NotFoundError(`Competition not found: ${competitionId}`);
     }
+
+    const isHost = Boolean(
+      currentUserId &&
+      (comp.host_id === currentUserId || comp.organizer_id === currentUserId || userRole === 'admin')
+    );
 
     // 2. Fetch all completed submissions with their scores and participant profile
     const { data: submissions, error: subError } = await supabaseAdmin
@@ -140,7 +147,69 @@ export class LeaderboardService {
       competition_id: comp.id,
       competition_title: comp.title,
       scoring_version: rankedWithUrls[0]?.scoring_version || 'v1.0.0',
+      is_host: isHost,
+      host_id: comp.host_id,
       entries: rankedWithUrls
+    };
+  }
+
+  /**
+   * Allows only the competition host (or admin) to download a contestant's submission image.
+   * Throws ForbiddenError if a competitor or unauthenticated user tries to download.
+   */
+  async getSubmissionDownloadForHost(
+    competitionId: string,
+    submissionId: string,
+    userId: string,
+    userRole?: string
+  ): Promise<{ fileBuffer: Buffer; mimeType: string; filename: string }> {
+    // 1. Fetch competition to verify host authorization
+    const { data: comp, error: compError } = await supabaseAdmin
+      .from('competitions')
+      .select('id, title, host_id, organizer_id')
+      .eq('id', competitionId)
+      .single();
+
+    if (compError || !comp) {
+      throw new NotFoundError(`Competition not found: ${competitionId}`);
+    }
+
+    const isHost = comp.host_id === userId || comp.organizer_id === userId || userRole === 'admin';
+    if (!isHost) {
+      throw new ForbiddenError('Access Denied: Only the competition host is permitted to download participant submission images.');
+    }
+
+    // 2. Fetch the submission record
+    const { data: sub, error: subError } = await supabaseAdmin
+      .from('submissions')
+      .select(`
+        id,
+        participant_id,
+        image_path,
+        original_filename,
+        mime_type,
+        attempt_number,
+        participant:profiles!participant_id(display_name)
+      `)
+      .eq('id', submissionId)
+      .eq('competition_id', competitionId)
+      .single();
+
+    if (subError || !sub) {
+      throw new NotFoundError(`Submission not found: ${submissionId}`);
+    }
+
+    const participantObj: any = Array.isArray(sub.participant) ? sub.participant[0] : sub.participant;
+    const participantName = (participantObj?.display_name || 'participant').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const ext = sub.mime_type === 'image/png' ? 'png' : sub.mime_type === 'image/webp' ? 'webp' : 'jpg';
+    const downloadFilename = `${participantName}_att${sub.attempt_number}_submission.${ext}`;
+
+    const fileBuffer = await downloadImageFromStorage(APP_CONSTANTS.STORAGE_BUCKETS.SUBMISSIONS, sub.image_path);
+
+    return {
+      fileBuffer,
+      mimeType: sub.mime_type || 'image/jpeg',
+      filename: downloadFilename
     };
   }
 

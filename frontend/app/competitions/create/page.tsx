@@ -104,7 +104,7 @@ export default function CreateCompetitionPage() {
   if (checkingAuth) {
     return (
       <div className="min-h-[75vh] flex items-center justify-center">
-        <div className="text-slate-400 text-sm">Checking authentication...</div>
+        <div className="text-[#526079] text-sm">Checking authentication...</div>
       </div>
     );
   }
@@ -115,59 +115,59 @@ export default function CreateCompetitionPage() {
 
     return (
       <div className="max-w-2xl mx-auto px-4 py-12">
-        <div className="bg-[#0B1D35]/90 border border-[#002B49] rounded-3xl p-8 sm:p-10 shadow-2xl backdrop-blur-sm text-center space-y-6">
-          <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+        <div className="bg-[#FFFFFF] border border-[#DCE4F3] rounded-3xl p-8 sm:p-10 shadow-sm text-center space-y-6">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center mx-auto">
             <CheckCircle2 className="w-8 h-8" />
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#101A35] tracking-tight">
               Competition Created!
             </h1>
-            <p className="text-xs text-slate-400">
-              Your competition <strong className="text-slate-200">{createdComp.title}</strong> is live and ready for contestants.
+            <p className="text-xs text-[#526079]">
+              Your competition <strong className="text-[#101A35]">{createdComp.title}</strong> is live and ready for contestants.
             </p>
           </div>
 
           {/* Unique Competition Code Box */}
-          <div className="bg-[#071527] border border-[#002B49] rounded-2xl p-5 text-left space-y-3">
+          <div className="bg-[#FCFDFF] border border-[#DCE4F3] rounded-2xl p-5 text-left space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
+              <span className="text-xs text-[#526079] font-semibold uppercase tracking-wider">
                 Competition Code
               </span>
               <button
                 type="button"
                 onClick={() => copyToClipboard(createdComp.code, false)}
-                className="inline-flex items-center gap-1.5 text-xs text-[#00A3E0] hover:text-sky-300 font-medium transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs text-[#376DDD] hover:text-[#285BC4] font-medium transition-colors"
               >
-                {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedCode ? 'Copied!' : 'Copy Code'}</span>
               </button>
             </div>
-            <div className="text-2xl sm:text-3xl font-mono font-bold text-[#00A3E0] tracking-wider">
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-[#376DDD] tracking-wider">
               {createdComp.code}
             </div>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[11px] text-[#526079]">
               Contestants can join directly by entering this code on the homepage or dashboard.
             </p>
           </div>
 
           {/* Invitation Link Box */}
-          <div className="bg-[#071527] border border-[#002B49] rounded-2xl p-5 text-left space-y-3">
+          <div className="bg-[#FCFDFF] border border-[#DCE4F3] rounded-2xl p-5 text-left space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
+              <span className="text-xs text-[#526079] font-semibold uppercase tracking-wider">
                 Shareable Invitation Link
               </span>
               <button
                 type="button"
                 onClick={() => copyToClipboard(inviteUrl, true)}
-                className="inline-flex items-center gap-1.5 text-xs text-[#00A3E0] hover:text-sky-300 font-medium transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs text-[#376DDD] hover:text-[#285BC4] font-medium transition-colors"
               >
-                {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedLink ? 'Copied!' : 'Copy Link'}</span>
               </button>
             </div>
-            <div className="text-xs font-mono text-slate-300 truncate bg-[#0B1D35] px-3 py-2.5 rounded-lg border border-[#002B49]">
+            <div className="text-xs font-mono text-[#101A35] truncate bg-[#FFFFFF] px-3 py-2.5 rounded-lg border border-[#DCE4F3]">
               {inviteUrl}
             </div>
           </div>
@@ -176,14 +176,14 @@ export default function CreateCompetitionPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
             <Link
               href={`/competitions/${createdComp.id}`}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-semibold text-xs transition-all shadow-md shadow-[#0085CA]/20 inline-flex items-center justify-center gap-2 active:scale-95"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] text-white font-semibold text-xs transition-all shadow-xs inline-flex items-center justify-center gap-2 active:scale-95"
             >
               <span>Go to Competition</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/dashboard"
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#002B49] hover:bg-[#003860] border border-[#0085CA]/20 text-slate-200 font-semibold text-xs transition-all"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#E7ECFA] hover:bg-[#DCE4F3] border border-[#DCE4F3] text-[#376DDD] font-semibold text-xs transition-all"
             >
               Back to Dashboard
             </Link>
@@ -198,7 +198,7 @@ export default function CreateCompetitionPage() {
       <div>
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-[#526079] hover:text-[#101A35] transition-colors"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           <span>Back to Dashboard</span>
@@ -206,38 +206,38 @@ export default function CreateCompetitionPage() {
       </div>
 
       <div>
-        <div className="flex items-center gap-2 text-[#00A3E0] text-xs font-semibold mb-1 uppercase tracking-wider">
+        <div className="flex items-center gap-2 text-[#376DDD] text-xs font-semibold mb-1 uppercase tracking-wider">
           <Sparkles className="w-4 h-4" />
           <span>Host a Challenge</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#101A35] tracking-tight">
           Create Competition
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-[#526079] mt-1">
           Upload a target reference image. An invitation code and shareable link will be generated automatically.
         </p>
       </div>
 
       {errorMsg && (
-        <div className="flex items-center gap-2 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs">
+        <div className="flex items-center gap-2 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{errorMsg}</span>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6 text-xs">
+      <form onSubmit={handleSubmit} className="space-y-6 text-xs bg-[#FFFFFF] border border-[#DCE4F3] p-6 sm:p-8 rounded-2xl shadow-xs">
         {/* Reference Image Dropzone */}
         <div className="space-y-2">
-          <label className="text-slate-300 font-medium">
-            Target Reference Image <span className="text-rose-400">*</span>
+          <label className="text-[#101A35] font-semibold">
+            Target Reference Image <span className="text-rose-600">*</span>
           </label>
           <div
             onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed border-[#002B49] hover:border-[#0085CA] rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer bg-[#0B1D35]/50 hover:bg-[#0B1D35]/80 transition-all text-center min-h-[220px]"
+            className="border-2 border-dashed border-[#DCE4F3] hover:border-[#376DDD] rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer bg-[#FCFDFF] hover:bg-[#E7ECFA]/40 transition-all text-center min-h-[220px]"
           >
             {previewUrl ? (
               <div className="space-y-3">
-                <div className="relative w-44 h-44 mx-auto rounded-xl overflow-hidden border border-[#002B49] shadow-md">
+                <div className="relative w-44 h-44 mx-auto rounded-xl overflow-hidden border border-[#DCE4F3] shadow-xs">
                   <Image
                     src={previewUrl}
                     alt="Preview"
@@ -245,18 +245,18 @@ export default function CreateCompetitionPage() {
                     className="object-contain"
                   />
                 </div>
-                <p className="text-[11px] text-slate-400">Click to change target image</p>
+                <p className="text-[11px] text-[#526079]">Click to change target image</p>
               </div>
             ) : (
               <div className="space-y-2 flex flex-col items-center">
-                <div className="p-3.5 rounded-2xl bg-[#0085CA]/15 text-[#00A3E0] border border-[#0085CA]/30">
+                <div className="p-3.5 rounded-2xl bg-[#E7ECFA] text-[#376DDD] border border-[#DCE4F3]">
                   <Upload className="h-6 w-6" />
                 </div>
                 <div className="space-y-1">
-                  <p className="font-semibold text-slate-200">
+                  <p className="font-semibold text-[#101A35]">
                     Upload high-resolution reference image
                   </p>
-                  <p className="text-slate-400 text-[11px]">PNG, JPEG, or WebP up to 15MB</p>
+                  <p className="text-[#526079] text-[11px]">PNG, JPEG, or WebP up to 15MB</p>
                 </div>
               </div>
             )}
@@ -273,8 +273,8 @@ export default function CreateCompetitionPage() {
         {/* Basic Details */}
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium" htmlFor="title">
-              Competition Title <span className="text-rose-400">*</span>
+            <label className="text-[#101A35] font-semibold" htmlFor="title">
+              Competition Title <span className="text-rose-600">*</span>
             </label>
             <input
               id="title"
@@ -285,12 +285,12 @@ export default function CreateCompetitionPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Cyberpunk Neon Cathedral Recreation"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#FFFFFF] border border-[#DCE4F3] text-[#101A35] placeholder-[#526079] focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD] transition-all"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium" htmlFor="description">
+            <label className="text-[#101A35] font-semibold" htmlFor="description">
               Description & Context
             </label>
             <textarea
@@ -299,12 +299,12 @@ export default function CreateCompetitionPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe the challenge, themes, or style instructions..."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#FFFFFF] border border-[#DCE4F3] text-[#101A35] placeholder-[#526079] focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD] transition-all"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium" htmlFor="rules">
+            <label className="text-[#101A35] font-semibold" htmlFor="rules">
               Rules & Guidelines
             </label>
             <textarea
@@ -313,7 +313,7 @@ export default function CreateCompetitionPage() {
               value={rules}
               onChange={(e) => setRules(e.target.value)}
               placeholder="e.g. Only Midjourney v6 or Stable Diffusion models allowed. No exact reference modifications."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA] transition-all"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#FFFFFF] border border-[#DCE4F3] text-[#101A35] placeholder-[#526079] focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD] transition-all"
             />
           </div>
         </div>
@@ -321,14 +321,14 @@ export default function CreateCompetitionPage() {
         {/* Competition Rules & Settings Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium" htmlFor="aspectRatio">
+            <label className="text-[#101A35] font-semibold" htmlFor="aspectRatio">
               Required Aspect Ratio
             </label>
             <select
               id="aspectRatio"
               value={aspectRatio}
               onChange={(e) => setAspectRatio(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA]"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#FFFFFF] border border-[#DCE4F3] text-[#101A35] focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD]"
             >
               <option value="any">Any Aspect Ratio</option>
               <option value="1:1">1:1 (Square)</option>
@@ -340,7 +340,7 @@ export default function CreateCompetitionPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium" htmlFor="submissionLimit">
+            <label className="text-[#101A35] font-semibold" htmlFor="submissionLimit">
               Max Attempts per Contestant
             </label>
             <input
@@ -350,12 +350,12 @@ export default function CreateCompetitionPage() {
               max={50}
               value={submissionLimit}
               onChange={(e) => setSubmissionLimit(parseInt(e.target.value, 10) || 1)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA]"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#FFFFFF] border border-[#DCE4F3] text-[#101A35] focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD]"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium" htmlFor="startsAt">
+            <label className="text-[#101A35] font-semibold" htmlFor="startsAt">
               Start Date & Time
             </label>
             <input
@@ -364,12 +364,12 @@ export default function CreateCompetitionPage() {
               required
               value={startsAt}
               onChange={(e) => setStartsAt(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA]"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#FFFFFF] border border-[#DCE4F3] text-[#101A35] focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD]"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium" htmlFor="endsAt">
+            <label className="text-[#101A35] font-semibold" htmlFor="endsAt">
               End Date & Time
             </label>
             <input
@@ -378,19 +378,19 @@ export default function CreateCompetitionPage() {
               required
               value={endsAt}
               onChange={(e) => setEndsAt(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA]"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#FFFFFF] border border-[#DCE4F3] text-[#101A35] focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD]"
             />
           </div>
 
           <div className="space-y-1.5 md:col-span-2">
-            <label className="text-slate-300 font-medium" htmlFor="visibility">
+            <label className="text-[#101A35] font-semibold" htmlFor="visibility">
               Leaderboard Visibility
             </label>
             <select
               id="visibility"
               value={visibility}
               onChange={(e) => setVisibility(e.target.value as any)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#040C16] border border-[#002B49] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0085CA]/50 focus:border-[#0085CA]"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-[#FFFFFF] border border-[#DCE4F3] text-[#101A35] focus:outline-none focus:ring-2 focus:ring-[#376DDD]/30 focus:border-[#376DDD]"
             >
               <option value="public">Public (Visible to everyone in real time)</option>
               <option value="hidden_until_close">Hidden until competition closes</option>
@@ -399,11 +399,11 @@ export default function CreateCompetitionPage() {
           </div>
         </div>
 
-        <div className="pt-4 border-t border-[#002B49]">
+        <div className="pt-4 border-t border-[#DCE4F3]">
           <button
             type="submit"
             disabled={loading}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] disabled:opacity-50 text-white font-semibold transition-all shadow-md shadow-[#0085CA]/20 active:scale-95"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] disabled:opacity-50 text-white font-semibold transition-all shadow-xs active:scale-95"
           >
             {loading ? 'Creating Competition & Generating Code...' : 'Create Competition & Get Code'}
           </button>

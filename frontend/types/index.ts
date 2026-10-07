@@ -103,5 +103,7 @@ export interface LeaderboardData {
   competition_id: string;
   competition_title: string;
   scoring_version: string;
+  is_host?: boolean;
+  host_id?: string;
   entries: LeaderboardEntry[];
 }

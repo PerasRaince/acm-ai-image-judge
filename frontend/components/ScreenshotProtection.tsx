@@ -116,21 +116,21 @@ export function ScreenshotProtection() {
     <>
       {/* Warning Toast */}
       {warningMessage && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[9999] max-w-md w-[90%] bg-rose-950/95 border border-rose-500 text-rose-200 px-4 py-3 rounded-2xl shadow-2xl backdrop-blur-md flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-200">
-          <ShieldAlert className="h-5 w-5 text-rose-400 shrink-0" />
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[9999] max-w-md w-[90%] bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-2xl shadow-lg backdrop-blur-md flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-200">
+          <ShieldAlert className="h-5 w-5 text-rose-600 shrink-0" />
           <div className="text-xs">
-            <p className="font-bold text-white">Screenshot Prohibited</p>
-            <p className="text-[11px] text-rose-300 leading-tight mt-0.5">{warningMessage}</p>
+            <p className="font-bold text-rose-900">Screenshot Prohibited</p>
+            <p className="text-[11px] text-rose-700 leading-tight mt-0.5">{warningMessage}</p>
           </div>
         </div>
       )}
 
       {/* Protective privacy veil when user switches to external snipping tools */}
       {isWindowObscured && (
-        <div className="fixed inset-0 z-[9990] bg-zinc-950/90 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center select-none pointer-events-none">
-          <ShieldAlert className="h-10 w-10 text-sky-400 mb-2 opacity-80" />
-          <h2 className="text-base font-bold text-white tracking-tight">ACM Anti-Cheat Content Protection</h2>
-          <p className="text-xs text-zinc-400 max-w-xs mt-1">
+        <div className="fixed inset-0 z-[9990] bg-[#FCFDFF]/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center select-none pointer-events-none">
+          <ShieldAlert className="h-10 w-10 text-[#376DDD] mb-2 opacity-80" />
+          <h2 className="text-base font-bold text-[#101A35] tracking-tight">ACM Anti-Cheat Content Protection</h2>
+          <p className="text-xs text-[#526079] max-w-xs mt-1">
             Window content is concealed while inactive to maintain competition integrity. Click back to resume.
           </p>
         </div>

@@ -1,8 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --background: #071527;
-  --foreground: #f1f5f9;
+  --background: #FCFDFF;
+  --foreground: #101A35;
+
+  --color-primary: #376DDD;
+  --color-primary-hover: #285BC4;
+  --color-primary-active: #204CA8;
+  --color-surface-white: #FFFFFF;
+  --color-section-pale: #E7ECFA;
+  --color-decorative-bg: #8AA9EC;
+  --color-border: #DCE4F3;
+  --color-border-subtle: #E2E8F4;
+  --color-text-main: #101A35;
+  --color-text-secondary: #526079;
+  --color-cyan-accent: #31B8D0;
+  --color-cyan-accessible: #0284C7;
+  --color-focus-ring: #285BC4;
 }
 
 @theme inline {
@@ -11,18 +25,34 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  --color-acm-blue: #0085ca;
-  --color-acm-deep: #005a8c;
-  --color-acm-navy: #002b49;
-  --color-acm-dark: #071527;
-  --color-acm-cyan: #00a3e0;
-  --color-acm-surface: #0b1d35;
+  --color-acm-blue: #376DDD;
+  --color-acm-deep: #101A35;
+  --color-acm-navy: #DCE4F3;
+  --color-acm-dark: #FCFDFF;
+  --color-acm-cyan: #31B8D0;
+  --color-acm-surface: #FFFFFF;
+  --color-acm-pale: #E7ECFA;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+a {
+  color: inherit;
+  transition: color 150ms ease;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+::selection {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
 }
 
 /* Anti-screenshot, anti-capture, and print shield */

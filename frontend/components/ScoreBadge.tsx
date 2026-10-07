@@ -15,13 +15,13 @@ export function ScoreBadge({
   className
 }: ScoreBadgeProps) {
   // Determine color scheme based on score tier
-  let colorClasses = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+  let colorClasses = 'bg-emerald-50 text-emerald-700 border-emerald-200';
   if (score < 60) {
-    colorClasses = 'bg-rose-500/10 text-rose-400 border-rose-500/20';
+    colorClasses = 'bg-rose-50 text-rose-700 border-rose-200';
   } else if (score < 75) {
-    colorClasses = 'bg-amber-500/10 text-amber-400 border-amber-500/20';
+    colorClasses = 'bg-amber-50 text-amber-800 border-amber-200';
   } else if (score < 88) {
-    colorClasses = 'bg-[#0085CA]/15 text-[#00A3E0] border-[#0085CA]/30';
+    colorClasses = 'bg-[#E7ECFA] text-[#376DDD] border-[#DCE4F3]';
   }
 
   const sizeClasses = {

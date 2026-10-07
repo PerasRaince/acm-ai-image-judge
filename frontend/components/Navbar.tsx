@@ -50,12 +50,12 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#002B49] bg-[#071527]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-[#DCE4F3] bg-[#FCFDFF]/90 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-3 text-white tracking-tight group">
-            <div className="relative h-10 w-10 rounded-xl bg-[#002B49] border border-[#0085CA]/40 flex items-center justify-center p-1.5 shadow-md group-hover:border-[#0085CA] transition-colors shrink-0">
+          <Link href="/" className="flex items-center gap-3 text-[#101A35] tracking-tight group">
+            <div className="relative h-10 w-10 rounded-xl bg-[#FFFFFF] border border-[#DCE4F3] flex items-center justify-center p-1.5 shadow-sm group-hover:border-[#376DDD] transition-colors shrink-0">
               <img
                 src="/acm-logo-blue.png"
                 alt="ACM GEC Thrissur"
@@ -64,12 +64,12 @@ export function Navbar() {
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-white text-sm tracking-tight leading-none">ACM GEC Thrissur</span>
-                <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#0085CA]/15 text-[#00A3E0] border border-[#0085CA]/30">
+                <span className="font-extrabold text-[#101A35] text-sm tracking-tight leading-none">ACM GEC Thrissur</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#E7ECFA] text-[#376DDD] border border-[#DCE4F3]">
                   Orientation
                 </span>
               </div>
-              <span className="text-[10px] text-slate-400 font-medium">AI Image Recreation Competition</span>
+              <span className="text-[10px] text-[#526079] font-medium">AI Image Recreation Competition</span>
             </div>
           </Link>
 
@@ -79,8 +79,8 @@ export function Navbar() {
               href="/competitions"
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 pathname === '/competitions'
-                  ? 'text-white bg-[#002B49] border border-[#0085CA]/35'
-                  : 'text-slate-300 hover:text-white hover:bg-[#002B49]/40'
+                  ? 'text-[#376DDD] bg-[#E7ECFA] border border-[#DCE4F3]'
+                  : 'text-[#526079] hover:text-[#101A35] hover:bg-[#E7ECFA]'
               }`}
             >
               Competitions
@@ -91,8 +91,8 @@ export function Navbar() {
                 href="/dashboard"
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                   pathname.startsWith('/dashboard')
-                    ? 'text-white bg-[#002B49] border border-[#0085CA]/35'
-                    : 'text-slate-300 hover:text-white hover:bg-[#002B49]/40'
+                    ? 'text-[#376DDD] bg-[#E7ECFA] border border-[#DCE4F3]'
+                    : 'text-[#526079] hover:text-[#101A35] hover:bg-[#E7ECFA]'
                 }`}
               >
                 Dashboard
@@ -104,8 +104,8 @@ export function Navbar() {
                 href="/admin"
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
                   pathname.startsWith('/admin')
-                    ? 'text-rose-400 bg-rose-950/40 border border-rose-800/50'
-                    : 'text-slate-300 hover:text-rose-400 hover:bg-[#002B49]/40'
+                    ? 'text-rose-600 bg-rose-50 border border-rose-200'
+                    : 'text-[#526079] hover:text-rose-600 hover:bg-[#E7ECFA]'
                 }`}
               >
                 <Shield className="w-3.5 h-3.5" />
@@ -120,32 +120,32 @@ export function Navbar() {
           {/* Host New Competition action button */}
           <Link
             href="/competitions/create"
-            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white font-semibold text-xs transition-all shadow-md shadow-[#0085CA]/20 active:scale-95"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] text-white font-semibold text-xs transition-all shadow-sm shadow-[#376DDD]/20 active:scale-95"
           >
             <PlusCircle className="w-3.5 h-3.5" />
             <span>Host Challenge</span>
           </Link>
 
           {loading ? (
-            <div className="h-8 w-20 animate-pulse rounded bg-[#002B49]/50" />
+            <div className="h-8 w-20 animate-pulse rounded bg-[#E7ECFA]" />
           ) : user ? (
             <div className="flex items-center gap-3">
               <Link
                 href="/dashboard/profile"
-                className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl hover:bg-[#002B49]/40 transition-colors"
+                className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl hover:bg-[#E7ECFA] transition-colors"
               >
-                <div className="w-7 h-7 rounded-full bg-[#0085CA]/20 border border-[#0085CA]/40 flex items-center justify-center text-xs font-semibold text-sky-300">
+                <div className="w-7 h-7 rounded-full bg-[#E7ECFA] border border-[#376DDD]/30 flex items-center justify-center text-xs font-semibold text-[#376DDD]">
                   {user.display_name.slice(0, 1).toUpperCase()}
                 </div>
                 <div className="hidden sm:flex flex-col text-left">
-                  <span className="text-xs font-medium text-slate-200">{user.display_name}</span>
+                  <span className="text-xs font-medium text-[#101A35]">{user.display_name}</span>
                 </div>
               </Link>
 
               <button
                 onClick={handleSignOut}
                 title="Sign Out"
-                className="p-2 text-slate-400 hover:text-rose-400 rounded-xl hover:bg-[#002B49]/40 transition-colors"
+                className="p-2 text-[#526079] hover:text-rose-600 rounded-xl hover:bg-[#E7ECFA] transition-colors"
               >
                 <LogOut className="h-4 w-4" />
               </button>
@@ -154,13 +154,13 @@ export function Navbar() {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="px-3.5 py-1.5 text-xs font-semibold text-slate-300 hover:text-white rounded-lg hover:bg-[#002B49]/40 transition-colors"
+                className="px-3.5 py-1.5 text-xs font-semibold text-[#526079] hover:text-[#101A35] rounded-lg hover:bg-[#E7ECFA] transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/signup"
-                className="px-3.5 py-1.5 text-xs font-semibold bg-gradient-to-r from-[#0085CA] to-[#005A8C] hover:from-[#0096E6] hover:to-[#006BA6] text-white rounded-xl shadow-md shadow-[#0085CA]/20 transition-all active:scale-95"
+                className="px-3.5 py-1.5 text-xs font-semibold bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] text-white rounded-xl shadow-sm shadow-[#376DDD]/20 transition-all active:scale-95"
               >
                 Sign Up
               </Link>
