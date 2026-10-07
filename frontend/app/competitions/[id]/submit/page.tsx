@@ -8,7 +8,7 @@ import { Competition, Submission, Score } from '../../../../types';
 import { ScoreBadge } from '../../../../components/ScoreBadge';
 import { MetricBar } from '../../../../components/MetricBar';
 import { ImageComparison } from '../../../../components/ImageComparison';
-import { Upload, ArrowLeft, AlertCircle, CheckCircle2, Sparkles, Trophy } from 'lucide-react';
+import { Upload, ArrowLeft, AlertCircle, CheckCircle2, Sparkles, Trophy, Lock, Crown } from 'lucide-react';
 
 import { supabase } from '../../../../lib/supabaseClient';
 
@@ -280,13 +280,36 @@ export default function SubmitRecreationPage() {
             {/* Target Reference preview */}
             <div className="space-y-2">
               <span className="text-xs font-semibold text-[#101A35]">Target Reference Image</span>
-              <div className="relative aspect-square w-full rounded-xl overflow-hidden border border-[#DCE4F3] bg-[#E7ECFA]/30 flex items-center justify-center">
+              <div className="relative aspect-square w-full rounded-xl overflow-hidden border border-[#DCE4F3] bg-[#E7ECFA]/30 flex items-center justify-center group">
                 {competition.reference_image_url ? (
-                  <img
-                    src={competition.reference_image_url}
-                    alt="Benchmark"
-                    className="w-full h-full object-contain"
-                  />
+                  <>
+                    <img
+                      src={competition.reference_image_url}
+                      alt="Benchmark"
+                      className={`w-full h-full object-contain transition-all duration-300 ${
+                        competition.is_host
+                          ? ''
+                          : 'blur-3xl scale-110 select-none pointer-events-none filter'
+                      }`}
+                    />
+                    {!competition.is_host && (
+                      <div className="absolute inset-0 bg-[#101A35]/35 backdrop-blur-xs flex flex-col items-center justify-center p-4 text-center select-none pointer-events-none">
+                        <Lock className="w-5 h-5 text-white mb-1 drop-shadow-md" />
+                        <span className="text-xs font-bold text-white drop-shadow-md">
+                          Reference Concealed
+                        </span>
+                        <span className="text-[10px] text-white/95 max-w-xs mt-0.5 font-medium drop-shadow-sm">
+                          Blurred for contestants
+                        </span>
+                      </div>
+                    )}
+                    {competition.is_host && (
+                      <div className="absolute top-2 left-2 bg-[#FFFFFF]/90 backdrop-blur-xs border border-[#DCE4F3] text-[#376DDD] text-[10px] font-semibold px-2 py-0.5 rounded-md flex items-center gap-1 shadow-xs pointer-events-none">
+                        <Crown className="w-3 h-3" />
+                        <span>Host View</span>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <span className="text-xs text-[#526079]">No reference image</span>
                 )}

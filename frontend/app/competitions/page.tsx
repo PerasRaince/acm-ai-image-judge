@@ -96,7 +96,9 @@ export default function CompetitionsPage() {
                     <img
                       src={comp.reference_image_url}
                       alt={comp.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ${
+                        comp.is_host ? '' : 'blur-2xl scale-110 select-none pointer-events-none filter'
+                      }`}
                     />
                   ) : (
                     <ImageIcon className="h-10 w-10 text-[#526079]/50" />

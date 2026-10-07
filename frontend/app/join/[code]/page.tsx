@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { supabase } from '../../../lib/supabaseClient';
 import { apiClient } from '../../../lib/apiClient';
 import { Competition } from '../../../types';
-import { Trophy, Calendar, Sparkles, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, Users } from 'lucide-react';
+import { Trophy, Calendar, Sparkles, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, Users, Lock, Crown } from 'lucide-react';
 
 export default function JoinCompetitionPage() {
   const params = useParams();
@@ -185,16 +185,42 @@ export default function JoinCompetitionPage() {
               <Sparkles className="w-4 h-4 text-[#376DDD]" />
               Reference Target Image
             </h3>
-            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-[#E7ECFA]/30 border border-[#DCE4F3] shadow-xs flex items-center justify-center">
+            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-[#E7ECFA]/30 border border-[#DCE4F3] shadow-xs flex items-center justify-center group">
               {competition.reference_image_url ? (
-                <Image
-                  src={competition.reference_image_url}
-                  alt={competition.title}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
-                />
+                <>
+                  <Image
+                    src={competition.reference_image_url}
+                    alt={competition.title}
+                    fill
+                    unoptimized
+                    className={`object-contain transition-all duration-300 ${
+                      isHost
+                        ? ''
+                        : 'blur-3xl scale-110 select-none pointer-events-none filter'
+                    }`}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                  />
+                  {!isHost && (
+                    <div className="absolute inset-0 bg-[#101A35]/35 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center select-none pointer-events-none">
+                      <div className="p-3 rounded-full bg-[#FFFFFF]/90 text-[#376DDD] shadow-md mb-2">
+                        <Lock className="w-5 h-5 text-[#376DDD]" />
+                      </div>
+                      <span className="text-xs font-bold text-white drop-shadow-md">
+                        Target Reference Concealed
+                      </span>
+                      <span className="text-[11px] text-white/95 max-w-xs mt-1 drop-shadow-sm font-medium">
+                        Heavily blurred for contestants. Recreate using description & AI prompts.
+                      </span>
+                    </div>
+                  )}
+                  {isHost && (
+                    <div className="absolute top-2.5 left-2.5 bg-[#FFFFFF]/90 backdrop-blur-xs border border-[#DCE4F3] text-[#376DDD] text-[10px] font-semibold px-2 py-0.5 rounded-md flex items-center gap-1 shadow-xs pointer-events-none">
+                      <Crown className="w-3 h-3" />
+                      <span>Host View (Unblurred)</span>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="text-xs text-[#526079]">Image Preview Protected</div>
               )}
