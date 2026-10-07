@@ -22,20 +22,28 @@ export class LeaderboardService {
     host_id?: string;
     entries: (LeaderboardEntry & { recreation_image_url?: string })[];
   }> {
-    // 1. Fetch competition
-    const { data: comp, error: compError } = await supabaseAdmin
+    // 1. Fetch competition (supports both UUID and room code)
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(competitionId);
+    let compQuery = supabaseAdmin
       .from('competitions')
-      .select('id, title, host_id, organizer_id, leaderboard_visibility, status, scoring_version_id')
-      .eq('id', competitionId)
-      .single();
+      .select('id, title, host_id, leaderboard_visibility, status, scoring_version_id');
+
+    if (isUuid) {
+      compQuery = compQuery.eq('id', competitionId);
+    } else {
+      compQuery = compQuery.ilike('code', competitionId.trim());
+    }
+
+    const { data: comp, error: compError } = await compQuery.maybeSingle();
 
     if (compError || !comp) {
+      if (compError) logger.error(`Error querying competition for leaderboard: ${compError.message}`);
       throw new NotFoundError(`Competition not found: ${competitionId}`);
     }
 
     const isHost = Boolean(
       currentUserId &&
-      (comp.host_id === currentUserId || comp.organizer_id === currentUserId || userRole === 'admin')
+      (comp.host_id === currentUserId || userRole === 'admin')
     );
 
     // 2. Fetch all completed submissions with their scores and participant profile
@@ -60,7 +68,7 @@ export class LeaderboardService {
           scoring_version:scoring_versions!scoring_version_id(version)
         )
       `)
-      .eq('competition_id', competitionId)
+      .eq('competition_id', comp.id)
       .eq('scoring_status', 'completed');
 
     if (subError) {
@@ -163,18 +171,26 @@ export class LeaderboardService {
     userId: string,
     userRole?: string
   ): Promise<{ fileBuffer: Buffer; mimeType: string; filename: string }> {
-    // 1. Fetch competition to verify host authorization
-    const { data: comp, error: compError } = await supabaseAdmin
+    // 1. Fetch competition to verify host authorization (supports UUID or code)
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(competitionId);
+    let compQuery = supabaseAdmin
       .from('competitions')
-      .select('id, title, host_id, organizer_id')
-      .eq('id', competitionId)
-      .single();
+      .select('id, title, host_id');
+
+    if (isUuid) {
+      compQuery = compQuery.eq('id', competitionId);
+    } else {
+      compQuery = compQuery.ilike('code', competitionId.trim());
+    }
+
+    const { data: comp, error: compError } = await compQuery.maybeSingle();
 
     if (compError || !comp) {
+      if (compError) logger.error(`Error verifying host for download: ${compError.message}`);
       throw new NotFoundError(`Competition not found: ${competitionId}`);
     }
 
-    const isHost = comp.host_id === userId || comp.organizer_id === userId || userRole === 'admin';
+    const isHost = Boolean(comp.host_id === userId || userRole === 'admin');
     if (!isHost) {
       throw new ForbiddenError('Access Denied: Only the competition host is permitted to download participant submission images.');
     }
@@ -192,7 +208,7 @@ export class LeaderboardService {
         participant:profiles!participant_id(display_name)
       `)
       .eq('id', submissionId)
-      .eq('competition_id', competitionId)
+      .eq('competition_id', comp.id)
       .single();
 
     if (subError || !sub) {

@@ -156,6 +156,36 @@ export default function LeaderboardPage() {
         </div>
       )}
 
+      {/* Winner Recreation Download Card for Host (Poster Generation) */}
+      {isHost && leaderboard.entries.length > 0 && (
+        <div className="p-5 rounded-2xl bg-[#FFFFFF] border border-[#DCE4F3] flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-2xl shrink-0">
+              🥇
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-[#101A35] text-sm">Rank #1 Winner: {leaderboard.entries[0].participant_name}</span>
+                <span className="text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full">
+                  {leaderboard.entries[0].final_score}/100 Score
+                </span>
+              </div>
+              <p className="text-xs text-[#526079] mt-0.5">
+                Download the winning contestant recreation image to design your ACM Chapter Congratulations poster.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => handleDownloadSubmission(leaderboard.entries[0])}
+            disabled={downloadingId === leaderboard.entries[0].submission_id}
+            className="shrink-0 px-4 py-2.5 bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] text-white rounded-xl text-xs font-semibold flex items-center gap-2 shadow-xs transition-colors cursor-pointer"
+          >
+            <Download className="w-4 h-4 text-white" />
+            <span className="text-white">Download Winner Image for Poster</span>
+          </button>
+        </div>
+      )}
+
       {/* Success / Error Alerts */}
       {downloadSuccessMsg && (
         <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2 animate-in fade-in duration-200">
@@ -344,8 +374,8 @@ export default function LeaderboardPage() {
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] text-white rounded-lg text-xs font-semibold shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
                           title={`Download ${entry.participant_name}'s submission`}
                         >
-                          <Download className="w-3.5 h-3.5" />
-                          <span>{downloadingId === entry.submission_id ? 'Downloading...' : 'Download'}</span>
+                          <Download className="w-3.5 h-3.5 text-white" />
+                          <span className="text-white font-semibold">{downloadingId === entry.submission_id ? 'Downloading...' : 'Download'}</span>
                         </button>
                       </td>
                     )}
@@ -430,8 +460,8 @@ export default function LeaderboardPage() {
                 disabled={downloadingId === selectedEntry.submission_id}
                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] text-white rounded-xl text-xs font-semibold shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
               >
-                <Download className="w-3.5 h-3.5" />
-                <span>{downloadingId === selectedEntry.submission_id ? 'Downloading...' : 'Download Recreation Image'}</span>
+                <Download className="w-3.5 h-3.5 text-white" />
+                <span className="text-white font-semibold">{downloadingId === selectedEntry.submission_id ? 'Downloading...' : 'Download Recreation Image'}</span>
               </button>
             </div>
           </div>

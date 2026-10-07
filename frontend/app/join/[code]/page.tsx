@@ -272,16 +272,16 @@ export default function JoinCompetitionPage() {
                   </Link>
                 </div>
               ) : isJoined ? (
-                <div className="text-xs text-emerald-700 flex items-center justify-between">
-                  <span className="flex items-center gap-1.5">
-                    <CheckCircle className="w-4 h-4" />
+                <div className="text-xs flex items-center justify-between flex-wrap gap-2">
+                  <span className="text-emerald-700 flex items-center gap-1.5 font-medium">
+                    <CheckCircle className="w-4 h-4 text-emerald-600" />
                     You are participating in this competition.
                   </span>
                   <Link
                     href={`/competitions/${competition.id}/submit`}
-                    className="px-4 py-2 rounded-xl bg-[#376DDD] hover:bg-[#285BC4] text-white font-semibold transition-all shadow-xs"
+                    className="px-4 py-2 rounded-xl bg-[#376DDD] hover:bg-[#285BC4] active:bg-[#204CA8] text-white font-semibold transition-all shadow-xs inline-flex items-center"
                   >
-                    Submit Recreation
+                    <span className="text-white font-semibold">Submit Recreation</span>
                   </Link>
                 </div>
               ) : (
