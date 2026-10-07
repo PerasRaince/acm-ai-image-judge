@@ -74,3 +74,113 @@ img {
   -webkit-user-select: none;
   -webkit-touch-callout: none;
 }
+
+/* Ambient Background Floating & Subtle Drift Animations */
+@keyframes ambient-float-1 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -25px) scale(1.06);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.96);
+  }
+}
+
+@keyframes ambient-float-2 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(-35px, 25px) scale(0.94);
+  }
+  66% {
+    transform: translate(25px, -30px) scale(1.08);
+  }
+}
+
+@keyframes ambient-float-3 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(25px, 35px) scale(1.05);
+  }
+}
+
+@keyframes ambient-grid-drift {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: 64px 64px;
+  }
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-bounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+
+.animate-ambient-1 {
+  animation: ambient-float-1 20s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-2 {
+  animation: ambient-float-2 24s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-3 {
+  animation: ambient-float-3 28s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-grid-drift {
+  animation: ambient-grid-drift 50s linear infinite;
+  will-change: background-position;
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 40s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+.animate-scroll-bounce {
+  animation: scroll-bounce 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ambient-1,
+  .animate-ambient-2,
+  .animate-ambient-3,
+  .animate-grid-drift,
+  .animate-marquee,
+  .animate-scroll-bounce {
+    animation: none !important;
+  }
+}
+
