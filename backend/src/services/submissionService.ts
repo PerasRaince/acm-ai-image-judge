@@ -230,17 +230,18 @@ export class SubmissionService {
         errMsg.includes('502') ||
         errMsg.includes('503') ||
         errMsg.includes('504') ||
-        errMsg.includes('Bad Gateway') ||
+        errMsg.includes('bad gateway') ||
         errMsg.includes('fetch failed') ||
         errMsg.includes('timeout') ||
         errMsg.includes('terminated') ||
         errMsg.includes('socket') ||
-        errMsg.includes('ECONNRESET') ||
+        errMsg.includes('econnreset') ||
+        errMsg.includes('econnrefused') ||
         errMsg.includes('warming up');
 
       if (isTransientGlitch) {
         throw new ServiceUnavailableError(
-          'The AI scoring engine is currently warming up or handling queue load. Your submission quota was NOT deducted. Please click Submit again!'
+          'The AI scoring engine is currently warming up or handling queue load. Your submission quota was NOT deducted. Please wait 10-15 seconds and click Submit again!'
         );
       }
 

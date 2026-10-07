@@ -22,25 +22,44 @@ export interface AIScoreResult {
   aspect_ratio: number;
 }
 
-export class AIScoringService {
-  private baseUrl: string;
+export function normalizeAiServiceUrl(rawUrl?: string): string {
+  if (!rawUrl) return 'http://localhost:7860';
+  let url = rawUrl.trim().replace(/\/$/, '');
 
-  constructor() {
-    this.baseUrl = env.AI_SERVICE_URL.replace(/\/$/, '');
+  // If user pasted Hugging Face Space page URL:
+  // e.g. https://huggingface.co/spaces/username/space-name
+  const hfMatch = url.match(/huggingface\.co\/spaces\/([^/]+)\/([^/]+)/);
+  if (hfMatch) {
+    const owner = hfMatch[1].toLowerCase().replace(/_/g, '-');
+    const name = hfMatch[2].toLowerCase().replace(/_/g, '-');
+    url = `https://${owner}-${name}.hf.space`;
+  }
+
+  return url;
+}
+
+export class AIScoringService {
+  /**
+   * Dynamically resolves the active AI service URL (supports Hugging Face Spaces & localhost).
+   */
+  public get baseUrl(): string {
+    return normalizeAiServiceUrl(process.env.AI_SERVICE_URL || env.AI_SERVICE_URL);
   }
 
   /**
    * Health check to determine if the AI service is responsive.
    */
   async checkHealth(): Promise<boolean> {
+    const endpoint = this.baseUrl;
     try {
-      const response = await fetch(`${this.baseUrl}/health`, {
+      const response = await fetch(`${endpoint}/health`, {
         method: 'GET',
-        headers: { Accept: 'application/json' }
+        headers: { Accept: 'application/json' },
+        signal: AbortSignal.timeout(10000)
       });
       return response.ok;
     } catch (err) {
-      logger.warn(`AI service health check failed at ${this.baseUrl}/health: ${(err as Error).message}`);
+      logger.warn(`AI service health check failed at ${endpoint}/health: ${(err as Error).message}`);
       return false;
     }
   }

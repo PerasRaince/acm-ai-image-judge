@@ -51,7 +51,7 @@ Submissions are evaluated by an automated, explainable **Multi-Metric Vision Ens
 | :--- | :--- | :--- | :--- |
 | **Frontend Web App** | Vercel | Hosted on Vercel Edge Network | Active |
 | **Backend API** | Render | `https://ai-judge-backend.onrender.com` | Healthy |
-| **AI Scoring Engine** | Render | `https://ai-judge-scoring.onrender.com` | Healthy |
+| **AI Scoring Engine** | Hugging Face Spaces | `https://<username>-<space-name>.hf.space` (16 GB RAM) | Active |
 | **Database & Auth** | Supabase | `https://llexnyzdvqjgvlrvzdgr.supabase.co` | Connected |
 
 ---
@@ -70,7 +70,7 @@ flowchart TD
     subgraph CDN_Gateway ["Edge & Hosting Layer"]
         Vercel["Vercel Edge Network\n(Frontend SSR / Static)"]
         RenderAPI["Render Web Service\nNode.js 22 LTS (Express API)"]
-        RenderAI["Render Docker Container\nPython 3.10 (FastAPI + PyTorch)"]
+        HFSpaces["Hugging Face Spaces (Docker)\n16 GB RAM Cloud (FastAPI + PyTorch)"]
     end
 
     subgraph SupabaseCloud ["Supabase Managed Cloud"]
@@ -85,10 +85,10 @@ flowchart TD
 
     RenderAPI -->|Service Role Client| Postgres
     RenderAPI -->|Signed Read / Write| Storage
-    RenderAPI -->|Internal Multipart Dispatch| RenderAI
+    RenderAPI -->|Multipart Dispatch| HFSpaces
 
-    RenderAI -->|Extract Features & Inference| RenderAI
-    RenderAI -->|Structured JSON Score| RenderAPI
+    HFSpaces -->|Extract Features & Inference| HFSpaces
+    HFSpaces -->|Structured JSON Score| RenderAPI
 
     RenderAPI -->|Persist Scores & Submissions| Postgres
     Postgres -.->|Real-time Leaderboard| UI
