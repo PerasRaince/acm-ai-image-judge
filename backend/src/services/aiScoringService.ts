@@ -54,7 +54,7 @@ export class AIScoringService {
     try {
       const response = await fetch(`${endpoint}/health`, {
         method: 'GET',
-        headers: { Accept: 'application/json' },
+        headers: { Accept: 'application/json', 'Bypass-Tunnel-Reminder': 'true' },
         signal: AbortSignal.timeout(10000)
       });
       return response.ok;
@@ -97,7 +97,8 @@ export class AIScoringService {
     const formBuffer = form.getBuffer();
     const headers = {
       ...form.getHeaders(),
-      'Content-Length': String(formBuffer.length)
+      'Content-Length': String(formBuffer.length),
+      'Bypass-Tunnel-Reminder': 'true'
     };
 
     let lastError: Error | null = null;
