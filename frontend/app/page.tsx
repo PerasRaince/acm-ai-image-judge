@@ -28,12 +28,21 @@ export default function HomePage() {
     <div className="relative flex flex-col space-y-16 sm:space-y-20 py-10 md:py-16 overflow-hidden">
       {/* Subtle Animated Background Elements (Professional ACM AI Visual Ambience) */}
       <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden" aria-hidden="true">
-        {/* Subtle dynamic blueprint grid drifting smoothly */}
+        {/* Layer 1: Primary Running Dotted Matrix (ACM Royal Blue) */}
         <div
-          className="absolute inset-0 opacity-[0.035] animate-grid-drift"
+          className="absolute inset-0 opacity-[0.18] animate-dots-running-primary"
           style={{
-            backgroundImage: `radial-gradient(#376DDD 1px, transparent 1px)`,
-            backgroundSize: '36px 36px'
+            backgroundImage: `radial-gradient(circle, #376DDD 1.6px, transparent 1.6px)`,
+            backgroundSize: '30px 30px'
+          }}
+        />
+
+        {/* Layer 2: Secondary Counter-Running Dotted Accent (Cyan) */}
+        <div
+          className="absolute inset-0 opacity-[0.10] animate-dots-running-secondary"
+          style={{
+            backgroundImage: `radial-gradient(circle, #31B8D0 1.2px, transparent 1.2px)`,
+            backgroundSize: '45px 45px'
           }}
         />
 

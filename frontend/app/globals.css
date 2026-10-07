@@ -34,10 +34,34 @@
   --color-acm-pale: #E7ECFA;
 }
 
+/* Hide scrollbar completely while maintaining full scroll capability */
+html,
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  scrollbar-width: none; /* Firefox, Safari 18+ */
+  -ms-overflow-style: none; /* IE, Edge */
+}
+
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+}
+
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.no-scrollbar {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
 }
 
 a {
@@ -138,6 +162,34 @@ img {
   }
 }
 
+@keyframes dotted-running-primary {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: 60px 60px;
+  }
+}
+
+@keyframes dotted-running-secondary {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: -48px 48px;
+  }
+}
+
+.animate-dots-running-primary {
+  animation: dotted-running-primary 5s linear infinite;
+  will-change: background-position;
+}
+
+.animate-dots-running-secondary {
+  animation: dotted-running-secondary 8s linear infinite;
+  will-change: background-position;
+}
+
 .animate-ambient-1 {
   animation: ambient-float-1 20s ease-in-out infinite;
   will-change: transform;
@@ -179,7 +231,9 @@ img {
   .animate-ambient-3,
   .animate-grid-drift,
   .animate-marquee,
-  .animate-scroll-bounce {
+  .animate-scroll-bounce,
+  .animate-dots-running-primary,
+  .animate-dots-running-secondary {
     animation: none !important;
   }
 }
