@@ -8,20 +8,19 @@ export function Footer() {
         {/* Main Row */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2.5">
-            <div className="h-6 w-6 rounded-md bg-[#002B49]/70 border border-[#0085CA]/30 flex items-center justify-center p-1">
+            <div className="h-7 w-7 rounded-md bg-[#002B49] border border-[#0085CA]/30 flex items-center justify-center p-1 shrink-0">
               <img
                 src="/acm-logo-blue.png"
-                alt="ACM Logo"
+                alt="ACM GEC Thrissur"
                 className="h-full w-full object-contain"
               />
             </div>
-            <span className="font-semibold text-slate-200">ACM Student Chapter</span>
-            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#0085CA]/15 text-[#00A3E0] border border-[#0085CA]/30">
-              AI Judge
-            </span>
-            <span className="text-slate-600 hidden sm:inline">•</span>
-            <span className="text-slate-400 text-[11px]">
-              © {new Date().getFullYear()} Institutional Chapter
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+              <span className="font-semibold text-slate-200">ACM Student Chapter</span>
+              <span className="text-slate-400 text-[11px]">Government Engineering College Thrissur</span>
+            </div>
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#0085CA]/15 text-[#00A3E0] border border-[#0085CA]/30 hidden sm:inline-block">
+              Orientation 2026
             </span>
           </div>
 
@@ -35,38 +34,15 @@ export function Footer() {
             <Link href="/competitions/create" className="hover:text-white transition-colors">
               Host Challenge
             </Link>
-            <a
-              href="https://www.acm.org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#00A3E0] hover:text-sky-300 font-medium transition-colors"
-            >
-              acm.org
-            </a>
+            <Link href="/login" className="hover:text-white transition-colors">
+              Sign In
+            </Link>
           </div>
         </div>
 
-        {/* Compact Legal & Trademark Notice */}
-        <div className="pt-2 border-t border-slate-900/90 text-[10px] text-slate-500 leading-relaxed text-center sm:text-left">
-          ACM and the ACM logo are registered trademarks of the{' '}
-          <a
-            href="https://www.acm.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-slate-400 hover:text-sky-400 underline underline-offset-2"
-          >
-            Association for Computing Machinery, Inc.
-          </a>
-          {' '}• Independently operated by the Institutional ACM Student Chapter for non-commercial educational benchmarking under the{' '}
-          <a
-            href="https://www.acm.org/code-of-ethics"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-slate-400 hover:text-sky-400 underline underline-offset-2"
-          >
-            ACM Code of Ethics
-          </a>
-          . Not hosted or certified by ACM Headquarters.
+        {/* Chapter Attribution */}
+        <div className="pt-2 border-t border-[#002B49]/60 text-[10px] text-slate-500 leading-relaxed text-center sm:text-left">
+          Organized by the ACM Student Chapter, Government Engineering College Thrissur (GEC Thrissur). AI image recreation fidelity evaluated via an automated 6-metric PyTorch vision ensemble.
         </div>
       </div>
     </footer>

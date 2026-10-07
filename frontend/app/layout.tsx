@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'ACM Student Chapter | AI Image Judge Platform',
-  description: 'Deterministic AI image recreation competition platform organized by the Institutional ACM Student Chapter (Association for Computing Machinery). Powered by DreamSim, DINOv2, OpenCLIP, and LPIPS.',
+  title: 'ACM Student Chapter GEC Thrissur | Orientation AI Image Recreation Competition',
+  description: 'Official AI Image Recreation Competition platform organized for the ACM Student Chapter Orientation at Government Engineering College Thrissur (GEC Thrissur). Powered by an automated 6-metric PyTorch vision evaluation ensemble.',
   icons: {
     icon: '/acm-icon.png',
     shortcut: '/acm-icon.png',

@@ -55,21 +55,21 @@ export function Navbar() {
         {/* Brand */}
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-3 text-white tracking-tight group">
-            <div className="relative h-9 w-9 rounded-xl bg-[#002B49]/60 border border-[#0085CA]/40 flex items-center justify-center p-1.5 shadow-md group-hover:border-[#0085CA] transition-colors">
+            <div className="relative h-10 w-10 rounded-xl bg-[#002B49] border border-[#0085CA]/40 flex items-center justify-center p-1.5 shadow-md group-hover:border-[#0085CA] transition-colors shrink-0">
               <img
                 src="/acm-logo-blue.png"
-                alt="ACM Logo"
+                alt="ACM GEC Thrissur"
                 className="w-full h-full object-contain"
               />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-white text-sm tracking-tight leading-none">ACM Chapter</span>
+                <span className="font-extrabold text-white text-sm tracking-tight leading-none">ACM GEC Thrissur</span>
                 <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#0085CA]/15 text-[#00A3E0] border border-[#0085CA]/30">
-                  AI Judge
+                  Orientation
                 </span>
               </div>
-              <span className="text-[10px] text-slate-400 font-medium">Association for Computing Machinery</span>
+              <span className="text-[10px] text-slate-400 font-medium">AI Image Recreation Competition</span>
             </div>
           </Link>
 
